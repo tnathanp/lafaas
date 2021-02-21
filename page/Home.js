@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Dimensions, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
-function RoundButton(props) {
-    const deviceWidth = Dimensions.get('window').width;
-    const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
+function RoundButton(props) {
     return (
         <Button
             title={props.title}
@@ -21,7 +21,9 @@ function RoundButton(props) {
 const Home = ({ navigation }) => {
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: 0.16 * deviceWidth, fontWeight: '700', color: 'white' }}>LaFaaS</Text>
+            <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Lost and Found as a Service</Text>
+            <View style={{ flexDirection: 'row', marginTop: 0.15 * deviceHeight }}>
                 <RoundButton title="Found" navigateFn={() => navigation.navigate('Details')} />
                 <RoundButton title="Lost" navigateFn={() => navigation.navigate('Recover')} />
             </View>
