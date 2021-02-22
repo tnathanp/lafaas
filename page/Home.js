@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dimensions, View } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import { Button } from 'react-native-elements';
+import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -10,7 +11,7 @@ function RoundButton(props) {
     return (
         <Button
             title={props.title}
-            titleStyle={{ color: '#fc8181', fontSize: 0.08 * deviceWidth, fontWeight: 'bold' }}
+            titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 0.08 * deviceWidth }}
             buttonStyle={{ borderRadius: 1000, width: 0.4 * deviceWidth, height: 0.4 * deviceWidth, backgroundColor: 'white' }}
             containerStyle={{ padding: 10 }}
             onPress={props.navigateFn}
@@ -21,8 +22,8 @@ function RoundButton(props) {
 const Home = ({ navigation }) => {
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 0.16 * deviceWidth, fontWeight: '700', color: 'white' }}>LaFaaS</Text>
-            <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', color: 'white', marginTop: -5 }}>Lost and Found as a Service</Text>
+            <Text style={{ fontSize: 0.16 * deviceWidth, fontWeight: 'bold' }}>LaFaaS</Text>
+            <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', marginTop: -5 }}>Lost and Found as a Service</Text>
             <View style={{ flexDirection: 'row', marginTop: 0.15 * deviceHeight }}>
                 <RoundButton title="Found" navigateFn={() => navigation.navigate('Details')} />
                 <RoundButton title="Lost" navigateFn={() => navigation.navigate('Recover')} />
