@@ -7,6 +7,7 @@ import Home from './page/Home';
 import Create from './page/Create';
 import Detail from './page/Detail';
 import Recover from './page/Recover';
+import LogIn from './page/LogIn';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ function App() {
         <Stack.Screen name="Detail" component={Detail} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
+        <Stack.Screen name="LogIn" component={LogIn} options={{ gestureEnabled: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
