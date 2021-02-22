@@ -25,9 +25,11 @@ const Home = ({ navigation }) => {
             <Text style={{ fontSize: 0.16 * deviceWidth, fontWeight: 'bold' }}>LaFaaS</Text>
             <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', marginTop: -5 }}>Lost and Found as a Service</Text>
             <View style={{ flexDirection: 'row', marginTop: 0.15 * deviceHeight }}>
-                <RoundButton title="Found" navigateFn={() => navigation.navigate('Details')} />
-                <RoundButton title="Lost" navigateFn={() => navigation.navigate('Recover')} />
+                <RoundButton title="Found" navigateFn={() => navigation.navigate('Detail')} />
+                <RoundButton title="Lost" navigateFn={() => navigation.navigate('Detail')} />
             </View>
+            <Button title="go to create (for testing)" onPress={() => navigation.navigate('Create')} />
+            <Button title="go to recover (for testing)" onPress={() => navigation.navigate('Recover')} />
         </LinearGradient>
     );
 }
