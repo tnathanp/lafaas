@@ -14,7 +14,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Details" component={Detail} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Details" component={Create} options={{ gestureEnabled: true }} />
+        <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Recover" component={RecoverAccount} options={{ gestureEnabled: true }} />
       </Stack.Navigator>
     </NavigationContainer>
