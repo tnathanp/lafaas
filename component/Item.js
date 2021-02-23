@@ -1,112 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import * as NativeElement from 'react-native-elements';
-import { Button, Input, Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Text } from './Text';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo } from '@expo/vector-icons';
-
 
 const Item = (props) => {
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState(
 
-        {
-            register:
-            {
-                1:
-                {
-                    name: "canvas",
-                    item_id: 111,
-                    location: "pacific ocean",
-                    color: "blue",
-                    description: "sda;jfas;dlff",
-                    image: 'https://picsum.photos/200/400'
+    let lists = [];
 
-                },
-                2:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://picsum.photos/200/400'
-
-                },
-                3:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://picsum.photos/200/400'
-
-                },
-                4:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://picsum.photos/200/400'
-
-                },
-                5:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaosadaFDF;LSDFJLncn,mzcnmzcxzcxn,.zc,.ckl;asljkasfdljkfadl;ads;ladsjkcnm.,cxv,mnldaksJLJKADSLJKDSHLJKCVXBN,MCXJajklsljSDALKJ;FDSLJSDFpf",
-                    image: 'https://picsum.photos/200/400'
-
-                }
-            },
-
-
-
-            claim: {
-                1:
-                {
-                    name: "canvas kha",
-                    item_id: 333,
-                    location: "pacific ocean",
-                    color: "blue",
-                    description: ";aldfalskfd",
-                    image: 'https://picsum.photos/200/400'
-
-                }
-            }
+    if (props.data != {}) {
+        for (let index in props.data.register) {
+            lists.push(props.data.register[index])
         }
-
-    );
-    let arr = [];
-    let descriptionText = ''
-    for (let index in data.register) {
-        arr.push(data.register[index])
     }
 
-
-
-
-
-
     return (
-
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Card onPress={() => null} containerStyle={styles.container}>
                     {
-                        arr.map((item, index) => {
-                            const maxChar = 95
-                            let descriptionText = ''
+                        lists.map((item, index) => {
+                            const maxChar = 95;
+                            let descriptionText = '';
                             if (item['description'].length > maxChar) {
-                                descriptionText = item['description'].substring(0, maxChar) + " ..."
+                                descriptionText = item['description'].substring(0, maxChar) + " ...";
                             } else {
-                                descriptionText = item['description'] + ' '
+                                descriptionText = item['description'] + ' ';
                             }
 
                             return (
