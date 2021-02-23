@@ -8,6 +8,8 @@ import Create from './page/Create';
 import Detail from './page/Detail';
 import Recover from './page/Recover';
 import Login from './page/Login';
+import Register from './page/Register';
+import Map from './page/Map';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +48,8 @@ function App() {
         <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
+        <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
+        <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

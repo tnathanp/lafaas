@@ -8,9 +8,6 @@ import LottieView from 'lottie-react-native';
 import validator from 'validator';
 
 const Recover = ({ navigation }) => {
-    let animation;
-    useEffect(() => animation.play(), []);
-
     const [email, setEmail] = useState("");
     const [formState, setFormState] = useState({ email: 0 });
 
@@ -65,7 +62,6 @@ const Recover = ({ navigation }) => {
                     </KeyboardAvoidingView>
 
                     <LottieView
-                        ref={anim => { animation = anim; }}
                         style={{
                             width: 0.4 * Dimensions.get('window').width,
                             height: 0.4 * Dimensions.get('window').width,
@@ -74,6 +70,7 @@ const Recover = ({ navigation }) => {
                             marginBottom: '60%'
                         }}
                         source={require('../assets/anim/8282-search-icon.json')}
+                        autoPlay
                     />
 
                 </View>

@@ -28,9 +28,12 @@ const Home = ({ navigation }) => {
                 <RoundButton title="Found" navigateFn={() => navigation.navigate('Detail')} />
                 <RoundButton title="Lost" navigateFn={() => navigation.navigate('Detail')} />
             </View>
-            <Button title="go to create (for testing)" onPress={() => navigation.navigate('Create')} />
-            <Button title="go to recover (for testing)" onPress={() => navigation.navigate('Recover')} />
-            <Button title="go to Login (for testing)" onPress={() => navigation.navigate('Login')} />
+            <Button title="Create (for testing)" onPress={() => navigation.navigate('Create')} />
+            <Button title="Recover (for testing)" onPress={() => navigation.navigate('Recover')} />
+            <Button title="Login (for testing)" onPress={() => navigation.navigate('Login')} />
+            <Button title="Map (for testing)" onPress={() => navigation.navigate('Map')} />
+            <Button title="Register (params: found)" onPress={() => navigation.navigate('Register', { type: 'found' })} />
+            <Button title="Register (params: lost)" onPress={() => navigation.navigate('Register', { type: 'lost' })} />
 
         </LinearGradient>
     );
