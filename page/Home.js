@@ -35,6 +35,7 @@ const Home = ({ navigation }) => {
             <Button title="Register (params: found)" onPress={() => navigation.navigate('Register', { type: 'found' })} />
             <Button title="Register (params: lost)" onPress={() => navigation.navigate('Register', { type: 'lost' })} />
             <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
+            <Button title="ClaimItem (for testing)" onPress={() => navigation.navigate('ClaimItem')} />
         </LinearGradient>
     );
 }

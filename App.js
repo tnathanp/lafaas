@@ -11,6 +11,8 @@ import Login from './page/Login';
 import Register from './page/Register';
 import Map from './page/Map';
 import List from './page/List';
+import ClaimItem from './page/ClaimItem';
+
 
 const Stack = createStackNavigator();
 
@@ -52,6 +54,8 @@ function App() {
         <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
         <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
+        <Stack.Screen name="ClaimItem" component={ClaimItem} options={{ gestureEnabled: true }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
