@@ -173,7 +173,7 @@ const Create = ({ navigation }) => {
                                 title="create"
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                 buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                onPress={() => null}
+                                onPress={() => console.log(fname+lname+username+password+email)}
                             />
                         </View>
                     </ScrollView>

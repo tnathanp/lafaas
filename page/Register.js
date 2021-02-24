@@ -8,8 +8,13 @@ import { Entypo } from '@expo/vector-icons';
 const Register = ({ route, navigation }) => {
     let usernameInput, passwordInput;
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [itemName, setItemName] = useState("");
+    const [locationDesc, setLocationDesc] = useState("");
+    const [cord, setCord] = useState("");
+    const [category, setCategory] = useState("");
+    const [color, setColor] = useState("");
+    const [desc, setDesc] = useState("");
+    const [img, setImg] = useState("");
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
@@ -27,24 +32,25 @@ const Register = ({ route, navigation }) => {
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
 
-                        <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>{route.params.type === 'found' ? 'test found' : 'test lost'}</Text>
+                        <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>{route.params.type === 'found' ? 'Found' : 'Lost'}</Text>
 
                         <Input
-                            onChangeText={value => setUsername(value)}
-                            label='Username'
+                            onChangeText={value => setItemName(value)}
+                            label='Item'
+                            placeholder='What is it?'
                             style={styles.inputBox}
                             labelStyle={styles.label}
                             inputStyle={styles.input}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => passwordInput.focus()}
-                            ref={box => { usernameInput = box; }}
+                            onSubmitEditing={() => locationInput.focus()}
                             autoCorrect={false}
                             autoCapitalize={'none'}
                         />
 
                         <Input
-                            onChangeText={value => setPassword(value)}
-                            label='Password'
+                            onChangeText={value => setLocationDesc(value)}
+                            label='Location'
+                            placeholder={'Where did you ' + route.params.type + ' it?'}
                             style={styles.inputBox}
                             labelStyle={styles.label}
                             inputStyle={styles.input}
@@ -55,30 +61,17 @@ const Register = ({ route, navigation }) => {
                             autoCapitalize={'none'}
                         />
 
-                        <View style={{ alignItems: 'center', marginTop: -5 }}>
+                        <View style={{ alignSelf: 'stretch', padding: 10, marginTop: -30 }}>
                             <Button
-                                title="create"
-                                titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
+                                title="Choose Location"
+                                titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
+                                buttonStyle={styles.locationButton}
                                 onPress={() => null}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 3 }}>
-                            <Button
-                                title="create account"
-                                type="clear"
-                                titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#ffffff', fontSize: 14 }}
-                                buttonStyle={{ width: 160, height: 32, borderRadius: 10, backgroundColor: 'transparent' }}
-                                onPress={() => navigation.navigate('Create')}
-                            />
-                            <Button
-                                title="forget password"
-                                type="clear"
-                                titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#ffffff', fontSize: 14 }}
-                                buttonStyle={{ width: 160, height: 32, borderRadius: 10, backgroundColor: 'transparent' }}
-                                onPress={() => navigation.navigate('Recover')}
-                            />
-                        </View>
+
+
+
                     </KeyboardAvoidingView>
                 </View>
             </TouchableWithoutFeedback>
@@ -131,6 +124,18 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         fontSize: 16,
         fontFamily: 'NotoSansBold'
+    },
+    locationButton: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.4,
+        elevation: 5
     }
 });
 
