@@ -11,7 +11,11 @@ import Login from './page/Login';
 import Register from './page/Register';
 import Map from './page/Map';
 import List from './page/List';
+<<<<<<< HEAD
 import ItemDesc from './page/ItemDesc';
+=======
+import Claiming from './page/Claiming';
+>>>>>>> claiming item
 
 const Stack = createStackNavigator();
 
@@ -53,7 +57,11 @@ function App() {
         <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
         <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
         <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
+<<<<<<< HEAD
         <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
+=======
+        <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
+>>>>>>> claiming item
       </Stack.Navigator>
     </NavigationContainer>
   );

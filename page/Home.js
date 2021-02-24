@@ -33,7 +33,11 @@ const Home = ({ navigation }) => {
             <Button title="Login (for testing)" onPress={() => navigation.navigate('Login')} />
             <Button title="Map (for testing)" onPress={() => navigation.navigate('Map')} />
             <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
+<<<<<<< HEAD
             <Button title="ItemDesc (for testing)" onPress={() => navigation.navigate('ItemDesc')} />
+=======
+            <Button title="Claiming page (for testing)" onPress={() => navigation.navigate('Claiming')} />
+>>>>>>> claiming item
         </LinearGradient>
     );
 }
