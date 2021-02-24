@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input } from 'react-native-elements';
-import { StyleSheet, ScrollView, KeyboardAvoidingView, View, Keyboard } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, ScrollView, KeyboardAvoidingView, View, Keyboard } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
@@ -70,115 +70,119 @@ const Create = ({ navigation }) => {
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
-            <View style={{ flex: 1, padding: 20 }}>
-                <View style={{ position: 'absolute', top: 50, left: 20 }}>
-                    <Button
-                        title="Back"
-                        icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
-                        titleStyle={{ fontSize: 13, fontFamily: 'NotoSans', padding: 10, marginTop: -5, color: '#fc8181' }}
-                        buttonStyle={{ width: 70, height: 26, borderRadius: 20, backgroundColor: 'white' }}
-                        onPress={() => navigation.goBack()}
-                    />
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={{ flex: 1, padding: 20 }}>
+                    <View style={{ position: 'absolute', top: 50, left: 20 }}>
+                        <Button
+                            title="Back"
+                            icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
+                            titleStyle={{ fontSize: 13, fontFamily: 'NotoSans', padding: 10, marginTop: -5, color: '#fc8181' }}
+                            buttonStyle={{ width: 70, height: 26, borderRadius: 20, backgroundColor: 'white' }}
+                            onPress={() => navigation.goBack()}
+                        />
+                    </View>
+
+                    <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <View onStartShouldSetResponder={() => true}>
+                                <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Create Account</Text>
+
+                                <View style={{ flexDirection: 'row', marginBottom: -15 }}>
+                                    <View style={{ width: '50%' }}>
+                                        <Input
+                                            onChangeText={value => handleChange(value, 'fname')}
+                                            label='First Name'
+                                            style={formState.fname == 0 ? styles.inputBox : styles.inputBoxError}
+                                            labelStyle={styles.label}
+                                            inputStyle={formState.fname == 0 ? styles.input : styles.inputError}
+                                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                            onSubmitEditing={() => lnameInput.focus()}
+                                            autoCorrect={false}
+                                        />
+                                    </View>
+                                    <View style={{ width: '50%' }}>
+                                        <Input
+                                            onChangeText={value => handleChange(value, 'lname')}
+                                            label='Last Name'
+                                            style={formState.lname == 0 ? styles.inputBox : styles.inputBoxError}
+                                            labelStyle={styles.label}
+                                            inputStyle={formState.lname == 0 ? styles.input : styles.inputError}
+                                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                            onSubmitEditing={() => usernameInput.focus()}
+                                            ref={box => { lnameInput = box; }}
+                                            autoCorrect={false}
+                                        />
+                                    </View>
+                                </View>
+
+                                <Input
+                                    onChangeText={value => handleChange(value, 'username')}
+                                    label='Username'
+                                    style={formState.username == 0 ? styles.inputBox : styles.inputBoxError}
+                                    labelStyle={styles.label}
+                                    inputStyle={formState.username == 0 ? styles.input : styles.inputError}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    onSubmitEditing={() => emailInput.focus()}
+                                    ref={box => { usernameInput = box; }}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                />
+
+                                <Input
+                                    onChangeText={value => handleChange(value, 'email')}
+                                    label='Email'
+                                    style={formState.email == 0 ? styles.inputBox : styles.inputBoxError}
+                                    labelStyle={styles.label}
+                                    inputStyle={formState.email == 0 ? styles.input : styles.inputError}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    onSubmitEditing={() => passInput.focus()}
+                                    ref={box => { emailInput = box; }}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                />
+
+                                <Input
+                                    onChangeText={value => handleChange(value, 'password')}
+                                    label='Password'
+                                    style={formState.password == 0 ? styles.inputBox : styles.inputBoxError}
+                                    labelStyle={styles.label}
+                                    inputStyle={formState.password == 0 ? styles.input : styles.inputError}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    onSubmitEditing={() => cpassInput.focus()}
+                                    ref={box => { passInput = box; }}
+                                    autoCorrect={false}
+                                    secureTextEntry={true}
+                                    autoCapitalize={'none'}
+                                />
+
+                                <Input
+                                    onChangeText={value => handleChange(value, 'cpassword')}
+                                    label='Confirm Password'
+                                    style={formState.cpassword == 0 ? styles.inputBox : styles.inputBoxError}
+                                    labelStyle={styles.label}
+                                    inputStyle={formState.cpassword == 0 ? styles.input : styles.inputError}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    containerStyle={{ marginTop: -20, marginBottom: 10 }}
+                                    onSubmitEditing={() => Keyboard.dismiss}
+                                    ref={box => { cpassInput = box; }}
+                                    autoCorrect={false}
+                                    secureTextEntry={true}
+                                    autoCapitalize={'none'}
+                                />
+
+                                <View style={{ alignItems: 'center', marginTop: -5, marginBottom: 15 }}>
+                                    <Button
+                                        title="create"
+                                        titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
+                                        buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
+                                        onPress={() => console.log(fname + lname + username + password + email)}
+                                    />
+                                </View>
+                            </View>
+                        </ScrollView>
+                    </KeyboardAvoidingView>
                 </View>
-
-                <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Create Account</Text>
-
-                        <View style={{ flexDirection: 'row', marginBottom: -15 }}>
-                            <View style={{ width: '50%' }}>
-                                <Input
-                                    onChangeText={value => handleChange(value, 'fname')}
-                                    label='First Name'
-                                    style={formState.fname == 0 ? styles.inputBox : styles.inputBoxError}
-                                    labelStyle={styles.label}
-                                    inputStyle={formState.fname == 0 ? styles.input : styles.inputError}
-                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                    onSubmitEditing={() => lnameInput.focus()}
-                                    autoCorrect={false}
-                                />
-                            </View>
-                            <View style={{ width: '50%' }}>
-                                <Input
-                                    onChangeText={value => handleChange(value, 'lname')}
-                                    label='Last Name'
-                                    style={formState.lname == 0 ? styles.inputBox : styles.inputBoxError}
-                                    labelStyle={styles.label}
-                                    inputStyle={formState.lname == 0 ? styles.input : styles.inputError}
-                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                    onSubmitEditing={() => usernameInput.focus()}
-                                    ref={box => { lnameInput = box; }}
-                                    autoCorrect={false}
-                                />
-                            </View>
-                        </View>
-
-                        <Input
-                            onChangeText={value => handleChange(value, 'username')}
-                            label='Username'
-                            style={formState.username == 0 ? styles.inputBox : styles.inputBoxError}
-                            labelStyle={styles.label}
-                            inputStyle={formState.username == 0 ? styles.input : styles.inputError}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => emailInput.focus()}
-                            ref={box => { usernameInput = box; }}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                        />
-
-                        <Input
-                            onChangeText={value => handleChange(value, 'email')}
-                            label='Email'
-                            style={formState.email == 0 ? styles.inputBox : styles.inputBoxError}
-                            labelStyle={styles.label}
-                            inputStyle={formState.email == 0 ? styles.input : styles.inputError}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => passInput.focus()}
-                            ref={box => { emailInput = box; }}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                        />
-
-                        <Input
-                            onChangeText={value => handleChange(value, 'password')}
-                            label='Password'
-                            style={formState.password == 0 ? styles.inputBox : styles.inputBoxError}
-                            labelStyle={styles.label}
-                            inputStyle={formState.password == 0 ? styles.input : styles.inputError}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => cpassInput.focus()}
-                            ref={box => { passInput = box; }}
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            autoCapitalize={'none'}
-                        />
-
-                        <Input
-                            onChangeText={value => handleChange(value, 'cpassword')}
-                            label='Confirm Password'
-                            style={formState.cpassword == 0 ? styles.inputBox : styles.inputBoxError}
-                            labelStyle={styles.label}
-                            inputStyle={formState.cpassword == 0 ? styles.input : styles.inputError}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            containerStyle={{ marginTop: -20, marginBottom: 10 }}
-                            onSubmitEditing={() => Keyboard.dismiss}
-                            ref={box => { cpassInput = box; }}
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            autoCapitalize={'none'}
-                        />
-
-                        <View style={{ alignItems: 'center', marginTop: -5, marginBottom: 15 }}>
-                            <Button
-                                title="create"
-                                titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                onPress={() => console.log(fname+lname+username+password+email)}
-                            />
-                        </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
+            </TouchableWithoutFeedback>
         </LinearGradient>
     );
 }

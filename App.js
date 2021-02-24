@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Home from './page/Home';
@@ -11,11 +12,8 @@ import Login from './page/Login';
 import Register from './page/Register';
 import Map from './page/Map';
 import List from './page/List';
-<<<<<<< HEAD
 import ItemDesc from './page/ItemDesc';
-=======
 import Claiming from './page/Claiming';
->>>>>>> claiming item
 
 const Stack = createStackNavigator();
 
@@ -47,23 +45,22 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Detail" component={Detail} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
-        <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
-        <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
-<<<<<<< HEAD
-        <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
-=======
-        <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
->>>>>>> claiming item
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ActionSheetProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Detail" component={Detail} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
+          <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ActionSheetProvider>
   );
 }
 

@@ -10,7 +10,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ASPECT_RATIO = deviceWidth / deviceHeight;
 
-const Map = ({ navigation }) => {
+const Map = ({ route, navigation }) => {
 
     const [location, setLocation] = useState();
 
@@ -55,7 +55,9 @@ const Map = ({ navigation }) => {
                 style={{ marginTop: '5%' }}
                 titleStyle={{ fontFamily: 'NotoSansBold', padding: '25%' }}
                 buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10, height: 0.06 * deviceHeight }}
-                onPress={() => console.log(location)}
+                onPress={() => {
+                    navigation.navigate('Register', { type: 'lost', coordinate: location });
+                }}
             />
 
         </View>

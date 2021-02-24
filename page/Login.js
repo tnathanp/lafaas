@@ -26,7 +26,6 @@ const Login = ({ navigation }) => {
                     </View>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
-
                         <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Login</Text>
 
                         <Input

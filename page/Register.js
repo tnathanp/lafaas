@@ -1,20 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Input } from 'react-native-elements';
-import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Image, Button, Input } from 'react-native-elements';
+import { StyleSheet, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as ImagePicker from 'expo-image-picker';
+import { useActionSheet } from '@expo/react-native-action-sheet'
 
 const Register = ({ route, navigation }) => {
-    let usernameInput, passwordInput;
-
+    let locationInput, colorInput, descInput;
+    const { showActionSheetWithOptions } = useActionSheet();
     const [itemName, setItemName] = useState("");
     const [locationDesc, setLocationDesc] = useState("");
-    const [cord, setCord] = useState("");
+    const [coordinate, setCoordinate] = useState("");
     const [category, setCategory] = useState("");
     const [color, setColor] = useState("");
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState("");
+    const [imageBox, setPositionOfImageBox] = useState(0);
+    const scrollRef = useRef();
+
+    //Set coordination after coming back from Map component
+    useEffect(() => {
+        if (route.params.coordinate != undefined) setCoordinate(route.params.coordinate);
+    }, [route.params.coordinate]);
+
+    const openActionSheet = () => {
+        const options = ['Take Photo', 'Photo Library', 'Cancel'];
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions(
+            {
+                options,
+                cancelButtonIndex
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    cameraLauncher();
+                } else if (buttonIndex === 1) {
+                    imageSelector();
+                }
+            }
+        );
+    };
+
+    const imageSelector = async () => {
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1
+        });
+
+        setImg(result.uri);
+    }
+
+    const cameraLauncher = async () => {
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        await ImagePicker.requestCameraPermissionsAsync();
+
+        let result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            quality: 1
+        });
+
+        if (result.cancelled) {
+            return;
+        }
+
+        let localUri = result.uri;
+        setImg(localUri);
+
+        /*let formData = new FormData();
+        formData.append('photo', { uri: localUri, name: localUri.split('/').pop(), type: 'image/jpeg' });
+
+        await fetch('', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });*/
+    }
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
@@ -31,47 +100,136 @@ const Register = ({ route, navigation }) => {
                     </View>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+                        <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+                            <View onStartShouldSetResponder={() => true}>
+                                <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>{route.params.type === 'found' ? 'Found' : 'Lost'}</Text>
 
-                        <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>{route.params.type === 'found' ? 'Found' : 'Lost'}</Text>
+                                <Input
+                                    onChangeText={value => setItemName(value)}
+                                    label='Item'
+                                    placeholder='What is it?'
+                                    style={styles.inputBox}
+                                    labelStyle={styles.label}
+                                    inputStyle={styles.input}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    onSubmitEditing={() => locationInput.focus()}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                />
 
-                        <Input
-                            onChangeText={value => setItemName(value)}
-                            label='Item'
-                            placeholder='What is it?'
-                            style={styles.inputBox}
-                            labelStyle={styles.label}
-                            inputStyle={styles.input}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => locationInput.focus()}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                        />
+                                <Input
+                                    onChangeText={value => setLocationDesc(value)}
+                                    label='Location'
+                                    placeholder={'Where did you ' + route.params.type + ' it?'}
+                                    style={styles.inputBox}
+                                    labelStyle={styles.label}
+                                    inputStyle={styles.input}
+                                    inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    onSubmitEditing={() => colorInput.focus()}
+                                    ref={box => { locationInput = box; }}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                />
 
-                        <Input
-                            onChangeText={value => setLocationDesc(value)}
-                            label='Location'
-                            placeholder={'Where did you ' + route.params.type + ' it?'}
-                            style={styles.inputBox}
-                            labelStyle={styles.label}
-                            inputStyle={styles.input}
-                            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => null}
-                            ref={box => { passwordInput = box; }}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                        />
+                                <View style={{ alignSelf: 'stretch', padding: 10, marginTop: -30 }}>
+                                    <Button
+                                        title={coordinate == '' ? 'Choose Location' : coordinate.latitude.toFixed(5) + ', ' + coordinate.longitude.toFixed(5)}
+                                        icon={<Entypo name="location-pin" size={24} color="#fc8181" />}
+                                        titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
+                                        buttonStyle={styles.locationButton}
+                                        onPress={() => navigation.navigate('Map')}
+                                    />
+                                </View>
 
-                        <View style={{ alignSelf: 'stretch', padding: 10, marginTop: -30 }}>
-                            <Button
-                                title="Choose Location"
-                                titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                buttonStyle={styles.locationButton}
-                                onPress={() => null}
-                            />
-                        </View>
+                                <View style={{ alignSelf: 'stretch', padding: 10 }}>
+                                    <Text style={styles.label}>Category</Text>
+                                    <DropDownPicker
+                                        items={[
+                                            { label: '1', value: 'item1' },
+                                            { label: '2', value: 'item2' },
+                                            { label: '3', value: 'item3' },
+                                            { label: '4', value: 'item4' },
+                                            { label: '5', value: 'item5' }
+                                        ]}
+                                        defaultIndex={0}
+                                        placeholder="Select category"
+                                        style={{
+                                            borderTopLeftRadius: 10, borderTopRightRadius: 10,
+                                            borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
+                                            shadowColor: 'black',
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 1,
+                                            },
+                                            shadowOpacity: 0.2,
+                                            shadowRadius: 1.4,
+                                            elevation: 5
+                                        }}
+                                        dropDownStyle={{ backgroundColor: '#f1f1f1' }}
+                                        labelStyle={{ fontFamily: 'NotoSansBold' }}
+                                        containerStyle={{ height: 41, marginTop: 1 }}
+                                        onChangeItem={item => setCategory(item.value)}
+                                    />
+                                </View>
 
+                                <View style={{ marginTop: -5, marginBottom: -20, zIndex: -1 }}>
+                                    <Input
+                                        onChangeText={value => setColor(value)}
+                                        label='Color'
+                                        placeholder='Describe its color'
+                                        style={styles.inputBox}
+                                        labelStyle={styles.label}
+                                        inputStyle={styles.input}
+                                        inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        onSubmitEditing={() => descInput.focus()}
+                                        ref={box => colorInput = box}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                    />
+                                </View>
 
+                                <View onLayout={e => setPositionOfImageBox(e.nativeEvent.layout.height + 20)} style={{ zIndex: -1 }}>
+                                    <Input
+                                        onChangeText={value => setDesc(value)}
+                                        label='Description'
+                                        placeholder='Describe anything about the item...'
+                                        style={[styles.inputBox, { height: 120 }]}
+                                        labelStyle={styles.label}
+                                        inputStyle={styles.input}
+                                        inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        onSubmitEditing={() => null}
+                                        onFocus={() => scrollRef.current.scrollTo({ x: 0, y: imageBox, animated: true })}
+                                        ref={box => { descInput = box; }}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                        multiline={true}
+                                    />
+                                </View>
 
+                                <View style={{ alignSelf: 'stretch', marginTop: -10, height: 300, padding: 10 }}>
+                                    <Text style={styles.label}>Picture</Text>
+                                    <Image
+                                        style={{ height: '100%', borderRadius: 10, backgroundColor: img == '' ? '#fafafa' : 'transparent' }}
+                                        source={img == '' ? null : { uri: img }}
+                                        onPress={openActionSheet}
+                                    >
+                                        {img == '' ? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                            <MaterialIcons name="add-photo-alternate" size={48} color="black" />
+                                        </View> : <></>}
+                                    </Image>
+                                </View>
+
+                                <View style={{ alignSelf: 'stretch', marginTop: 20, padding: 10 }}>
+                                    <Button
+                                        title='register'
+                                        titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
+                                        buttonStyle={styles.locationButton}
+                                        onPress={() => console.log(itemName + locationDesc + coordinate + category + color + desc + img)}
+                                    />
+                                </View>
+
+                            </View>
+                        </ScrollView>
                     </KeyboardAvoidingView>
                 </View>
             </TouchableWithoutFeedback>
