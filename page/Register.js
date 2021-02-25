@@ -3,7 +3,7 @@ import { Image, Button, Input } from 'react-native-elements';
 import { StyleSheet, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { useActionSheet } from '@expo/react-native-action-sheet'
@@ -27,19 +27,25 @@ const Register = ({ route, navigation }) => {
     }, [route.params.coordinate]);
 
     const openActionSheet = () => {
-        const options = ['Take Photo', 'Photo Library', 'Cancel'];
-        const cancelButtonIndex = 2;
+
+        let options = ['Take Photo', 'Photo Library', 'Remove', 'Cancel'];
+        if (img === '') options = options.filter(e => e !== 'Remove');
+        const cancelButtonIndex = img === '' ? 2 : 3;
+        const destructiveButtonIndex = img === '' ? null : 2;
 
         showActionSheetWithOptions(
             {
                 options,
-                cancelButtonIndex
+                cancelButtonIndex,
+                destructiveButtonIndex
             },
             buttonIndex => {
                 if (buttonIndex === 0) {
                     cameraLauncher();
                 } else if (buttonIndex === 1) {
                     imageSelector();
+                } else if (buttonIndex === 2 && img !== '') {
+                    setImg('');
                 }
             }
         );
@@ -133,10 +139,10 @@ const Register = ({ route, navigation }) => {
 
                                 <View style={{ alignSelf: 'stretch', padding: 10, marginTop: -30 }}>
                                     <Button
-                                        title={coordinate == '' ? 'Choose Location' : coordinate.latitude.toFixed(5) + ', ' + coordinate.longitude.toFixed(5)}
+                                        title={coordinate === '' ? 'Choose Location' : coordinate.latitude.toFixed(5) + ', ' + coordinate.longitude.toFixed(5)}
                                         icon={<Entypo name="location-pin" size={24} color="#fc8181" />}
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                        buttonStyle={styles.locationButton}
+                                        buttonStyle={styles.stretchButton}
                                         onPress={() => navigation.navigate('Map')}
                                     />
                                 </View>
@@ -209,13 +215,16 @@ const Register = ({ route, navigation }) => {
                                 <View style={{ alignSelf: 'stretch', marginTop: -10, height: 300, padding: 10 }}>
                                     <Text style={styles.label}>Picture</Text>
                                     <Image
-                                        style={{ height: '100%', borderRadius: 10, backgroundColor: img == '' ? '#fafafa' : 'transparent' }}
-                                        source={img == '' ? null : { uri: img }}
+                                        style={{ height: '100%', borderRadius: 10, backgroundColor: img === '' ? '#fafafa' : 'transparent' }}
+                                        source={img === '' ? null : { uri: img }}
                                         onPress={openActionSheet}
                                     >
-                                        {img == '' ? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                            <MaterialIcons name="add-photo-alternate" size={48} color="black" />
-                                        </View> : <></>}
+                                        {
+                                            img === '' &&
+                                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                                <MaterialIcons name="add-photo-alternate" size={48} color="black" />
+                                            </View>
+                                        }
                                     </Image>
                                 </View>
 
@@ -223,7 +232,7 @@ const Register = ({ route, navigation }) => {
                                     <Button
                                         title='register'
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                        buttonStyle={styles.locationButton}
+                                        buttonStyle={styles.stretchButton}
                                         onPress={() => console.log(itemName + locationDesc + coordinate + category + color + desc + img)}
                                     />
                                 </View>
@@ -283,7 +292,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'NotoSansBold'
     },
-    locationButton: {
+    stretchButton: {
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: 'black',

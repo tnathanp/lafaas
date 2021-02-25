@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'react-native-elements';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Animated, View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Text } from './Text';
 
-const Item = (props) => {
-    const [isLoading, setLoading] = useState(true);
-
-    let lists = [];
-
-    if (props.data != {}) {
-        for (let index in props.data.register) {
-            lists.push(props.data.register[index])
-        }
-    }
+const Item = (props, { navigation }) => {
+    const [animContr, setAnim] = useState({
+        '0': new Animated.Value(0),
+        '1': new Animated.Value(0),
+        '2': new Animated.Value(0),
+        '3': new Animated.Value(0),
+        '4': new Animated.Value(0)
+    });
 
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Card onPress={() => null} containerStyle={styles.container}>
                     {
-                        lists.map((item, index) => {
+                        props.data.map((item, index) => {
                             const maxChar = 95;
                             let descriptionText = '';
                             if (item['description'].length > maxChar) {
@@ -29,23 +27,28 @@ const Item = (props) => {
                             }
 
                             return (
-                                <View key={index}>
-                                    <View style={styles.cardsWrapper}>
-                                        <View style={styles.card}>
-                                            <View style={styles.cardImgWrapper}>
-                                                <Image
-                                                    source={{ uri: item.image }}
-                                                    resizeMode="cover"
-                                                    style={styles.cardImg}
-                                                />
-                                            </View>
-                                            <View style={styles.cardInfo}>
-                                                <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
-                                                <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
-                                            </View>
+                                <Animated.View key={index} style={{ opacity: animContr[index] }}>
+                                    <View style={styles.card}>
+                                        <View style={styles.cardImgWrapper}>
+                                            <Image
+                                                onLoadEnd={() => {
+                                                    Animated.timing(animContr[index], {
+                                                        toValue: 1,
+                                                        duration: 500,
+                                                        useNativeDriver: true
+                                                    }).start()
+                                                }}
+                                                source={{ uri: item.image + '?' + new Date() }}
+                                                resizeMode='cover'
+                                                style={styles.cardImg}
+                                            />
+                                        </View>
+                                        <View style={styles.cardInfo}>
+                                            <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
+                                            <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
                                         </View>
                                     </View>
-                                </View>
+                                </Animated.View>
                             );
                         })
                     }
@@ -86,11 +89,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         flex: 1,
-    },
-    cardsWrapper: {
-        elevation: 0,
-        width: '100%',
-        alignSelf: 'center',
     },
     card: {
         height: 100,
