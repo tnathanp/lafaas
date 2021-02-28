@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import * as Font from 'expo-font';
@@ -14,12 +15,18 @@ import List from './page/List';
 import ItemDesc from './page/ItemDesc';
 import Claiming from './page/Claiming';
 import ItemView from './page/ItemView';
-import QrCode from './page/QrCode';
+import QRCode from './page/QRCode';
 
 const Stack = createSharedElementStackNavigator();
 
 function App() {
   const [loaded, setLoaded] = useState(false);
+
+  const Fade = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    }
+  });
 
   const loadAsset = async () => {
     await Font.loadAsync({
@@ -54,12 +61,12 @@ function App() {
           <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true}} />
           <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
           <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false }} />
+          <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false, cardStyleInterpolator: Fade }} />
           <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="QrCode" component={QrCode} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="QRCode" component={QRCode} options={{ gestureEnabled: true }} />
         </Stack.Navigator>
       </NavigationContainer>
     </ActionSheetProvider>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import MapView from 'react-native-maps';
 import LottieView from 'lottie-react-native';
 import { Entypo } from '@expo/vector-icons';
@@ -34,6 +35,8 @@ const Map = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
+
+            <StatusBar style='dark' />
 
             <MapView
                 style={styles.map}

@@ -21,7 +21,9 @@ const ItemDesc = ({ route, navigation }) => {
 
     return (
         <View style={{ height: '100%', backgroundColor: 'white' }}>
+
             <StatusBar hidden />
+
             <View style={{ backgroundColor: 'white', height: 0.5 * Dimensions.get('window').height }}>
                 <SharedElement id={'image'} >
                     <Image
@@ -41,7 +43,6 @@ const ItemDesc = ({ route, navigation }) => {
                         />
                     </SharedElement>
                 </View>
-
             </View>
 
             <BottomSheet

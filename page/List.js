@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar } from 'react-native-elements';
 import { StyleSheet, Dimensions, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
@@ -104,6 +105,9 @@ const List = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, paddingTop: 30 }}>
+
+            <StatusBar style='dark' />
+
             <SearchBar
                 placeholder="search"
                 onChangeText={value => setSearch(value)}
