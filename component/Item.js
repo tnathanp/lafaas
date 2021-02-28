@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'react-native-elements';
-import { Animated, View, StyleSheet, ScrollView, Image } from 'react-native';
+import { Animated, View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Text } from './Text';
 
 const Item = (props, { navigation }) => {
@@ -28,26 +28,28 @@ const Item = (props, { navigation }) => {
 
                             return (
                                 <Animated.View key={index} style={{ opacity: animContr[index] }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardImgWrapper}>
-                                            <Image
-                                                onLoadEnd={() => {
-                                                    Animated.timing(animContr[index], {
-                                                        toValue: 1,
-                                                        duration: 500,
-                                                        useNativeDriver: true
-                                                    }).start()
-                                                }}
-                                                source={{ uri: item.image + '?' + new Date() }}
-                                                resizeMode='cover'
-                                                style={styles.cardImg}
-                                            />
+                                    <TouchableOpacity onPress={() => props.navigator(item)}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardImgWrapper}>
+                                                <Image
+                                                    onLoadEnd={() => {
+                                                        Animated.timing(animContr[index], {
+                                                            toValue: 1,
+                                                            duration: 500,
+                                                            useNativeDriver: true
+                                                        }).start()
+                                                    }}
+                                                    source={{ uri: item.image }}
+                                                    resizeMode='cover'
+                                                    style={styles.cardImg}
+                                                />
+                                            </View>
+                                            <View style={styles.cardInfo}>
+                                                <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
+                                                <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.cardInfo}>
-                                            <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
-                                            <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
-                                        </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 </Animated.View>
                             );
                         })

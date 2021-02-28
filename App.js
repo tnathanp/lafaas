@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Home from './page/Home';
 import Create from './page/Create';
-import Detail from './page/Detail';
 import Recover from './page/Recover';
 import Login from './page/Login';
 import Register from './page/Register';
@@ -14,8 +13,9 @@ import Map from './page/Map';
 import List from './page/List';
 import ItemDesc from './page/ItemDesc';
 import Claiming from './page/Claiming';
+import ItemView from './page/ItemView';
 
-const Stack = createStackNavigator();
+const Stack = createSharedElementStackNavigator();
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -49,7 +49,6 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Detail" component={Detail} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
@@ -57,6 +56,7 @@ function App() {
           <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
           <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
           <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false }} />
           <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
         </Stack.Navigator>
       </NavigationContainer>

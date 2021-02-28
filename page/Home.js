@@ -14,7 +14,7 @@ function RoundButton(props) {
             titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 0.08 * deviceWidth }}
             buttonStyle={{ borderRadius: 1000, width: 0.4 * deviceWidth, height: 0.4 * deviceWidth, backgroundColor: 'white' }}
             containerStyle={{ padding: 10 }}
-            onPress={props.navigateFn}
+            onPress={props.navigator}
         />
     );
 }
@@ -25,15 +25,13 @@ const Home = ({ navigation }) => {
             <Text style={{ fontSize: 0.16 * deviceWidth, fontWeight: 'bold' }}>LaFaaS</Text>
             <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', marginTop: -5 }}>Lost and Found as a Service</Text>
             <View style={{ flexDirection: 'row', marginTop: 0.15 * deviceHeight }}>
-                <RoundButton title="Found" navigateFn={() => navigation.navigate('Register', { type: 'found' })} />
-                <RoundButton title="Lost" navigateFn={() => navigation.navigate('Register', { type: 'lost' })} />
+                <RoundButton title="Found" navigator={() => navigation.navigate('Register', { type: 'found' })} />
+                <RoundButton title="Lost" navigator={() => navigation.navigate('Register', { type: 'lost' })} />
             </View>
             <Button title="Create (for testing)" onPress={() => navigation.navigate('Create')} />
             <Button title="Recover (for testing)" onPress={() => navigation.navigate('Recover')} />
             <Button title="Login (for testing)" onPress={() => navigation.navigate('Login')} />
             <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
-            <Button title="ItemDesc (for testing)" onPress={() => navigation.navigate('ItemDesc')} />
-            <Button title="Claiming (for testing)" onPress={() => navigation.navigate('Claiming')} />
         </LinearGradient>
     );
 }

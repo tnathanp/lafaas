@@ -24,7 +24,7 @@ const List = ({ navigation }) => {
                     location: "pacific ocean",
                     color: "blue",
                     description: "sda;jfas;dlff",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/hBZgNT9/Taojeaw.jpg'
 
                 },
                 2:
@@ -34,7 +34,7 @@ const List = ({ navigation }) => {
                     location: "Saen Saeb Canal",
                     color: "green",
                     description: "aosdfaopf",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/B3nwdh3/Brian.jpg'
 
                 },
                 3:
@@ -44,7 +44,7 @@ const List = ({ navigation }) => {
                     location: "Saen Saeb Canal",
                     color: "green",
                     description: "aosdfaopf",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/BGv7Qfw/Blue.jpg'
 
                 },
                 4:
@@ -54,7 +54,7 @@ const List = ({ navigation }) => {
                     location: "Saen Saeb Canal",
                     color: "green",
                     description: "aosdfaopf",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/0cZ8BVR/Spark.jpg'
 
                 },
                 5:
@@ -64,7 +64,7 @@ const List = ({ navigation }) => {
                     location: "Saen Saeb Canal",
                     color: "green",
                     description: "aosdfaosadaFDF;LSDFJLncn,mzcnmzcxzcxn,.zc,.ckl;asljkasfdljkfadl;ads;ladsjkcnm.,cxv,mnldaksJLJKADSLJKDSHLJKCVXBN,MCXJajklsljSDALKJ;FDSLJSDFpf",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/94C5C9N/Megara.jpg'
 
                 }
             },
@@ -76,7 +76,7 @@ const List = ({ navigation }) => {
                     location: "pacific ocean",
                     color: "blue",
                     description: ";aldfalskfd",
-                    image: 'https://source.unsplash.com/random'
+                    image: 'https://i.ibb.co/N9hPGZZ/Katsu.jpg'
 
                 }
             }
@@ -91,9 +91,15 @@ const List = ({ navigation }) => {
     }
 
     useEffect(() => {
+        let mounted = true
+
         const timeout = setTimeout(() => {
-            setLoad(false)
+            if (mounted) setLoad(false)
         }, 3000);
+
+        return function cleanup() {
+            mounted = false
+        }
     }, [data]);
 
     return (
@@ -118,7 +124,7 @@ const List = ({ navigation }) => {
                 </View>
             }
 
-            {!load && <Item data={data} />}
+            {!load && <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />}
         </View>
     );
 }

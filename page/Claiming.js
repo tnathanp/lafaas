@@ -5,9 +5,9 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 
-const Claiming = ({ navigation }) => {
+const Claiming = ({ route, navigation }) => {
     let idInput;
-
+    const { item } = route.params;
     const [id, setId] = useState("");
 
     return (
@@ -25,7 +25,6 @@ const Claiming = ({ navigation }) => {
                     </View>
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 50 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
 
-
                         <View style={{ padding: 20, left: 20 }} >
                             <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Claim</Text>
                             <Text style={{ fontSize: 16 }}>Item name from item description</Text>
@@ -33,7 +32,7 @@ const Claiming = ({ navigation }) => {
 
                         <View style={{ marginBottom: 10 }} >
                             <Image
-                                source={{ uri: 'https://picsum.photos/200/300' }}
+                                source={{ uri: item.image }}
                                 resizeMode="cover"
                                 style={styles.stretch}
                             />
@@ -59,9 +58,10 @@ const Claiming = ({ navigation }) => {
                                 title="submit"
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                 buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                onPress={() => null}
+                                onPress={() => console.log(item)}
                             />
                         </View>
+
                     </KeyboardAvoidingView>
                 </View>
             </TouchableWithoutFeedback>
