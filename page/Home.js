@@ -31,7 +31,7 @@ const Home = ({ navigation }) => {
             <Button title="Create (for testing)" onPress={() => navigation.navigate('Create')} />
             <Button title="Recover (for testing)" onPress={() => navigation.navigate('Recover')} />
             <Button title="Login (for testing)" onPress={() => navigation.navigate('Login')} />
-            <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
+            <Button title="List (for testing)" onPress={() => navigation.navigate('QrCode')} />
         </LinearGradient>
     );
 }
