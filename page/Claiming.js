@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input } from 'react-native-elements';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, View, Keyboard, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,6 +13,7 @@ const Claiming = ({ route, navigation }) => {
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
+            <StatusBar hidden={false} />
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1 }}>
                     <View style={{ position: 'absolute', top: 50, left: 20, zIndex: 1 }}>

@@ -61,7 +61,7 @@ function App() {
           <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true}} />
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
           <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
           <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
           <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false, cardStyleInterpolator: Fade }} />

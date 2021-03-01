@@ -212,21 +212,23 @@ const Register = ({ route, navigation }) => {
                                     />
                                 </View>
 
-                                <View style={{ alignSelf: 'stretch', marginTop: -10, height: 300, padding: 10 }}>
-                                    <Text style={styles.label}>Picture</Text>
-                                    <Image
-                                        style={{ height: '100%', borderRadius: 10, backgroundColor: img === '' ? '#fafafa' : 'transparent' }}
-                                        source={img === '' ? null : { uri: img }}
-                                        onPress={openActionSheet}
-                                    >
-                                        {
-                                            img === '' &&
-                                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                <MaterialIcons name="add-photo-alternate" size={48} color="black" />
-                                            </View>
-                                        }
-                                    </Image>
-                                </View>
+                                {route.params.type === 'found' &&
+                                    <View style={{ alignSelf: 'stretch', marginTop: -10, height: 300, padding: 10 }}>
+                                        <Text style={styles.label}>Picture</Text>
+                                        <Image
+                                            style={{ height: '100%', borderRadius: 10, backgroundColor: img === '' ? '#fafafa' : 'transparent' }}
+                                            source={img === '' ? null : { uri: img }}
+                                            onPress={openActionSheet}
+                                        >
+                                            {
+                                                img === '' &&
+                                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <MaterialIcons name="add-photo-alternate" size={48} color="black" />
+                                                </View>
+                                            }
+                                        </Image>
+                                    </View>
+                                }
 
                                 <View style={{ alignSelf: 'stretch', marginTop: 20, padding: 10 }}>
                                     <Button

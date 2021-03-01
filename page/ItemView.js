@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { SharedElement } from 'react-navigation-shared-element';
 import { Button } from 'react-native-elements';
 import { Entypo } from '@expo/vector-icons';
@@ -9,6 +10,9 @@ const ItemView = ({ route, navigation }) => {
 
     return (
         <View style={{ height: '100%', backgroundColor: 'white' }}>
+
+            <StatusBar hidden={false} />
+
             <View style={{ position: 'absolute', top: 50, left: 20, zIndex: 1 }}>
                 <SharedElement id={'backBtn'}>
                     <Button
