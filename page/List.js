@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar } from 'react-native-elements';
-import { StyleSheet, Dimensions, View, ScrollView } from 'react-native';
+import { StyleSheet, Dimensions, View, ScrollView, RefreshControl } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
 import Item from '../component/Item';
@@ -11,14 +11,37 @@ const wait = (timeout) => {
 }
 
 const List = ({ navigation }) => {
-    const [search, setSearch] = useState("");
+
+    const [search, setSearch] = useState();
+    const [refreshing, setRefreshing] = useState(false);
     const [load, setLoad] = useState(true);
     const [data, setData] = useState();
 
-    useEffect(() => fetchData(), []);
+    useEffect(() => fetchData(), [refreshing]);
 
     function fetchData() {
-        //fetch from backend then save to variable
+        /*fetch('URL HERE').then(res => res.json())
+            .then(data => {
+
+                let arr = [];
+                for (let index in data.registered) {
+                    arr.push(data.registered[index]);
+                }
+
+                let mounted = true;
+
+                wait(1000).then(() => {
+                    if (mounted) {
+                        setData(arr);
+                        setRefreshing(false);
+                    }
+                })
+
+                return function cleanup() {
+                    mounted = false;
+                }
+            }).catch(e => console.log(e));*/
+
         const sample = {
             registered:
             {
@@ -94,14 +117,17 @@ const List = ({ navigation }) => {
 
         let mounted = true;
 
-        wait(3000).then(() => {
-            if (mounted) setData(arr)
+        //Wait 1 second for UX ;)
+        wait(1000).then(() => {
+            if (mounted) {
+                setData(arr);
+                setRefreshing(false);
+            }
         })
 
         return function cleanup() {
             mounted = false;
         }
-
     }
 
     function useDidUpdateEffect(fn, inputs) {
@@ -125,7 +151,6 @@ const List = ({ navigation }) => {
         }
     }, [data]);
 
-
     return (
         <View style={{ flex: 1, paddingTop: 30 }}>
 
@@ -147,13 +172,14 @@ const List = ({ navigation }) => {
                         source={require('../assets/anim/890-loading-animation.json')}
                         autoPlay
                     />
-                    <Text style={{ color: 'black' }}>Suppose loading is done in 3 secs</Text>
+                    <Text style={{ color: 'black' }}>Suppose loading is done in one second</Text>
                 </View>
             }
 
             {!load &&
                 <ScrollView
                     showsVerticalScrollIndicator={false}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(true)} />}
                 >
                     <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />
                 </ScrollView>

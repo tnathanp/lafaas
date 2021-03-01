@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Card } from 'react-native-elements';
-import { Animated, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { Text } from './Text';
 
 const Item = (props, { navigation }) => {
 
-    const [animController, setController] = useState({});
-
-    useEffect(() => {
-        let animTemp = {};
-        for (let i = 0; i < props.data.length; i++) {
-            animTemp[i] = new Animated.Value(0);
-        }
-        setController(animTemp);
-    }, []);
+    let itemsRef = [];
 
     return (
         <Card containerStyle={styles.container}>
@@ -28,18 +21,12 @@ const Item = (props, { navigation }) => {
                     }
 
                     return (
-                        <Animated.View key={index} style={{ opacity: animController[index] }}>
+                        <Animatable.View ref={el => itemsRef[index] = el} useNativeDriver={true} style={{ opacity: 0 }} key={index} >
                             <TouchableOpacity onPress={() => props.navigator(item)}>
                                 <View style={styles.card}>
                                     <View style={styles.cardImgWrapper}>
                                         <Image
-                                            onLoadEnd={() => {
-                                                Animated.timing(animController[index], {
-                                                    toValue: 1,
-                                                    duration: 500,
-                                                    useNativeDriver: true
-                                                }).start()
-                                            }}
+                                            onLoadEnd={() => itemsRef[index].fadeIn()}
                                             source={{ uri: item.image }}
                                             resizeMode='cover'
                                             style={styles.cardImg}
@@ -51,7 +38,7 @@ const Item = (props, { navigation }) => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                        </Animated.View>
+                        </Animatable.View>
                     );
                 })
             }
