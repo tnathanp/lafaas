@@ -1,62 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from 'react-native-elements';
-import { Animated, View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Animated, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text } from './Text';
 
 const Item = (props, { navigation }) => {
-    const [animContr, setAnim] = useState({
-        '0': new Animated.Value(0),
-        '1': new Animated.Value(0),
-        '2': new Animated.Value(0),
-        '3': new Animated.Value(0),
-        '4': new Animated.Value(0)
-    });
+
+    const [animController, setController] = useState({});
+
+    useEffect(() => {
+        let animTemp = {};
+        for (let i = 0; i < props.data.length; i++) {
+            animTemp[i] = new Animated.Value(0);
+        }
+        setController(animTemp);
+    }, []);
 
     return (
-        <View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Card onPress={() => null} containerStyle={styles.container}>
-                    {
-                        props.data.map((item, index) => {
-                            const maxChar = 95;
-                            let descriptionText = '';
-                            if (item['description'].length > maxChar) {
-                                descriptionText = item['description'].substring(0, maxChar) + " ...";
-                            } else {
-                                descriptionText = item['description'] + ' ';
-                            }
-
-                            return (
-                                <Animated.View key={index} style={{ opacity: animContr[index] }}>
-                                    <TouchableOpacity onPress={() => props.navigator(item)}>
-                                        <View style={styles.card}>
-                                            <View style={styles.cardImgWrapper}>
-                                                <Image
-                                                    onLoadEnd={() => {
-                                                        Animated.timing(animContr[index], {
-                                                            toValue: 1,
-                                                            duration: 500,
-                                                            useNativeDriver: true
-                                                        }).start()
-                                                    }}
-                                                    source={{ uri: item.image }}
-                                                    resizeMode='cover'
-                                                    style={styles.cardImg}
-                                                />
-                                            </View>
-                                            <View style={styles.cardInfo}>
-                                                <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
-                                                <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                </Animated.View>
-                            );
-                        })
+        <Card containerStyle={styles.container}>
+            {
+                props.data.map((item, index) => {
+                    const maxChar = 95;
+                    let descriptionText = '';
+                    if (item['description'].length > maxChar) {
+                        descriptionText = item['description'].substring(0, maxChar) + " ...";
+                    } else {
+                        descriptionText = item['description'] + ' ';
                     }
-                </Card>
-            </ScrollView>
-        </View>
+
+                    return (
+                        <Animated.View key={index} style={{ opacity: animController[index] }}>
+                            <TouchableOpacity onPress={() => props.navigator(item)}>
+                                <View style={styles.card}>
+                                    <View style={styles.cardImgWrapper}>
+                                        <Image
+                                            onLoadEnd={() => {
+                                                Animated.timing(animController[index], {
+                                                    toValue: 1,
+                                                    duration: 500,
+                                                    useNativeDriver: true
+                                                }).start()
+                                            }}
+                                            source={{ uri: item.image }}
+                                            resizeMode='cover'
+                                            style={styles.cardImg}
+                                        />
+                                    </View>
+                                    <View style={styles.cardInfo}>
+                                        <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
+                                        <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    );
+                })
+            }
+        </Card>
     );
 }
 

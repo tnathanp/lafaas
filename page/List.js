@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar } from 'react-native-elements';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const List = ({ navigation }) => {
     const [search, setSearch] = useState("");
     const [load, setLoad] = useState(true);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState();
 
     useEffect(() => fetchData(), []);
 
     function fetchData() {
         //fetch from backend then save to variable
         const sample = {
-            register:
+            registered:
             {
                 1:
                 {
@@ -69,7 +73,7 @@ const List = ({ navigation }) => {
 
                 }
             },
-            claim: {
+            claimed: {
                 1:
                 {
                     name: "canvas kha",
@@ -84,24 +88,43 @@ const List = ({ navigation }) => {
         }
 
         let arr = [];
-        for (let index in sample.register) {
-            arr.push(sample.register[index]);
+        for (let index in sample.registered) {
+            arr.push(sample.registered[index]);
         }
-        setData(arr);
+
+        let mounted = true;
+
+        wait(3000).then(() => {
+            if (mounted) setData(arr)
+        })
+
+        return function cleanup() {
+            mounted = false;
+        }
 
     }
 
-    useEffect(() => {
-        let mounted = true
+    function useDidUpdateEffect(fn, inputs) {
+        const didMountRef = useRef(false);
 
-        const timeout = setTimeout(() => {
-            if (mounted) setLoad(false)
-        }, 3000);
+        useEffect(() => {
+            if (didMountRef.current)
+                fn();
+            else
+                didMountRef.current = true;
+        }, inputs);
+    }
+
+    useDidUpdateEffect(() => {
+        let mounted = true;
+
+        if (mounted) setLoad(false)
 
         return function cleanup() {
-            mounted = false
+            mounted = false;
         }
     }, [data]);
+
 
     return (
         <View style={{ flex: 1, paddingTop: 30 }}>
@@ -128,7 +151,13 @@ const List = ({ navigation }) => {
                 </View>
             }
 
-            {!load && <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />}
+            {!load &&
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                >
+                    <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />
+                </ScrollView>
+            }
         </View>
     );
 }
