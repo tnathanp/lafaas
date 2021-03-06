@@ -23,16 +23,11 @@ const List = ({ navigation }) => {
         /*fetch('URL HERE').then(res => res.json())
             .then(data => {
 
-                let arr = [];
-                for (let index in data.registered) {
-                    arr.push(data.registered[index]);
-                }
-
                 let mounted = true;
 
                 wait(1000).then(() => {
                     if (mounted) {
-                        setData(arr);
+                        setData(data.Registered);
                         setRefreshing(false);
                     }
                 })
@@ -43,76 +38,54 @@ const List = ({ navigation }) => {
             }).catch(e => console.log(e));*/
 
         const sample = {
-            registered:
-            {
-                1:
-                {
-                    name: "canvas",
-                    item_id: 111,
-                    location: "pacific ocean",
-                    color: "blue",
-                    description: "sda;jfas;dlff",
-                    image: 'https://i.ibb.co/hBZgNT9/Taojeaw.jpg'
+            Registered:
+                [
+                    {
+                        name: "canvas",
+                        item_id: 111,
+                        location: "pacific ocean",
+                        color: "blue",
+                        description: "sda;jfas;dlff",
+                        image: 'https://i.ibb.co/hBZgNT9/Taojeaw.jpg'
 
-                },
-                2:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://i.ibb.co/B3nwdh3/Brian.jpg'
+                    },
+                    {
+                        name: "starbucks tumbler",
+                        item_id: 222,
+                        location: "Saen Saeb Canal",
+                        color: "green",
+                        description: "aosdfaopf",
+                        image: 'https://i.ibb.co/B3nwdh3/Brian.jpg'
 
-                },
-                3:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://i.ibb.co/BGv7Qfw/Blue.jpg'
+                    },
+                    {
+                        name: "starbucks tumbler",
+                        item_id: 222,
+                        location: "Saen Saeb Canal",
+                        color: "green",
+                        description: "aosdfaopf",
+                        image: 'https://i.ibb.co/BGv7Qfw/Blue.jpg'
 
-                },
-                4:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaopf",
-                    image: 'https://i.ibb.co/0cZ8BVR/Spark.jpg'
+                    },
+                    {
+                        name: "starbucks tumbler",
+                        item_id: 222,
+                        location: "Saen Saeb Canal",
+                        color: "green",
+                        description: "aosdfaopf",
+                        image: 'https://i.ibb.co/0cZ8BVR/Spark.jpg'
 
-                },
-                5:
-                {
-                    name: "starbucks tumbler",
-                    item_id: 222,
-                    location: "Saen Saeb Canal",
-                    color: "green",
-                    description: "aosdfaosadaFDF;LSDFJLncn,mzcnmzcxzcxn,.zc,.ckl;asljkasfdljkfadl;ads;ladsjkcnm.,cxv,mnldaksJLJKADSLJKDSHLJKCVXBN,MCXJajklsljSDALKJ;FDSLJSDFpf",
-                    image: 'https://i.ibb.co/94C5C9N/Megara.jpg'
+                    },
+                    {
+                        name: "starbucks tumbler",
+                        item_id: 222,
+                        location: "Saen Saeb Canal",
+                        color: "green",
+                        description: "aosdfaosadaFDF;LSDFJLncn,mzcnmzcxzcxn,.zc,.ckl;asljkasfdljkfadl;ads;ladsjkcnm.,cxv,mnldaksJLJKADSLJKDSHLJKCVXBN,MCXJajklsljSDALKJ;FDSLJSDFpf",
+                        image: 'https://i.ibb.co/94C5C9N/Megara.jpg'
 
-                }
-            },
-            claimed: {
-                1:
-                {
-                    name: "canvas kha",
-                    item_id: 333,
-                    location: "pacific ocean",
-                    color: "blue",
-                    description: ";aldfalskfd",
-                    image: 'https://i.ibb.co/N9hPGZZ/Katsu.jpg'
-
-                }
-            }
-        }
-
-        let arr = [];
-        for (let index in sample.registered) {
-            arr.push(sample.registered[index]);
+                    }
+                ]
         }
 
         let mounted = true;
@@ -120,7 +93,7 @@ const List = ({ navigation }) => {
         //Wait 1 second for UX ;)
         wait(1000).then(() => {
             if (mounted) {
-                setData(arr);
+                setData(sample.Registered);
                 setRefreshing(false);
             }
         })

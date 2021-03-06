@@ -56,13 +56,13 @@ const Login = ({ navigation }) => {
 
                         <View style={{ alignItems: 'center', marginTop: -5 }}>
                             <Button
-                                title="create"
+                                title="login"
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                 buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
                                 onPress={() => null}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 3 }}>
+                        <View style={{ flexDirection: 'row', marginTop: 3, justifyContent: 'center' }}>
                             <Button
                                 title="create account"
                                 type="clear"
@@ -71,7 +71,7 @@ const Login = ({ navigation }) => {
                                 onPress={() => navigation.navigate('Create')}
                             />
                             <Button
-                                title="forget password"
+                                title="forgot password"
                                 type="clear"
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#ffffff', fontSize: 14 }}
                                 buttonStyle={{ width: 160, height: 32, borderRadius: 10, backgroundColor: 'transparent' }}
