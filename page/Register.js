@@ -143,7 +143,7 @@ const Register = ({ route, navigation }) => {
                                         icon={<Entypo name="location-pin" size={24} color="#fc8181" />}
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
-                                        onPress={() => navigation.navigate('Map')}
+                                        onPress={() => navigation.navigate('Map', {type: route.params.type})}
                                     />
                                 </View>
 

@@ -59,7 +59,7 @@ const Map = ({ route, navigation }) => {
                 titleStyle={{ fontFamily: 'NotoSansBold', padding: '25%' }}
                 buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10, height: 0.06 * deviceHeight }}
                 onPress={() => {
-                    navigation.navigate('Register', { type: 'lost', coordinate: location });
+                    navigation.navigate('Register', { type: route.params.type, coordinate: location });
                 }}
             />
 
