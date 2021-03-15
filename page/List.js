@@ -41,48 +41,48 @@ const List = ({ navigation }) => {
             Registered:
                 [
                     {
-                        name: "canvas",
+                        name: "Item 1",
                         item_id: 111,
                         location: "pacific ocean",
                         color: "blue",
-                        description: "sda;jfas;dlff",
-                        image: 'https://i.ibb.co/hBZgNT9/Taojeaw.jpg'
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
 
                     },
                     {
-                        name: "starbucks tumbler",
+                        name: "Item 2",
                         item_id: 222,
                         location: "Saen Saeb Canal",
                         color: "green",
-                        description: "aosdfaopf",
-                        image: 'https://i.ibb.co/B3nwdh3/Brian.jpg'
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
 
                     },
                     {
-                        name: "starbucks tumbler",
+                        name: "Item 3",
                         item_id: 222,
                         location: "Saen Saeb Canal",
                         color: "green",
-                        description: "aosdfaopf",
-                        image: 'https://i.ibb.co/BGv7Qfw/Blue.jpg'
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
 
                     },
                     {
-                        name: "starbucks tumbler",
+                        name: "Item 4",
                         item_id: 222,
                         location: "Saen Saeb Canal",
                         color: "green",
-                        description: "aosdfaopf",
-                        image: 'https://i.ibb.co/0cZ8BVR/Spark.jpg'
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
 
                     },
                     {
-                        name: "starbucks tumbler",
+                        name: "Item 5",
                         item_id: 222,
                         location: "Saen Saeb Canal",
                         color: "green",
-                        description: "aosdfaosadaFDF;LSDFJLncn,mzcnmzcxzcxn,.zc,.ckl;asljkasfdljkfadl;ads;ladsjkcnm.,cxv,mnldaksJLJKADSLJKDSHLJKCVXBN,MCXJajklsljSDALKJ;FDSLJSDFpf",
-                        image: 'https://i.ibb.co/94C5C9N/Megara.jpg'
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
 
                     }
                 ]

@@ -61,9 +61,9 @@ const ItemDesc = ({ route, navigation }) => {
                 )}
                 renderContent={() => (
                     <View style={{ backgroundColor: 'white', height: '100%' }}>
-                        <Text style={styles.title}>{itemName}</Text>
+                        <Text style={styles.title}>{item.name}</Text>
                         <Text style={styles.topic}>Description:</Text>
-                        <Text style={styles.content}>{itemDes}</Text>
+                        <Text style={styles.content}>{item.description}</Text>
 
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', margin: 24 }}>Is this yours?</Text>

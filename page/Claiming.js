@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Input } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, View, Keyboard, Image } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, View, Keyboard, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 
 const Claiming = ({ route, navigation }) => {
-    let idInput;
+    let phoneInput, idInput;
     const { item } = route.params;
     const [id, setId] = useState("");
+    const [phone, setPhone] = useState("");
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
             <StatusBar hidden={false} />
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1 }}>
-                    <View style={{ position: 'absolute', top: 50, left: 20, zIndex: 1 }}>
+                    <View style={{ top: 50, left: 20, zIndex: 1, marginBottom: 10 }}>
                         <Button
                             title="Back"
                             icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
@@ -25,45 +26,62 @@ const Claiming = ({ route, navigation }) => {
                             onPress={() => navigation.goBack()}
                         />
                     </View>
-                    <KeyboardAvoidingView style={{ flex: 1, marginTop: 50 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+                    <KeyboardAvoidingView style={{ flex: 1, paddingTop: 50 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <View style={{ marginTop: -50 }} onStartShouldSetResponder={() => true}>
+                                <View style={{ padding: 20, left: 20 }} >
+                                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Claim</Text>
+                                    <Text style={{ fontSize: 16 }}>Item name from item description</Text>
+                                </View>
 
-                        <View style={{ padding: 20, left: 20 }} >
-                            <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Claim</Text>
-                            <Text style={{ fontSize: 16 }}>Item name from item description</Text>
-                        </View>
+                                <View style={{ marginBottom: 10 }} >
+                                    <Image
+                                        source={{ uri: item.image }}
+                                        resizeMode="cover"
+                                        style={styles.stretch}
+                                    />
+                                </View>
 
-                        <View style={{ marginBottom: 10 }} >
-                            <Image
-                                source={{ uri: item.image }}
-                                resizeMode="cover"
-                                style={styles.stretch}
-                            />
-                        </View>
+                                <View style={{ padding: 20 }}>
+                                    <Input
+                                        onChangeText={value => setPhone(value)}
+                                        label='Phone no.'
+                                        style={styles.inputBox}
+                                        labelStyle={styles.label}
+                                        inputStyle={styles.input}
+                                        inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        onSubmitEditing={() => idInput.focus()}
+                                        ref={box => { phoneInput = box; }}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                    />
+                                </View>
 
-                        <View style={{ padding: 20 }}>
-                            <Input
-                                onChangeText={value => setId(value, 'id')}
-                                label='Identification card number'
-                                style={styles.inputBox}
-                                labelStyle={styles.label}
-                                inputStyle={styles.input}
-                                inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                onSubmitEditing={() => Keyboard.dismiss()}
-                                ref={box => { idInput = box; }}
-                                autoCorrect={false}
-                                autoCapitalize={'none'}
-                            />
-                        </View>
+                                <View style={{ padding: 20, marginTop: -50 }}>
+                                    <Input
+                                        onChangeText={value => setId(value)}
+                                        label='Identification card number'
+                                        style={styles.inputBox}
+                                        labelStyle={styles.label}
+                                        inputStyle={styles.input}
+                                        inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        onSubmitEditing={() => Keyboard.dismiss()}
+                                        ref={box => { idInput = box; }}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                    />
+                                </View>
 
-                        <View style={{ alignItems: 'center', marginBottom: 15 }}>
-                            <Button
-                                title="submit"
-                                titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
-                                buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                onPress={() => console.log(item)}
-                            />
-                        </View>
-
+                                <View style={{ alignItems: 'center', marginBottom: 15 }}>
+                                    <Button
+                                        title="submit"
+                                        titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
+                                        buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
+                                        onPress={() => console.log(item)}
+                                    />
+                                </View>
+                            </View>
+                        </ScrollView>
                     </KeyboardAvoidingView>
                 </View>
             </TouchableWithoutFeedback>
