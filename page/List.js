@@ -1,21 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Button } from 'react-native-elements';
 import { StyleSheet, Dimensions, View, ScrollView, RefreshControl } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { LinearGradient } from 'expo-linear-gradient';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
+import * as Comparator from 'string-similarity';
+
+const Tab = createMaterialTopTabNavigator();
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const List = ({ navigation }) => {
+const ListItem = ({ route, navigation }) => {
 
-    const [search, setSearch] = useState();
+    const type = route.name === 'Registered Items' ? 0 : 1;
+    const [search, setSearch] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [load, setLoad] = useState(true);
-    const [data, setData] = useState();
+    const [data, setData] = useState([null]);
+    const [originalData, setOriginalData] = useState();
 
     useEffect(() => fetchData(), [refreshing]);
 
@@ -41,7 +48,7 @@ const List = ({ navigation }) => {
             Registered:
                 [
                     {
-                        name: "Item 1",
+                        name: type === 0 ? 'eiei' : 'a a',
                         item_id: 111,
                         location: "pacific ocean",
                         color: "blue",
@@ -93,7 +100,7 @@ const List = ({ navigation }) => {
         //Wait 1 second for UX ;)
         wait(1000).then(() => {
             if (mounted) {
-                setData(sample.Registered);
+                setOriginalData(sample.Registered);
                 setRefreshing(false);
             }
         })
@@ -103,39 +110,57 @@ const List = ({ navigation }) => {
         }
     }
 
-    function useDidUpdateEffect(fn, inputs) {
+    function filterData(value) {
+        setSearch(value);
+        let newData;
+        const text = value.toLowerCase();
+        if (text !== '') {
+            newData = originalData.filter(e => {
+                if (e.name.toLowerCase().includes(text)) {
+                    return true;
+                } else if (Comparator.compareTwoStrings(e.name, text) >= 0.6) {
+                    return true;
+                }
+                return false;
+            })
+        } else {
+            newData = originalData;
+        }
+        if (!(newData.length === 0 && data.length === 0)) setData(newData);
+    }
+
+    useDidUpdateEffect(() => setLoad(false), [data]);
+    useDidUpdateEffect(() => filterData(search), [originalData]);
+
+    /* Custom function equivalent to componentDidUpdate*/
+    function useDidUpdateEffect(method, dependency) {
         const didMountRef = useRef(false);
 
         useEffect(() => {
-            if (didMountRef.current)
-                fn();
+            if (didMountRef.current) {
+                let mounted = true;
+                if (mounted) method()
+                return function cleanup() {
+                    mounted = false;
+                }
+            }
             else
                 didMountRef.current = true;
-        }, inputs);
+        }, dependency);
     }
-
-    useDidUpdateEffect(() => {
-        let mounted = true;
-
-        if (mounted) setLoad(false)
-
-        return function cleanup() {
-            mounted = false;
-        }
-    }, [data]);
+    /* End of Custom function */
 
     return (
-        <View style={{ flex: 1, paddingTop: 30 }}>
-
-            <StatusBar style='dark' />
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
 
             <SearchBar
                 placeholder="search"
-                onChangeText={value => setSearch(value)}
+                onChangeText={text => filterData(text)}
                 containerStyle={styles.searchContainer}
                 inputContainerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 value={search}
+                disabled={refreshing || load}
             />
 
             {load &&
@@ -161,18 +186,67 @@ const List = ({ navigation }) => {
     );
 }
 
+const List = ({ navigation }) => {
+    return (
+        <View style={{ flex: 1, paddingTop: 50, backgroundColor: 'white' }}>
+
+            <StatusBar style='dark' />
+
+            <Tab.Navigator
+                lazy={true}
+                tabBarOptions={{
+                    activeTintColor: '#f6a085',
+                    inactiveTintColor: 'black',
+                    indicatorStyle: { backgroundColor: '#fc8181' }
+                }}
+            >
+                <Tab.Screen name='Registered Items' component={ListItem} />
+                <Tab.Screen name='Claimed Items' component={ListItem} />
+            </Tab.Navigator>
+
+            <View style={styles.footer} >
+                <Button
+                    title='Found'
+                    onPress={() => navigation.navigate('Register', { type: 'found' })}
+                    titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
+                    buttonStyle={{ borderRadius: 10, marginRight: 10 }}
+                    ViewComponent={LinearGradient}
+                    linearGradientProps={{
+                        colors: ['#fc8181', '#f6a085'],
+                        locations: [0.3, 1]
+                    }}
+                />
+
+                <Button
+                    title='Lost'
+                    onPress={() => navigation.navigate('Register', { type: 'lost' })}
+                    titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
+                    buttonStyle={{ borderRadius: 10, marginLeft: 10 }}
+                    ViewComponent={LinearGradient}
+                    linearGradientProps={{
+                        colors: ['#fc8181', '#f6a085'],
+                        locations: [0.3, 1]
+                    }}
+                />
+            </View>
+
+        </View>
+    );
+}
+
 const styles = StyleSheet.create({
     searchContainer: {
         backgroundColor: 'transparent',
         borderBottomColor: 'transparent',
         borderTopColor: 'transparent',
-        padding: 24
+        padding: 12
     },
     inputContainer: {
         fontFamily: 'NotoSans',
         backgroundColor: '#e7e7e7',
         fontSize: 16,
-        borderRadius: 20,
+        borderRadius: 15,
+        maxHeight: 40
     },
     input: {
         color: '#868686',
@@ -186,6 +260,16 @@ const styles = StyleSheet.create({
         width: 0.5 * Dimensions.get('window').width,
         height: 0.5 * Dimensions.get('window').width,
         marginTop: -1 * 0.02 * Dimensions.get('window').height
+    },
+    footer: {
+        flexDirection: 'row',
+        borderTopColor: '#eee',
+        backgroundColor: '#f9f9f9',
+        borderTopWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 15,
+        paddingBottom: 25
     }
 });
 

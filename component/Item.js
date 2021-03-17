@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         marginTop: -15,
         backgroundColor: 'transparent',
         borderColor: 'transparent',
-        flex: 1,
+        flex: 1
     },
     card: {
         height: 100,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     cardImgWrapper: {
-        flex: 1,
+        flex: 1
     },
     cardImg: {
         height: '100%',
@@ -102,9 +102,6 @@ const styles = StyleSheet.create({
     cardInfo: {
         flex: 2,
         padding: 10,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderLeftWidth: 0,
         borderBottomRightRadius: 8,
         borderTopRightRadius: 8,
         backgroundColor: '#fff',
