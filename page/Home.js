@@ -34,6 +34,7 @@ const Home = ({ navigation }) => {
             <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
             <Button title="QRCode (for testing)" onPress={() => navigation.navigate('QRCode')} />
             <Button title="Filter (for testing)" onPress={() => navigation.navigate('Filter')} />
+            <Button title="Noti (for testing)" onPress={() => navigation.navigate('Noti')} />
         </LinearGradient>
     );
 }

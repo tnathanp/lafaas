@@ -17,6 +17,7 @@ import Claiming from './page/Claiming';
 import ItemView from './page/ItemView';
 import QRCode from './page/QRCode';
 import Filter from './page/Filter';
+import Noti from './page/Noti';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -69,6 +70,7 @@ function App() {
           <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
           <Stack.Screen name="QRCode" component={QRCode} options={{ gestureEnabled: true }} />
           <Stack.Screen name="Filter" component={Filter} options={{ gestureEnabled: true }} />
+          <Stack.Screen name="Noti" component={Noti} options={{ gestureEnabled: true }} />
         </Stack.Navigator>
       </NavigationContainer>
     </ActionSheetProvider>
