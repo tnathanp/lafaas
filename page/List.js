@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar, Button } from 'react-native-elements';
-import { StyleSheet, Dimensions, View, ScrollView, RefreshControl } from 'react-native';
+import { StyleSheet, Dimensions, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
+import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
 
 const Tab = createMaterialTopTabNavigator();
@@ -160,6 +161,7 @@ const ListItem = ({ route, navigation }) => {
                 inputContainerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 value={search}
+                autoCorrect={false}
                 disabled={refreshing || load}
             />
 
@@ -174,7 +176,24 @@ const ListItem = ({ route, navigation }) => {
                 </View>
             }
 
-            {!load &&
+            {data.length === 0 &&
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                    <Animatable.View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} animation="fadeIn">
+                        <LottieView
+                            style={{
+                                position: 'absolute',
+                                width: 0.7 * Dimensions.get('window').width,
+                                marginTop: -1 * 0.025 * Dimensions.get('window').height
+                            }}
+                            source={require('../assets/anim/11323-sad-search.json')}
+                            autoPlay
+                        />
+                        <Text style={{ color: 'black', paddingTop: 135, alignContent: 'center' }}>There's nothing here...</Text>
+                    </Animatable.View>
+                </TouchableWithoutFeedback>
+            }
+
+            {data.length !== 0 && !load &&
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(true)} />}
@@ -182,6 +201,7 @@ const ListItem = ({ route, navigation }) => {
                     <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />
                 </ScrollView>
             }
+
         </View>
     );
 }
