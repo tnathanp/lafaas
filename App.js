@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { CardStyleInterpolators } from '@react-navigation/stack';
+import { StatusBar } from 'expo-status-bar';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import * as Font from 'expo-font';
@@ -57,6 +57,7 @@ function App() {
   return (
     <ActionSheetProvider>
       <NavigationContainer>
+        <StatusBar style='dark' />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />

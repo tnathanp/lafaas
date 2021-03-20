@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import MapView from 'react-native-maps';
 import LottieView from 'lottie-react-native';
 import { Entypo } from '@expo/vector-icons';
@@ -12,7 +11,6 @@ const deviceHeight = Dimensions.get('window').height;
 const ASPECT_RATIO = deviceWidth / deviceHeight;
 
 const Map = ({ route, navigation }) => {
-
     const [location, setLocation] = useState();
 
     useEffect(() => {
@@ -21,7 +19,7 @@ const Map = ({ route, navigation }) => {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerLeft: () => (
+            headerLeft: Platform.OS === 'ios' ? () => (
                 <Button
                     title="Back"
                     icon={<Entypo name="chevron-left" size={20} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
@@ -29,14 +27,12 @@ const Map = ({ route, navigation }) => {
                     buttonStyle={{ width: 70, height: 30, marginLeft: 5, borderRadius: 20, backgroundColor: 'transparent' }}
                     onPress={() => navigation.goBack()}
                 />
-            ),
+            ) : () => null,
         });
     }, [navigation]);
 
     return (
         <View style={styles.container}>
-
-            <StatusBar style='dark' />
 
             <MapView
                 style={styles.map}
@@ -55,15 +51,14 @@ const Map = ({ route, navigation }) => {
 
             <Button
                 title="Confirm Location"
-                style={{ marginTop: '5%' }}
                 titleStyle={{ fontFamily: 'NotoSansBold', padding: '25%' }}
-                buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10, height: 0.06 * deviceHeight }}
+                buttonStyle={{ marginTop: '5%', backgroundColor: '#fc8181', borderRadius: 10, height: 0.06 * deviceHeight }}
                 onPress={() => {
                     navigation.navigate('Register', { type: route.params.type, coordinate: location });
                 }}
             />
 
-        </View>
+        </View >
     );
 }
 

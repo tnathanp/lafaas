@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar, Button } from 'react-native-elements';
 import { StyleSheet, Dimensions, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,14 +27,14 @@ const ListItem = ({ route, navigation }) => {
     useEffect(() => fetchData(), [refreshing]);
 
     function fetchData() {
-        /*fetch('URL HERE').then(res => res.json())
+        /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
             .then(data => {
 
                 let mounted = true;
 
                 wait(1000).then(() => {
                     if (mounted) {
-                        setData(data.Registered);
+                        setOriginalData(type === 0 ? data.Registered : data.Claimed);
                         setRefreshing(false);
                     }
                 })
@@ -172,7 +171,7 @@ const ListItem = ({ route, navigation }) => {
                         source={require('../assets/anim/890-loading-animation.json')}
                         autoPlay
                     />
-                    <Text style={{ color: 'black' }}>Suppose loading is done in one second</Text>
+                    <Text style={{ color: 'black', paddingTop: Platform.OS === 'ios' ? 0 : 30 }}>Suppose loading is done in one second</Text>
                 </View>
             }
 
@@ -188,7 +187,7 @@ const ListItem = ({ route, navigation }) => {
                             source={require('../assets/anim/11323-sad-search.json')}
                             autoPlay
                         />
-                        <Text style={{ color: 'black', paddingTop: 135, alignContent: 'center' }}>There's nothing here...</Text>
+                        <Text style={{ color: 'black', paddingTop: Platform.OS === 'ios' ? 135 : 165, alignContent: 'center' }}>There's nothing here...</Text>
                     </Animatable.View>
                 </TouchableWithoutFeedback>
             }
@@ -198,7 +197,7 @@ const ListItem = ({ route, navigation }) => {
                     showsVerticalScrollIndicator={false}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(true)} />}
                 >
-                    <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item })} />
+                    <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item, type: type })} />
                 </ScrollView>
             }
 
@@ -209,8 +208,6 @@ const ListItem = ({ route, navigation }) => {
 const List = ({ navigation }) => {
     return (
         <View style={{ flex: 1, paddingTop: 50, backgroundColor: 'white' }}>
-
-            <StatusBar style='dark' />
 
             <Tab.Navigator
                 lazy={true}
@@ -259,7 +256,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderBottomColor: 'transparent',
         borderTopColor: 'transparent',
-        padding: 12
+        paddingHorizontal: 28,
+        paddingTop: 12
     },
     inputContainer: {
         fontFamily: 'NotoSans',

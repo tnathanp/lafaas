@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Input } from 'react-native-elements';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, View, Keyboard, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo } from '@expo/vector-icons';
+import BackButton from '../component/BackButton';
 
 const Claiming = ({ route, navigation }) => {
     let phoneInput, idInput;
@@ -14,24 +13,17 @@ const Claiming = ({ route, navigation }) => {
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
-            <StatusBar hidden={false} />
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1 }}>
                     <View style={{ top: 50, left: 20, zIndex: 1, marginBottom: 10 }}>
-                        <Button
-                            title="Back"
-                            icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
-                            titleStyle={{ fontSize: 13, fontFamily: 'NotoSans', padding: 10, marginTop: -5, color: '#fc8181' }}
-                            buttonStyle={{ width: 70, height: 26, borderRadius: 20, backgroundColor: 'white' }}
-                            onPress={() => navigation.goBack()}
-                        />
+                        <BackButton navigation={navigation} />
                     </View>
                     <KeyboardAvoidingView style={{ flex: 1, paddingTop: 50 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={{ marginTop: -50 }} onStartShouldSetResponder={() => true}>
                                 <View style={{ padding: 20, left: 20 }} >
                                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Claim</Text>
-                                    <Text style={{ fontSize: 16 }}>Item name from item description</Text>
+                                    <Text style={{ fontSize: 16 }}>{item.name}</Text>
                                 </View>
 
                                 <View style={{ marginBottom: 10 }} >

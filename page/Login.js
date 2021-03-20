@@ -3,7 +3,7 @@ import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo } from '@expo/vector-icons';
+import BackButton from '../component/BackButton';
 
 const Login = ({ navigation }) => {
     let usernameInput, passwordInput;
@@ -16,13 +16,7 @@ const Login = ({ navigation }) => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ position: 'absolute', top: 50, left: 20 }}>
-                        <Button
-                            title="Back"
-                            icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
-                            titleStyle={{ fontSize: 13, fontFamily: 'NotoSans', padding: 10, marginTop: -5, color: '#fc8181' }}
-                            buttonStyle={{ width: 70, height: 26, borderRadius: 20, backgroundColor: 'white' }}
-                            onPress={() => navigation.goBack()}
-                        />
+                        <BackButton navigation={navigation} />
                     </View>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
@@ -115,12 +109,12 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     input: {
-        fontFamily: 'NotoSansBold',
+        fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
     },
     inputError: {
-        fontFamily: 'NotoSansBold',
+        fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10,
         color: '#FC4E29'

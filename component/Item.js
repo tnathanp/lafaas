@@ -33,7 +33,7 @@ const Item = (props, { navigation }) => {
                                         />
                                     </View>
                                     <View style={styles.cardInfo}>
-                                        <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
+                                        <Text style={{ fontSize: 18, color: 'black', fontWeight: 'medium' }}>{item.name}</Text>
                                         <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
                                     </View>
                                 </View>
@@ -47,25 +47,6 @@ const Item = (props, { navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    inputBox: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        shadowColor: 'black',
-        borderWidth: 1.5,
-        borderColor: 'white',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
-    },
-    input: {
-        fontFamily: 'NotoSansBold',
-        fontSize: 15,
-        padding: 10
-    },
     label: {
         color: 'white',
         marginBottom: 3,
@@ -76,6 +57,7 @@ const styles = StyleSheet.create({
         marginTop: -15,
         backgroundColor: 'transparent',
         borderColor: 'transparent',
+        elevation: 0,
         flex: 1
     },
     card: {
@@ -86,7 +68,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0,
         shadowRadius: 2,
-        elevation: 0,
+        elevation: 0
     },
     cardImgWrapper: {
         flex: 1
@@ -97,7 +79,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 8,
         borderBottomRightRadius: 0,
-        borderTopRightRadius: 0,
+        borderTopRightRadius: 0
     },
     cardInfo: {
         flex: 2,
@@ -105,6 +87,8 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 8,
         borderTopRightRadius: 8,
         backgroundColor: '#fff',
+        borderWidth: Platform.OS === 'android' ? 1 : 0,
+        borderColor: '#eee'
     }
 });
 

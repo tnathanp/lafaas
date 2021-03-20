@@ -3,10 +3,11 @@ import { Image, Button, Input } from 'react-native-elements';
 import { StyleSheet, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import DropDownPicker from 'react-native-dropdown-picker';
-import * as ImagePicker from 'expo-image-picker';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet'
+import * as ImagePicker from 'expo-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import BackButton from '../component/BackButton';
 
 const Register = ({ route, navigation }) => {
     let locationInput, colorInput, descInput;
@@ -96,13 +97,7 @@ const Register = ({ route, navigation }) => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ position: 'absolute', top: 50, left: 20 }}>
-                        <Button
-                            title="Back"
-                            icon={<Entypo name="chevron-left" size={16} style={{ marginTop: -3, marginRight: -8 }} color='#fc8181' />}
-                            titleStyle={{ fontSize: 13, fontFamily: 'NotoSans', padding: 10, marginTop: -5, color: '#fc8181' }}
-                            buttonStyle={{ width: 70, height: 26, borderRadius: 20, backgroundColor: 'white' }}
-                            onPress={() => navigation.goBack()}
-                        />
+                        <BackButton navigation={navigation} />
                     </View>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
@@ -143,7 +138,7 @@ const Register = ({ route, navigation }) => {
                                         icon={<Entypo name="location-pin" size={24} color="#fc8181" />}
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
-                                        onPress={() => navigation.navigate('Map', {type: route.params.type})}
+                                        onPress={() => navigation.navigate('Map', { type: route.params.type })}
                                     />
                                 </View>
 
@@ -155,7 +150,9 @@ const Register = ({ route, navigation }) => {
                                             { label: '2', value: 'item2' },
                                             { label: '3', value: 'item3' },
                                             { label: '4', value: 'item4' },
-                                            { label: '5', value: 'item5' }
+                                            { label: '5', value: 'item5' },
+                                            { label: '6', value: 'item6' },
+                                            { label: '7', value: 'item7' }
                                         ]}
                                         defaultIndex={0}
                                         placeholder="Select category"
@@ -173,6 +170,9 @@ const Register = ({ route, navigation }) => {
                                         }}
                                         dropDownStyle={{ backgroundColor: '#f1f1f1' }}
                                         labelStyle={{ fontFamily: 'NotoSansBold' }}
+                                        itemStyle={{
+                                            justifyContent: 'flex-start'
+                                        }}
                                         containerStyle={{ height: 41, marginTop: 1 }}
                                         onChangeItem={item => setCategory(item.value)}
                                     />
@@ -230,7 +230,7 @@ const Register = ({ route, navigation }) => {
                                     </View>
                                 }
 
-                                <View style={{ alignSelf: 'stretch', marginTop: 20, padding: 10 }}>
+                                <View style={{ alignSelf: 'stretch', marginTop: route.params.type === 'found' ? 20 : -20, padding: 10 }}>
                                     <Button
                                         title='register'
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
@@ -278,12 +278,12 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     input: {
-        fontFamily: 'NotoSansBold',
+        fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
     },
     inputError: {
-        fontFamily: 'NotoSansBold',
+        fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10,
         color: '#FC4E29'
@@ -296,15 +296,7 @@ const styles = StyleSheet.create({
     },
     stretchButton: {
         backgroundColor: 'white',
-        borderRadius: 10,
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderRadius: 10
     }
 });
 
