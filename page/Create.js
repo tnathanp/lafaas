@@ -44,7 +44,7 @@ const Create = ({ navigation }) => {
                 if (isPass) setEmail(val);
                 break;
             case 'password':
-                isPass = validator.isStrongPassword(val, { minSymbols: 0 });
+                isPass = validator.isAlphanumeric(val, 'en-US');
                 if (isPass) setPassword(val);
                 break;
             case 'cpassword':
@@ -52,6 +52,8 @@ const Create = ({ navigation }) => {
                 if (isPass) setPasswordConfirm(val);
                 break;
         }
+
+        if (val === '') isPass = true;
 
         if (isPass) {
             setFormState(prev => {

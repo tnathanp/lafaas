@@ -26,15 +26,8 @@ const Home = ({ navigation }) => {
             <Text style={{ fontSize: 0.045 * deviceWidth, fontWeight: 'normal', marginTop: -5 }}>Lost and Found as a Service</Text>
             <View style={{ flexDirection: 'row', marginTop: 0.15 * deviceHeight }}>
                 <RoundButton title="Found" navigator={() => navigation.navigate('Register', { type: 'found' })} />
-                <RoundButton title="Lost" navigator={() => navigation.navigate('Register', { type: 'lost' })} />
+                <RoundButton title="Lost" navigator={() => navigation.navigate('Login')} />
             </View>
-            <Button title="Create (for testing)" onPress={() => navigation.navigate('Create')} />
-            <Button title="Recover (for testing)" onPress={() => navigation.navigate('Recover')} />
-            <Button title="Login (for testing)" onPress={() => navigation.navigate('Login')} />
-            <Button title="List (for testing)" onPress={() => navigation.navigate('List')} />
-            <Button title="QRCode (for testing)" onPress={() => navigation.navigate('QRCode')} />
-            <Button title="Filter (for testing)" onPress={() => navigation.navigate('Filter')} />
-            <Button title="Noti (for testing)" onPress={() => navigation.navigate('Noti')} />
         </LinearGradient>
     );
 }

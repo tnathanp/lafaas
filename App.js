@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
+import { AuthProvider, useAuthContext } from './component/AuthContext';
 import * as Font from 'expo-font';
+import * as SecureStore from 'expo-secure-store';
 import AppLoading from 'expo-app-loading';
 import Home from './page/Home';
 import Create from './page/Create';
@@ -21,8 +23,9 @@ import Noti from './page/Noti';
 
 const Stack = createSharedElementStackNavigator();
 
-function App() {
+function Provider() {
   const [loaded, setLoaded] = useState(false);
+  const { state, dispatch } = useAuthContext();
 
   const Fade = ({ current }) => ({
     cardStyle: {
@@ -42,6 +45,8 @@ function App() {
       NotoSansExtraBold: require('./assets/fonts/800-NotoSans-ExtraBold.ttf'),
       NotoSansBlack: require('./assets/fonts/900-NotoSans-Black.ttf')
     });
+
+    if (await SecureStore.getItemAsync('userToken') !== null) await dispatch({ type: 'SIGN_IN' });
   }
 
   if (!loaded) {
@@ -58,24 +63,45 @@ function App() {
     <ActionSheetProvider>
       <NavigationContainer>
         <StatusBar style='dark' />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Create" component={Create} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Recover" component={Recover} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' }, gestureEnabled: true }} />
-          <Stack.Screen name="List" component={List} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="ItemDesc" component={ItemDesc} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false, cardStyleInterpolator: Fade }} />
-          <Stack.Screen name="Claiming" component={Claiming} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="QRCode" component={QRCode} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Filter" component={Filter} options={{ gestureEnabled: true }} />
-          <Stack.Screen name="Noti" component={Noti} options={{ gestureEnabled: true }} />
+        <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true }}>
+
+          {!state.isLoggedIn && <Stack.Screen name="Home" component={Home} />}
+          {state.isLoggedIn && <Stack.Screen name="List" component={List} />}
+
+          {!state.isLoggedIn ?
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Create" component={Create} />
+              <Stack.Screen name="Recover" component={Recover} />
+            </>
+            :
+            <>
+              <Stack.Screen name="ItemDesc" component={ItemDesc} />
+              <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false, cardStyleInterpolator: Fade }} />
+              <Stack.Screen name="Claiming" component={Claiming} />
+              <Stack.Screen name="Filter" component={Filter} />
+              <Stack.Screen name="Noti" component={Noti} />
+            </>
+          }
+
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' } }} />
+          <Stack.Screen name="QRCode" component={QRCode} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </ActionSheetProvider>
-  );
+  )
+
+}
+
+function App() {
+
+  return (
+    <AuthProvider>
+      <Provider />
+    </AuthProvider>
+  )
 }
 
 export default App;

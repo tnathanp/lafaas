@@ -1,15 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuthContext } from '../component/AuthContext';
 import BackButton from '../component/BackButton';
+import validator from 'validator';
+import * as SecureStore from 'expo-secure-store';
 
 const Login = ({ navigation }) => {
-    let usernameInput, passwordInput;
+    let passwordInput;
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const { dispatch } = useAuthContext();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [formState, setFormState] = useState({
+        username: 0,
+        password: 0
+    });
+
+    function handleChange(val, field) {
+        let isPass;
+        switch (field) {
+            case 'username':
+                isPass = validator.isAlphanumeric(val, 'en-US');
+                if (isPass) setUsername(val);
+                break;
+            case 'password':
+                isPass = validator.isAlphanumeric(val, 'en-US');
+                if (isPass) setPassword(val);
+                break;
+        }
+
+        if (val === '') isPass = true;
+
+        if (isPass) {
+            setFormState(prev => {
+                let state = ({ ...prev });
+                state[field] = 0;
+                return state
+            });
+        } else {
+            setFormState(prev => {
+                let state = ({ ...prev });
+                state[field] = 1;
+                return state
+            });
+        }
+    }
+
+    function login() {
+        //Check if there are input errors
+        for (let state in formState) {
+            if (formState.state === 1) return;
+        }
+        //Check if it is empty
+        if (username === '' || password === '') return;
+
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/login', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                user: username,
+                pass: password
+            })
+        }).then(res => res.json()).then(data => {
+            console.log(data);
+            if (data.code === 1) {
+                SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
+            }
+        });
+    }
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
@@ -23,28 +84,28 @@ const Login = ({ navigation }) => {
                         <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Login</Text>
 
                         <Input
-                            onChangeText={value => setUsername(value)}
+                            onChangeText={value => handleChange(value, 'username')}
                             label='Username'
-                            style={styles.inputBox}
+                            style={formState.username == 0 ? styles.inputBox : styles.inputBoxError}
                             labelStyle={styles.label}
-                            inputStyle={styles.input}
+                            inputStyle={formState.username == 0 ? styles.input : styles.inputError}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
                             onSubmitEditing={() => passwordInput.focus()}
-                            ref={box => { usernameInput = box; }}
                             autoCorrect={false}
                             autoCapitalize={'none'}
                         />
 
                         <Input
-                            onChangeText={value => setPassword(value)}
+                            onChangeText={value => handleChange(value, 'password')}
                             label='Password'
-                            style={styles.inputBox}
+                            style={formState.password == 0 ? styles.inputBox : styles.inputBoxError}
                             labelStyle={styles.label}
-                            inputStyle={styles.input}
+                            inputStyle={formState.password == 0 ? styles.input : styles.inputError}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
                             onSubmitEditing={() => null}
                             ref={box => { passwordInput = box; }}
                             autoCorrect={false}
+                            secureTextEntry={true}
                             autoCapitalize={'none'}
                         />
 
@@ -53,7 +114,7 @@ const Login = ({ navigation }) => {
                                 title="login"
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                 buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                onPress={() => null}
+                                onPress={() => login()}
                             />
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 3, justifyContent: 'center' }}>

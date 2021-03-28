@@ -4,10 +4,12 @@ import { StyleSheet, Dimensions, View, ScrollView, RefreshControl, Keyboard, Tou
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuthContext } from '../component/AuthContext';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
+import * as SecureStore from 'expo-secure-store';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -206,6 +208,8 @@ const ListItem = ({ route, navigation }) => {
 }
 
 const List = ({ navigation }) => {
+    const { dispatch } = useAuthContext();
+
     return (
         <View style={{ flex: 1, paddingTop: 50, backgroundColor: 'white' }}>
 
@@ -221,7 +225,16 @@ const List = ({ navigation }) => {
                 <Tab.Screen name='Claimed Items' component={ListItem} />
             </Tab.Navigator>
 
-            <View style={styles.footer} >
+
+            <Button title='QR (test)' onPress={() => navigation.navigate('QRCode')} />
+            <Button title='Filter (test)' onPress={() => navigation.navigate('Filter')} />
+            <Button title='Noti (test)' onPress={() => navigation.navigate('Noti')} />
+            <Button title='Logout (test)' onPress={() => {
+                SecureStore.deleteItemAsync('userToken').then(() => dispatch({ type: 'SIGN_OUT' }));
+            }} />
+
+            <View style={styles.footer}>
+
                 <Button
                     title='Found'
                     onPress={() => navigation.navigate('Register', { type: 'found' })}
