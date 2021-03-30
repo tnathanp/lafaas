@@ -69,8 +69,7 @@ const Register = ({ route, navigation }) => {
         await ImagePicker.requestCameraPermissionsAsync();
 
         let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            quality: 1
+            allowsEditing: true
         });
 
         if (result.cancelled) {
@@ -80,16 +79,19 @@ const Register = ({ route, navigation }) => {
         let localUri = result.uri;
         setImg(localUri);
 
-        /*let formData = new FormData();
-        formData.append('photo', { uri: localUri, name: localUri.split('/').pop(), type: 'image/jpeg' });
+        // let formData = new FormData();
+        // formData.append('item_name', itemName);
+        // formData.append('color', 'green');
+        // formData.append('image', { uri: localUri, name: localUri.split('/').pop(), type: 'image/jpeg' });
 
-        await fetch('', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        });*/
+        // await fetch('http://192.168.1.33:7000/registeritem', {
+        //     method: 'POST',
+        //     body: formData,
+        //     headers: {
+        //         'content-type': 'multipart/form-data',
+        //     },
+        // });
+
     }
 
     return (
