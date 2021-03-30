@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text } from '../component/Text';
 import { View, Alert } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { CheckBox, Button } from 'react-native-elements'
 
 const someTag = ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green'];
 const clicked = () => {
     Alert.alert('clicked');
 }
-function renderTag() {
+function Tag() {
     return someTag.map((item, key) => {
         return (
             <Button
@@ -21,205 +22,72 @@ function renderTag() {
     })
 }
 
-function Filter() {
-    return (
-        <View>
-            <View style={{ flexDirection: 'row', marginTop: 32, marginLeft: 29, marginRight: 29, justifyContent: 'space-between' }}>
+function Filter({ navigation }) {
+    const [filter, setFilter] = useState([0, 0, 0, 0, 0, 0, 0]);
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
                 <Button
                     title="Cancel"
                     type="clear"
-                    titleStyle={{ fontFamily: 'NotoSansBold', color: '#FF8686', fontSize: 12 }}
-                    buttonStyle={{ height: 32, backgroundColor: 'transparent' }}
-                    onPress={null}
+                    titleStyle={{ fontFamily: 'NotoSansBold', color: '#FF8686', fontSize: 13 }}
+                    containerStyle={{ marginLeft: 15 }}
+                    buttonStyle={{ height: 40, backgroundColor: 'transparent' }}
+                    onPress={() => navigation.goBack()}
                 />
-                <Button
-                    title="Search filters"
-                    type="clear"
-                    titleStyle={{ fontFamily: 'NotoSansBold', color: '#000000', fontSize: 14 }}
-                    buttonStyle={{ height: 32, backgroundColor: 'transparent' }}
-                    onPress={null}
-                />
+            ),
+            headerRight: () => (
                 <Button
                     title="Apply"
                     type="clear"
-                    titleStyle={{ fontFamily: 'NotoSansBold', color: '#FF8686', fontSize: 12 }}
-                    buttonStyle={{ height: 32, backgroundColor: 'transparent' }}
-                    onPress={null}
+                    titleStyle={{ fontFamily: 'NotoSansBold', color: '#FF8686', fontSize: 13 }}
+                    containerStyle={{ marginRight: 15 }}
+                    buttonStyle={{ height: 40, backgroundColor: 'transparent' }}
+                    onPress={() => null}
                 />
-            </View>
-            <View style={{ marginLeft: 38, marginRight: 38, }}>
+            )
+        });
+    }, [navigation]);
+
+    return (
+        <View>
+            <View style={{ marginHorizontal: 35 }}>
+
                 <Text
                     style={{ fontFamily: 'NotoSansBold', color: '#868686', fontSize: 13, marginTop: 17 }}>
                     Category
                 </Text>
 
-                <View style={{ borderColor: '#868686', borderBottomWidth: 0.5, marginTop: 7 }} />
+                <View style={{ borderColor: '#cccccc', borderWidth: 0.5, marginTop: 7 }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, marginTop: 15, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Bag
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Bottle
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Certificate
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Keyring
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Money
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Tumbler
-                    </Text>
-                </View>
-
-                {/* -----------------------------------------  */}
-
-                <Text
-                    style={{ fontFamily: 'NotoSansBold', color: '#868686', fontSize: 13, marginTop: 17 }}>
-                    Color
-                </Text>
-
-                <View style={{ borderColor: '#868686', borderBottomWidth: 0.5, marginTop: 7 }} />
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, marginTop: 15, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Beige
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Brown
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Blue
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Cream
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Crimson
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Cyan
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Gold
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Green
-                    </Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', height: 30, }}>
-                    <CheckBox
-                        value={null}
-                        onValueChange={null}
-                    />
-                    <Text style={{ fontFamily: 'NotoSans', color: '#000000', fontSize: 11, }}>
-                        Grey
-                    </Text>
+                <View style={{ marginTop: 5 }}>
+                    {['Bag', 'Bottle', 'Certificate', 'Keyring', 'Tumbler'].map((each, index) => {
+                        return (
+                            <CheckBox
+                                key={index}
+                                title={each}
+                                fontFamily='NotoSans'
+                                textStyle={{ fontSize: 14 }}
+                                containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginVertical: -5 }}
+                                checkedIcon={<MaterialIcons name='check-box' size={20} color='#ff8686' />}
+                                uncheckedIcon={<MaterialIcons name='check-box-outline-blank' size={20} color='#aaaaaa' />}
+                                checked={filter[index]}
+                                onPress={() => {
+                                    let newFilter = [...filter];
+                                    newFilter[index] = !newFilter[index];
+                                    setFilter(newFilter);
+                                }}
+                            />
+                        )
+                    })}
                 </View>
             </View>
 
-            {/* ------------------Tag-------------------------- */}
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 0, marginLeft: 29, marginRight: 29 }}>
-                {renderTag()}
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, marginHorizontal: 30 }}>
+                {Tag()}
             </View>
-            {/* ----------------------------------------------- */}
+
         </View>
     )
 }

@@ -79,13 +79,13 @@ function Provider() {
               <Stack.Screen name="ItemDesc" component={ItemDesc} />
               <Stack.Screen name="ItemView" component={ItemView} options={{ gestureEnabled: false, cardStyleInterpolator: Fade }} />
               <Stack.Screen name="Claiming" component={Claiming} />
-              <Stack.Screen name="Filter" component={Filter} />
+              <Stack.Screen name="Filter" component={Filter} options={{ headerShown: true, title: 'Search filters', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
               <Stack.Screen name="Noti" component={Noti} />
             </>
           }
 
           <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { fontFamily: 'NotoSansBold' } }} />
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
           <Stack.Screen name="QRCode" component={QRCode} />
 
         </Stack.Navigator>
