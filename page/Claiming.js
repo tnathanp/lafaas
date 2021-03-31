@@ -43,7 +43,7 @@ const Claiming = ({ route, navigation }) => {
                                         inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => idInput.focus()}
-                                        ref={box => { phoneInput = box; }}
+                                        ref={instance => { phoneInput = instance; }}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                     />
@@ -58,7 +58,7 @@ const Claiming = ({ route, navigation }) => {
                                         inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => Keyboard.dismiss()}
-                                        ref={box => { idInput = box; }}
+                                        ref={instance => { idInput = instance; }}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                     />

@@ -103,7 +103,7 @@ const Login = ({ navigation }) => {
                             inputStyle={formState.password == 0 ? styles.input : styles.inputError}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
                             onSubmitEditing={() => null}
-                            ref={box => { passwordInput = box; }}
+                            ref={instance => { passwordInput = instance; }}
                             autoCorrect={false}
                             secureTextEntry={true}
                             autoCapitalize={'none'}

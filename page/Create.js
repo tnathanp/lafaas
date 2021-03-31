@@ -105,7 +105,7 @@ const Create = ({ navigation }) => {
                                             inputStyle={formState.lname == 0 ? styles.input : styles.inputError}
                                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                             onSubmitEditing={() => usernameInput.focus()}
-                                            ref={box => { lnameInput = box; }}
+                                            ref={instance => { lnameInput = instance; }}
                                             autoCorrect={false}
                                         />
                                     </View>
@@ -119,7 +119,7 @@ const Create = ({ navigation }) => {
                                     inputStyle={formState.username == 0 ? styles.input : styles.inputError}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => emailInput.focus()}
-                                    ref={box => { usernameInput = box; }}
+                                    ref={instance => { usernameInput = instance; }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                 />
@@ -132,7 +132,7 @@ const Create = ({ navigation }) => {
                                     inputStyle={formState.email == 0 ? styles.input : styles.inputError}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => passInput.focus()}
-                                    ref={box => { emailInput = box; }}
+                                    ref={instance => { emailInput = instance; }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                 />
@@ -145,7 +145,7 @@ const Create = ({ navigation }) => {
                                     inputStyle={formState.password == 0 ? styles.input : styles.inputError}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => cpassInput.focus()}
-                                    ref={box => { passInput = box; }}
+                                    ref={instance => { passInput = instance; }}
                                     autoCorrect={false}
                                     secureTextEntry={true}
                                     autoCapitalize={'none'}
@@ -160,7 +160,7 @@ const Create = ({ navigation }) => {
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     containerStyle={{ marginTop: -20, marginBottom: 10 }}
                                     onSubmitEditing={() => Keyboard.dismiss}
-                                    ref={box => { cpassInput = box; }}
+                                    ref={instance => { cpassInput = instance; }}
                                     autoCorrect={false}
                                     secureTextEntry={true}
                                     autoCapitalize={'none'}
