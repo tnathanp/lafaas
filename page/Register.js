@@ -10,12 +10,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../component/BackButton';
 
 const Register = ({ route, navigation }) => {
-    let locationInput, colorInput, descInput;
+    let controller, locationInput, colorInput, descInput;
     const { showActionSheetWithOptions } = useActionSheet();
     const [itemName, setItemName] = useState("");
     const [locationDesc, setLocationDesc] = useState("");
     const [coordinate, setCoordinate] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState({});
     const [color, setColor] = useState("");
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState("");
@@ -28,6 +28,7 @@ const Register = ({ route, navigation }) => {
     }, [route.params.coordinate]);
 
     const openActionSheet = () => {
+        controller.close();
 
         let options = ['Take Photo', 'Photo Library', 'Remove', 'Cancel'];
         if (img === '') options = options.filter(e => e !== 'Remove');
@@ -116,6 +117,7 @@ const Register = ({ route, navigation }) => {
                                     inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => locationInput.focus()}
+                                    onFocus={() => controller.close()}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                 />
@@ -129,7 +131,8 @@ const Register = ({ route, navigation }) => {
                                     inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => colorInput.focus()}
-                                    ref={box => { locationInput = box; }}
+                                    onFocus={() => controller.close()}
+                                    ref={instance => { locationInput = instance; }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                 />
@@ -140,24 +143,31 @@ const Register = ({ route, navigation }) => {
                                         icon={<Entypo name="location-pin" size={24} color="#fc8181" />}
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
-                                        onPress={() => navigation.navigate('Map', { type: route.params.type })}
+                                        onPress={() => {
+                                            controller.close();
+                                            navigation.navigate('Map', { type: route.params.type });
+                                        }}
                                     />
                                 </View>
 
                                 <View style={{ alignSelf: 'stretch', padding: 10 }}>
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
+                                        controller={instance => controller = instance}
                                         items={[
-                                            { label: '1', value: 'item1' },
-                                            { label: '2', value: 'item2' },
-                                            { label: '3', value: 'item3' },
-                                            { label: '4', value: 'item4' },
-                                            { label: '5', value: 'item5' },
-                                            { label: '6', value: 'item6' },
-                                            { label: '7', value: 'item7' }
+                                            { label: 'North America', value: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
+                                            { label: 'United States', value: 'us', parent: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
+                                            { label: 'Alaska', value: 'alaska', parent: 'us' },
+                                            { label: 'Canada', value: 'canada', parent: 'na' },
+                                            { label: 'Mexico', value: 'mexico', parent: 'na' },
+
+                                            { label: 'Europe', value: 'eu', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
+                                            { label: 'UK', value: 'uk', parent: 'eu' },
+                                            { label: 'Germany', value: 'germany', parent: 'eu' },
+                                            { label: 'Russia', value: 'russia', parent: 'eu' }
                                         ]}
-                                        defaultIndex={0}
-                                        placeholder="Select category"
+                                        scrollViewProps={{ showsVerticalScrollIndicator: false }}
+                                        placeholder='Select category'
                                         style={{
                                             borderTopLeftRadius: 10, borderTopRightRadius: 10,
                                             borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
@@ -171,12 +181,12 @@ const Register = ({ route, navigation }) => {
                                             elevation: 5
                                         }}
                                         dropDownStyle={{ backgroundColor: '#f1f1f1' }}
-                                        labelStyle={{ fontFamily: 'NotoSansBold' }}
+                                        labelStyle={{ fontFamily: 'NotoSansMedium' }}
                                         itemStyle={{
                                             justifyContent: 'flex-start'
                                         }}
                                         containerStyle={{ height: 41, marginTop: 1 }}
-                                        onChangeItem={item => setCategory(item.value)}
+                                        onChangeItem={item => setCategory(item)}
                                     />
                                 </View>
 
@@ -190,7 +200,8 @@ const Register = ({ route, navigation }) => {
                                         inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => descInput.focus()}
-                                        ref={box => colorInput = box}
+                                        onFocus={() => controller.close()}
+                                        ref={instance => colorInput = instance}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                     />
@@ -207,7 +218,8 @@ const Register = ({ route, navigation }) => {
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => null}
                                         onFocus={() => scrollRef.current.scrollTo({ x: 0, y: imageBox, animated: true })}
-                                        ref={box => { descInput = box; }}
+                                        ref={instance => { descInput = instance; }}
+                                        onFocus={() => controller.close()}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                         multiline={true}
@@ -237,7 +249,10 @@ const Register = ({ route, navigation }) => {
                                         title='register'
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
-                                        onPress={() => console.log(itemName + locationDesc + coordinate + category + color + desc + img)}
+                                        onPress={() => {
+                                            controller.close();
+                                            console.log(itemName + locationDesc + coordinate + category.value + color + desc + img);
+                                        }}
                                     />
                                 </View>
 
