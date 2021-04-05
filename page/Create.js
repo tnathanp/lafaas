@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, ScrollView, KeyboardAvoidingView, View, Keyboard } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuthContext } from '../component/AuthContext';
 import BackButton from '../component/BackButton';
 import validator from 'validator';
+import * as SecureStore from 'expo-secure-store';
 
 const Create = ({ navigation }) => {
     let lnameInput, usernameInput, emailInput, passInput, cpassInput;
 
+    const { dispatch } = useAuthContext();
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
     const [username, setUsername] = useState("");
@@ -48,7 +51,7 @@ const Create = ({ navigation }) => {
                 if (isPass) setPassword(val);
                 break;
             case 'cpassword':
-                isPass = password === val && validator.isStrongPassword(val, { minSymbols: 0 });
+                isPass = password === val && validator.isAlphanumeric(val, 'en-US');
                 if (isPass) setPasswordConfirm(val);
                 break;
         }
@@ -68,6 +71,33 @@ const Create = ({ navigation }) => {
                 return state
             });
         }
+    }
+
+    function createAccount() {
+        //Check if there are input errors
+        for (let state in formState) {
+            if (formState.state === 1) return;
+        }
+        //Check if it is empty
+        if (username === '' || password === '' || fname === '' || lname === '' || email === '' || passwordConfirm === '') return;
+
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                user: username,
+                pass: passwordConfirm,
+                email: email,
+                fname: fname,
+                lname: lname,
+                noti_token: 'test'
+            })
+        }).then(res => res.json()).then(data => {
+            console.log(data);
+            if (data.code === 1) {
+                SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
+            }
+        });
     }
 
     return (
@@ -171,7 +201,7 @@ const Create = ({ navigation }) => {
                                         title="create"
                                         titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                        onPress={() => console.log(fname + lname + username + password + email)}
+                                        onPress={() => createAccount()}
                                     />
                                 </View>
                             </View>
