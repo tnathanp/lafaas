@@ -1,63 +1,50 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SearchBar, Button, Header, Icon } from 'react-native-elements';
+import { SearchBar, Button, Icon } from 'react-native-elements';
 import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
 import * as SecureStore from 'expo-secure-store';
 
-
-
 /*const Drawer = ({ navigation }) => {
     const Drawer = createDrawerNavigator();
+    function CustomDrawerContent(props) {
+        return (
+            <DrawerContentScrollView {...props}>
+                <DrawerItemList {...props} />
+                <DrawerItem
+                    label="Close drawer"
+                    onPress={() => props.navigation.closeDrawer()}
+                />
+                <DrawerItem
+                    label="Toggle drawer"
+                    onPress={() => props.navigation.toggleDrawer()}
+                />
+            </DrawerContentScrollView>
+        );
 
-function CustomDrawerContent(props) {
+    }
+    function MyDrawer() {
+        return (
+
+            <Drawer.Navigator initialRouteName="List">
+                <Drawer.Screen name="List" component={List} />
+            </Drawer.Navigator>
+
+        );
+    }
     return (
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-        <DrawerItem
-          label="Close drawer"
-          onPress={() => props.navigation.closeDrawer()}
-        />
-        <DrawerItem
-          label="Toggle drawer"
-          onPress={() => props.navigation.toggleDrawer()}
-        />
-      </DrawerContentScrollView>
-    );
+        <MyDrawer />
+    )
 
-  
-  }
-
-  function MyDrawer() {
-    return (
-     
-        <Drawer.Navigator initialRouteName="List">
-        <Drawer.Screen name="List" component={List} />
-      </Drawer.Navigator>
-    
-    );
-  }
-  return(
- <MyDrawer />
-         
-
-   
-
-
-  
-  )
-  
 }
 */
-
 
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -68,7 +55,7 @@ const wait = (timeout) => {
 
 const ListItem = ({ route, navigation }) => {
 
-    const type = route.name === 'Registered Items' ? 0 : 1;
+    const type = route.name === 'Registered' ? 0 : 1;
     const [search, setSearch] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [load, setLoad] = useState(true);
@@ -80,16 +67,13 @@ const ListItem = ({ route, navigation }) => {
     function fetchData() {
         /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
             .then(data => {
-
                 let mounted = true;
-
                 wait(1000).then(() => {
                     if (mounted) {
                         setOriginalData(type === 0 ? data.Registered : data.Claimed);
                         setRefreshing(false);
                     }
                 })
-
                 return function cleanup() {
                     mounted = false;
                 }
@@ -256,31 +240,25 @@ const ListItem = ({ route, navigation }) => {
     );
 }
 
-
 const List = ({ navigation }) => {
     const { dispatch } = useAuthContext();
-
-
-
-
 
     return (
         <View style={{ flex: 1, paddingTop: 50, backgroundColor: 'white' }}>
 
-            <Header
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                    <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                        <Icon name="menu" color="black" size={20} />
+                    </TouchableOpacity>
+                </View>
 
-                leftComponent={<TouchableOpacity onPress={() => navigation.openDrawer()}>
-                    <Icon
+                <Text style={{ color: 'black' }}>List Items</Text>
 
-                        name="menu"
-                        color="#ffffff"
-                        size={20}
-                    />
-                </TouchableOpacity>
-                }
-                centerComponent={<Text style = {{}}>List Items</Text>}
-                
-            />
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                    <></>
+                </View>
+            </View>
 
             <Tab.Navigator
                 lazy={true}
@@ -293,7 +271,6 @@ const List = ({ navigation }) => {
                 <Tab.Screen name='Registered' component={ListItem} />
                 <Tab.Screen name='Claimed' component={ListItem} />
             </Tab.Navigator>
-
 
             <Button title='QR (test)' onPress={() => navigation.navigate('QRCode')} />
             <Button title='Filter (test)' onPress={() => navigation.navigate('Filter')} />
@@ -375,12 +352,8 @@ const styles = StyleSheet.create({
 
 export default function App() {
     return (
-
         <Drawer.Navigator initialRouteName="List" drawerPosition="left">
             <Drawer.Screen name="List" component={List} />
-
         </Drawer.Navigator>
-
     )
-
-};
+}
