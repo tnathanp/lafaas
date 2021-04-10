@@ -3,20 +3,19 @@ import { Image, Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, View, Keyboard } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet'
+import * as ImagePicker from 'expo-image-picker';
+import BackButton from '../component/BackButton';
 
-import BackButton from '../component/BackButton'; 
+const Reporting = ({ route, navigation }) => {
 
-const Reporting = ({ navigation }) => {
-    let controller, detailInput;
+    const { item } = route.params;
     const { showActionSheetWithOptions } = useActionSheet();
     const [detail, setDetail] = useState("");
     const [img, setImg] = useState("");
 
     const openActionSheet = () => {
-        // controller.close();
         let options = ['Take Photo', 'Photo Library', 'Remove', 'Cancel'];
         if (img === '') options = options.filter(e => e !== 'Remove');
         const cancelButtonIndex = img === '' ? 2 : 3;
@@ -38,17 +37,17 @@ const Reporting = ({ navigation }) => {
             }
         );
     };
+
     const imageSelector = async () => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            quality: 1
+            mediaTypes: ImagePicker.MediaTypeOptions.Images
         });
 
         setImg(result.uri);
     }
+
     const cameraLauncher = async () => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
         await ImagePicker.requestCameraPermissionsAsync();
@@ -75,26 +74,36 @@ const Reporting = ({ navigation }) => {
                     <KeyboardAvoidingView style={{ flex: 1, paddingTop: 50 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={{ marginTop: -50 }} onStartShouldSetResponder={() => true}>
-                                <View style={{ padding: 10, left: 10 }} >
+                                <View style={{ padding: 20, paddingLeft: 40 }} >
                                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Report Item</Text>
+                                    <Text style={{ fontSize: 16 }}>If you are sure that this belongs to you,{'\n'}</Text>
+                                    <Text style={{ fontSize: 16 }}>
+                                        Give details about
+                                        <Text style={{ fontWeight: 'bold' }}> {item.name} </Text>
+                                        and we will contact you as soon as possible.
+                                     </Text>
                                 </View>
 
-                                <View style={{ padding: 10}}>
+                                <Image
+                                    source={{ uri: item.image }}
+                                    resizeMode="cover"
+                                    style={styles.stretch}
+                                />
+
+                                <View style={{ padding: 20, paddingBottom: 0 }}>
                                     <Input
                                         onChangeText={value => setDetail(value)}
-                                        label='Evidence Detail'
+                                        label='Detail'
                                         style={styles.inputBox}
                                         labelStyle={styles.label}
                                         inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                        onSubmitEditing={() => detailInput.focus()}
-                                        ref={instance => { detailInput = instance; }}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
-                                        multiline={true}
                                     />
                                 </View>
-                                <View style={{  height: 300, padding: 20, marginTop:-30}}>
+
+                                <View style={{ height: 200, padding: 30, marginTop: -40 }}>
                                     <Text style={styles.label}>Picture</Text>
                                     <Image
                                         style={{ height: '100%', borderRadius: 10, backgroundColor: img === '' ? '#fafafa' : 'transparent' }}
@@ -108,8 +117,9 @@ const Reporting = ({ navigation }) => {
                                             </View>
                                         }
                                     </Image>
-                                </View>                                
-                                <View style={{ alignItems: 'center', marginBottom: 15, marginTop: 50 }}>
+                                </View>
+
+                                <View style={{ alignItems: 'center', marginBottom: 30, marginTop: 15 }}>
                                     <Button
                                         title="report"
                                         titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
@@ -117,7 +127,6 @@ const Reporting = ({ navigation }) => {
                                         onPress={() => navigation.navigate('Reported')}
                                     />
                                 </View>
-
                             </View>
                         </ScrollView>
                     </KeyboardAvoidingView>
@@ -134,7 +143,6 @@ const styles = StyleSheet.create({
     },
     inputBox: {
         backgroundColor: 'white',
-        height: 120,
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,

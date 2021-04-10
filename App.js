@@ -84,7 +84,7 @@ function Provider() {
               <Stack.Screen name="Filter" component={Filter} options={{ headerShown: true, title: 'Search filters', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
               <Stack.Screen name="Noti" component={Noti} />
               <Stack.Screen name="Reporting" component={Reporting} />
-              <Stack.Screen name="Reported" component={Reported} />
+              <Stack.Screen name="Reported" component={Reported} options={{ gestureEnabled: false }} />
             </>
           }
 
