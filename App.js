@@ -20,6 +20,7 @@ import ItemView from './page/ItemView';
 import QRCode from './page/QRCode';
 import Filter from './page/Filter';
 import Noti from './page/Noti';
+import Reporting from './page/Reporting';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -72,7 +73,7 @@ function Provider() {
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Create" component={Create} />
-              <Stack.Screen name="Recover" component={Recover} />
+              <Stack.Screen name="Recover" component={Recover} />              
             </>
             :
             <>
@@ -81,6 +82,8 @@ function Provider() {
               <Stack.Screen name="Claiming" component={Claiming} />
               <Stack.Screen name="Filter" component={Filter} options={{ headerShown: true, title: 'Search filters', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
               <Stack.Screen name="Noti" component={Noti} />
+              <Stack.Screen name="Reporing" component={Reporting} />
+              
             </>
           }
 

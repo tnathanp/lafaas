@@ -52,7 +52,6 @@ const Register = ({ route, navigation }) => {
             }
         );
     };
-
     const imageSelector = async () => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
