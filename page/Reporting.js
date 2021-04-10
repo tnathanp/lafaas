@@ -114,7 +114,7 @@ const Reporting = ({ navigation }) => {
                                         title="report"
                                         titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                        // onPress={() => console.log(item)}
+                                        onPress={() => navigation.navigate('Reported')}
                                     />
                                 </View>
 

@@ -50,7 +50,7 @@ const ItemDesc = ({ route, navigation }) => {
 
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             {type === 0 && <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', marginTop: 24 }}>Is this yours?</Text>}
-                            <TouchableOpacity onPress={() => navigation.navigate('Claiming', { item: route.params.item })}>
+                            <TouchableOpacity onPress={() => navigation.navigate(type === 0 ? 'Claiming' : 'Reporting', { item: route.params.item })}>
                                 <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.3, 1]} style={{ borderRadius: 16, marginTop: 24 }}>
                                     <Text style={{ paddingHorizontal: 15, paddingVertical: 10, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}>
                                         {type === 0 ? 'Claim' : 'Report'}

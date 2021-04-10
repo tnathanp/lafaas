@@ -74,7 +74,7 @@ function Provider() {
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Create" component={Create} />
-              <Stack.Screen name="Recover" component={Recover} />              
+              <Stack.Screen name="Recover" component={Recover} />
             </>
             :
             <>
