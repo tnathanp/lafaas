@@ -1,17 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SearchBar, Button } from 'react-native-elements';
-import { StyleSheet, Dimensions, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { SearchBar, Button, Header, Icon } from 'react-native-elements';
+import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import Item from '../component/Item';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
 import * as SecureStore from 'expo-secure-store';
 
+
+
+/*const Drawer = ({ navigation }) => {
+    const Drawer = createDrawerNavigator();
+
+function CustomDrawerContent(props) {
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Close drawer"
+          onPress={() => props.navigation.closeDrawer()}
+        />
+        <DrawerItem
+          label="Toggle drawer"
+          onPress={() => props.navigation.toggleDrawer()}
+        />
+      </DrawerContentScrollView>
+    );
+
+  
+  }
+
+  function MyDrawer() {
+    return (
+     
+        <Drawer.Navigator initialRouteName="List">
+        <Drawer.Screen name="List" component={List} />
+      </Drawer.Navigator>
+    
+    );
+  }
+  return(
+ <MyDrawer />
+         
+
+   
+
+
+  
+  )
+  
+}
+*/
+
+
 const Tab = createMaterialTopTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -207,11 +256,31 @@ const ListItem = ({ route, navigation }) => {
     );
 }
 
+
 const List = ({ navigation }) => {
     const { dispatch } = useAuthContext();
 
+
+
+
+
     return (
         <View style={{ flex: 1, paddingTop: 50, backgroundColor: 'white' }}>
+
+            <Header
+
+                leftComponent={<TouchableOpacity onPress={() => navigation.openDrawer()}>
+                    <Icon
+
+                        name="menu"
+                        color="#ffffff"
+                        size={20}
+                    />
+                </TouchableOpacity>
+                }
+                centerComponent={<Text style = {{}}>List Items</Text>}
+                
+            />
 
             <Tab.Navigator
                 lazy={true}
@@ -221,8 +290,8 @@ const List = ({ navigation }) => {
                     indicatorStyle: { backgroundColor: '#fc8181' }
                 }}
             >
-                <Tab.Screen name='Registered Items' component={ListItem} />
-                <Tab.Screen name='Claimed Items' component={ListItem} />
+                <Tab.Screen name='Registered' component={ListItem} />
+                <Tab.Screen name='Claimed' component={ListItem} />
             </Tab.Navigator>
 
 
@@ -304,4 +373,14 @@ const styles = StyleSheet.create({
     }
 });
 
-export default List;
+export default function App() {
+    return (
+
+        <Drawer.Navigator initialRouteName="List" drawerPosition="left">
+            <Drawer.Screen name="List" component={List} />
+
+        </Drawer.Navigator>
+
+    )
+
+};
