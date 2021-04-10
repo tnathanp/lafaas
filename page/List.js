@@ -99,7 +99,7 @@ const ListItem = ({ route, navigation }) => {
             Registered:
                 [
                     {
-                        name: type === 0 ? 'eiei' : 'a a',
+                        name: type === 0 ? "Item 1 Registered" : "Item 1 Claimed",
                         item_id: 111,
                         location: "pacific ocean",
                         color: "blue",
