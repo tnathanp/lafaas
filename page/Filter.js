@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text } from '../component/Text';
 import { View, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CheckBox, Button } from 'react-native-elements'
+
+
 
 const someTag = ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green'];
 const clicked = () => {
@@ -24,6 +26,18 @@ function Tag() {
 
 function Filter({ navigation }) {
     const [filter, setFilter] = useState([0, 0, 0, 0, 0, 0, 0]);
+    
+    function sendFilter() {
+        let i;
+        let tempFilter = [];
+        let filterList = ['Bag', 'Bottle', 'Certificate', 'Keyring', 'Tumbler'];
+        for(i=0; i<filter.length; i++ ) {
+            if(filter[i] === true){
+                tempFilter.push(filterList[i])
+            }
+        }
+        navigation.navigate('List', { filters: tempFilter })
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -44,7 +58,7 @@ function Filter({ navigation }) {
                     titleStyle={{ fontFamily: 'NotoSansBold', color: '#FF8686', fontSize: 13 }}
                     containerStyle={{ marginRight: 15 }}
                     buttonStyle={{ height: 40, backgroundColor: 'transparent' }}
-                    onPress={() => null}
+                    onPress={() => sendFilter()}
                 />
             )
         });

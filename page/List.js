@@ -316,7 +316,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default List = () => {
+export default List = ({route}) => {
+    console.log(route.params?.filters);
     return (
         <Drawer.Navigator initialRouteName="List" drawerPosition="left">
             <Drawer.Screen name="List" component={ListPage} />
