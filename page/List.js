@@ -12,40 +12,6 @@ import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
 import * as SecureStore from 'expo-secure-store';
 
-/*const Drawer = ({ navigation }) => {
-    const Drawer = createDrawerNavigator();
-    function CustomDrawerContent(props) {
-        return (
-            <DrawerContentScrollView {...props}>
-                <DrawerItemList {...props} />
-                <DrawerItem
-                    label="Close drawer"
-                    onPress={() => props.navigation.closeDrawer()}
-                />
-                <DrawerItem
-                    label="Toggle drawer"
-                    onPress={() => props.navigation.toggleDrawer()}
-                />
-            </DrawerContentScrollView>
-        );
-
-    }
-    function MyDrawer() {
-        return (
-
-            <Drawer.Navigator initialRouteName="List">
-                <Drawer.Screen name="List" component={List} />
-            </Drawer.Navigator>
-
-        );
-    }
-    return (
-        <MyDrawer />
-    )
-
-}
-*/
-
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -53,7 +19,7 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const ListItem = ({ route, navigation }) => {
+const ItemList = ({ route, navigation }) => {
 
     const type = route.name === 'Registered' ? 0 : 1;
     const [search, setSearch] = useState('');
@@ -240,7 +206,7 @@ const ListItem = ({ route, navigation }) => {
     );
 }
 
-const List = ({ navigation }) => {
+const ListPage = ({ navigation }) => {
     const { dispatch } = useAuthContext();
 
     return (
@@ -268,8 +234,8 @@ const List = ({ navigation }) => {
                     indicatorStyle: { backgroundColor: '#fc8181' }
                 }}
             >
-                <Tab.Screen name='Registered' component={ListItem} />
-                <Tab.Screen name='Claimed' component={ListItem} />
+                <Tab.Screen name='Registered' component={ItemList} />
+                <Tab.Screen name='Claimed' component={ItemList} />
             </Tab.Navigator>
 
             <Button title='QR (test)' onPress={() => navigation.navigate('QRCode')} />
@@ -350,10 +316,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function App() {
+export default List = () => {
     return (
         <Drawer.Navigator initialRouteName="List" drawerPosition="left">
-            <Drawer.Screen name="List" component={List} />
+            <Drawer.Screen name="List" component={ListPage} />
         </Drawer.Navigator>
     )
 }
