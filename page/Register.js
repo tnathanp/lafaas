@@ -216,9 +216,11 @@ const Register = ({ route, navigation }) => {
                                         inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => null}
-                                        onFocus={() => scrollRef.current.scrollTo({ x: 0, y: imageBox, animated: true })}
+                                        onFocus={() => {
+                                            scrollRef.current.scrollTo({ x: 0, y: imageBox, animated: true });
+                                            controller.close();
+                                        }}
                                         ref={instance => { descInput = instance; }}
-                                        onFocus={() => controller.close()}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                         multiline={true}
