@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import BackButton from '../component/BackButton';
+import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
 
@@ -14,6 +15,7 @@ const Login = ({ navigation }) => {
     const { dispatch } = useAuthContext();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setLoad] = useState(false);
     const [formState, setFormState] = useState({
         username: 0,
         password: 0
@@ -52,10 +54,12 @@ const Login = ({ navigation }) => {
     function login() {
         //Check if there are input errors
         for (let state in formState) {
-            if (formState.state === 1) return;
+            if (formState[state] === 1) return;
         }
         //Check if it is empty
         if (username === '' || password === '') return;
+
+        setLoad(true);
 
         fetch('https://lafaas-n4hzx.ondigitalocean.app/login', {
             method: 'POST',
@@ -68,6 +72,8 @@ const Login = ({ navigation }) => {
             console.log(data);
             if (data.code === 1) {
                 SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
+            } else {
+                setLoad(false);
             }
         });
     }
@@ -102,7 +108,7 @@ const Login = ({ navigation }) => {
                             labelStyle={styles.label}
                             inputStyle={formState.password == 0 ? styles.input : styles.inputError}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                            onSubmitEditing={() => null}
+                            onSubmitEditing={() => login()}
                             ref={instance => { passwordInput = instance; }}
                             autoCorrect={false}
                             secureTextEntry={true}
@@ -111,9 +117,11 @@ const Login = ({ navigation }) => {
 
                         <View style={{ alignItems: 'center', marginTop: -5 }}>
                             <Button
-                                title="login"
+                                title={isLoading ? <LoadingButton /> : "login"}
                                 titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                 buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
+                                disabled={isLoading}
+                                disabledStyle={{ backgroundColor: 'white' }}
                                 onPress={() => login()}
                             />
                         </View>

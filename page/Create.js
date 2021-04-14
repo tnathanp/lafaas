@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import BackButton from '../component/BackButton';
+import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
 
@@ -18,6 +19,7 @@ const Create = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [isLoading, setLoad] = useState(false);
     const [formState, setFormState] = useState({
         fname: 0,
         lname: 0,
@@ -76,10 +78,12 @@ const Create = ({ navigation }) => {
     function createAccount() {
         //Check if there are input errors
         for (let state in formState) {
-            if (formState.state === 1) return;
+            if (formState[state] === 1) return;
         }
         //Check if it is empty
         if (username === '' || password === '' || fname === '' || lname === '' || email === '' || passwordConfirm === '') return;
+
+        setLoad(true);
 
         fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
             method: 'POST',
@@ -96,6 +100,8 @@ const Create = ({ navigation }) => {
             console.log(data);
             if (data.code === 1) {
                 SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
+            } else {
+                setLoad(false);
             }
         });
     }
@@ -189,7 +195,7 @@ const Create = ({ navigation }) => {
                                     inputStyle={formState.cpassword == 0 ? styles.input : styles.inputError}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     containerStyle={{ marginTop: -20, marginBottom: 10 }}
-                                    onSubmitEditing={() => Keyboard.dismiss}
+                                    onSubmitEditing={() => createAccount()}
                                     ref={instance => { cpassInput = instance; }}
                                     autoCorrect={false}
                                     secureTextEntry={true}
@@ -198,9 +204,11 @@ const Create = ({ navigation }) => {
 
                                 <View style={{ alignItems: 'center', marginTop: -5, marginBottom: 15 }}>
                                     <Button
-                                        title="create"
+                                        title={isLoading ? <LoadingButton /> : "create"}
                                         titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
+                                        disabled={isLoading}
+                                        disabledStyle={{ backgroundColor: 'white' }}
                                         onPress={() => createAccount()}
                                     />
                                 </View>
