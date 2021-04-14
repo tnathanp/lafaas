@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SearchBar, Button, Icon } from 'react-native-elements';
 import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from 'react-native';
 import { Text } from '../component/Text';
@@ -28,8 +28,11 @@ const ItemList = ({ route, navigation }) => {
     const [load, setLoad] = useState(true);
     const [data, setData] = useState([null]);
     const [originalData, setOriginalData] = useState();
+    const inputFilter = useContext(FilterContext);
+    const [filterArray, setFilterArray] = useState(inputFilter);
 
     useEffect(() => fetchData(), [refreshing]);
+    useEffect(() => setFilterArray(inputFilter), [inputFilter]);
 
     function fetchData() {
         /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
@@ -131,6 +134,25 @@ const ItemList = ({ route, navigation }) => {
         if (!(newData.length === 0 && data.length === 0)) setData(newData);
     }
 
+    function Tag() {
+        if(Array.isArray(filterArray)){
+            return filterArray.map((item, key) => {
+                return (
+                    <Button
+                        title={item + "  x"}
+                        key={key}
+                        titleStyle={{ padding: 7, marginTop: -3, fontFamily: 'NotoSans', color: '#ffffff', fontSize: 11 }}
+                        buttonStyle={{ height: 32, borderRadius: 10, backgroundColor: '#ff8686', alignSelf: 'flex-start', marginRight: 5, marginBottom: 5 }}
+                        onPress={() => {
+                            let temp = filterArray.slice();
+                            temp.splice(key,1);
+                            setFilterArray(temp);
+                        }}
+                    />
+                )
+            })
+        }
+    }
     useDidUpdateEffect(() => setLoad(false), [data]);
     useDidUpdateEffect(() => filterData(search), [originalData]);
 
@@ -165,7 +187,9 @@ const ItemList = ({ route, navigation }) => {
                 autoCorrect={false}
                 disabled={refreshing || load}
             />
-
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 30 }}>
+                {Tag()}
+            </View>
             {load &&
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <LottieView
@@ -238,7 +262,7 @@ const CustomSidebarMenu = (props) => {
 
 const ListPage = ({ navigation }) => {
     const { dispatch } = useAuthContext();
-
+    const filterArray = useContext(FilterContext);
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
 
@@ -269,7 +293,6 @@ const ListPage = ({ navigation }) => {
                 <Tab.Screen name='Registered' component={ItemList} />
                 <Tab.Screen name='Claimed' component={ItemList} />
             </Tab.Navigator>
-
             <Button title='QR (test)' onPress={() => navigation.navigate('QRCode')} />
             <Button title='Filter (test)' onPress={() => navigation.navigate('Filter')} />
             <Button title='Noti (test)' onPress={() => navigation.navigate('Noti')} />
@@ -348,16 +371,21 @@ const styles = StyleSheet.create({
     }
 });
 
-export default List = () => {
+export const FilterContext = React.createContext();
+export default List = ({route}) => {
+    var filterArray = route.params?.filters;
+    
     return (
-        <Drawer.Navigator
-            initialRouteName="List"
-            drawerPosition="left"
-            drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: { marginVertical: 5 } }}
-            drawerContent={(props) => <CustomSidebarMenu {...props} />}
-        >
-            <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="List Items" component={ListPage} />
-        </Drawer.Navigator>
+        <FilterContext.Provider value={filterArray}>
+            <Drawer.Navigator 
+                initialRouteName="List" 
+                drawerPosition="left"  
+                drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: {marginVertical: 5}, }} 
+                drawerContent={(props) => <CustomSidebarMenu {...props} />} 
+            >
+                <Drawer.Screen name="Profile" component={Profile} />
+                <Drawer.Screen name="List Items" component={ListPage}  />
+            </Drawer.Navigator>
+        </FilterContext.Provider>
     )
 }
