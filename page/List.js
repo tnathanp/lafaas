@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SearchBar, Button, Icon } from 'react-native-elements';
-import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback,SafeAreaView,Image,Linking } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createDrawerNavigator,DrawerContentScrollView,DrawerItemList,DrawerItem, } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import Item from '../component/Item';
@@ -208,42 +208,33 @@ const ItemList = ({ route, navigation }) => {
 }
 
 const CustomSidebarMenu = (props) => {
-    const BASE_PATH =
-      'https://raw.githubusercontent.com/AboutReact/sampleresource/master/';
-    const proileImage = 'react_logo.png';
-  
     return (
-      <SafeAreaView style={{flex: 1}}>
-       <View style={{ paddingTop:25,alignItems: 'center'}}>
-        <Image
-          source={{uri: 'https://picsum.photos/200/300'}}
-          style={{ height: 100,width:100 ,borderRadius: 50,alignContent: 'center',overflow: 'hidden'}}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: 'center',
-            color: '#000000',
-            fontWeight:'bold',marginTop:10 ,marginBottom: -25
-          }}>
-          User's name
-        </Text>
-        </View>
-        <DrawerContentScrollView {...props}>
-          <DrawerItemList {...props} />
-          <DrawerItem
-            label="Contact Us"
-            onPress={() => null}
-          />
- 
-        </DrawerContentScrollView>
-        
-      </SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ paddingTop: 25, alignItems: 'center' }}>
+                <Image
+                    source={{ uri: 'https://picsum.photos/200/300' }}
+                    style={{ height: 100, width: 100, borderRadius: 50, alignContent: 'center', overflow: 'hidden' }}
+                />
+                <Text
+                    style={{
+                        fontSize: 16,
+                        textAlign: 'center',
+                        color: '#000000',
+                        fontWeight: 'bold', marginTop: 10, marginBottom: -25
+                    }}>
+                    User's name
+                </Text>
+            </View>
+            <DrawerContentScrollView {...props}>
+                <DrawerItemList {...props} />
+                <DrawerItem
+                    label="Contact Us"
+                    onPress={() => null}
+                />
+            </DrawerContentScrollView>
+        </SafeAreaView>
     );
-  };
-  
-
-
+};
 
 const ListPage = ({ navigation }) => {
     const { dispatch } = useAuthContext();
@@ -251,17 +242,16 @@ const ListPage = ({ navigation }) => {
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
 
-            <View style={{ flexDirection: 'row',marginBottom:15 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
                 <View style={{ flex: 1, textAlign: 'center' }}>
-                    <TouchableOpacity style={{ flex: 1, marginLeft:-85 }} onPress={() => navigation.openDrawer()}>
+                    <TouchableOpacity style={{ flex: 1, marginLeft: -85 }} onPress={() => navigation.openDrawer()}>
                         <Icon name="menu" color="black" size={20} />
                     </TouchableOpacity>
                 </View>
-                <View style = {{   textAlign: 'center'}}>
-                <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15 }}>LIST ITEMS</Text>
-                </View>
 
-              
+                <View style={{ textAlign: 'center' }}>
+                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15 }}>LIST ITEMS</Text>
+                </View>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <></>
@@ -358,14 +348,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default List = ({route}) => {
-    console.log(route.params?.filters);
+export default List = () => {
     return (
-        <Drawer.Navigator initialRouteName="List" drawerPosition="left"  drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: {marginVertical: 5},
-          }} drawerContent={(props) => <CustomSidebarMenu {...props} />} >
-            
+        <Drawer.Navigator
+            initialRouteName="List"
+            drawerPosition="left"
+            drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: { marginVertical: 5 } }}
+            drawerContent={(props) => <CustomSidebarMenu {...props} />}
+        >
             <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="List Items" component={ListPage}  />
+            <Drawer.Screen name="List Items" component={ListPage} />
         </Drawer.Navigator>
     )
 }
