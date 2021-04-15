@@ -22,6 +22,7 @@ import Filter from './page/Filter';
 import Noti from './page/Noti';
 import Reporting from './page/Reporting';
 import Reported from './page/Reported';
+import End from './page/End';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -91,6 +92,7 @@ function Provider() {
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
           <Stack.Screen name="QRCode" component={QRCode} />
+          <Stack.Screen name="End" component={End} />
 
         </Stack.Navigator>
       </NavigationContainer>
