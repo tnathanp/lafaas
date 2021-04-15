@@ -36,11 +36,10 @@ const Map = ({ route, navigation }) => {
 
             <MapView
                 style={styles.map}
-                provider='google'
                 initialRegion={{ latitude: 13.739, longitude: 100.5303, latitudeDelta: 13.523 - 13.5, longitudeDelta: (13.523 - 13.5) * ASPECT_RATIO }}
                 onRegionChangeComplete={loc => setLocation(loc)}
-                showsUserLocation
-                showsMyLocationButton
+                showsUserLocation={true}
+                showsMyLocationButton={true}
             />
 
             <LottieView
