@@ -4,6 +4,7 @@ import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshCont
 import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { Octicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import Item from '../component/Item';
@@ -135,7 +136,7 @@ const ItemList = ({ route, navigation }) => {
     }
 
     function Tag() {
-        if(Array.isArray(filterArray)){
+        if (Array.isArray(filterArray)) {
             return filterArray.map((item, key) => {
                 return (
                     <Button
@@ -145,7 +146,7 @@ const ItemList = ({ route, navigation }) => {
                         buttonStyle={{ height: 32, borderRadius: 10, backgroundColor: '#ff8686', alignSelf: 'flex-start', marginRight: 5, marginBottom: 5 }}
                         onPress={() => {
                             let temp = filterArray.slice();
-                            temp.splice(key,1);
+                            temp.splice(key, 1);
                             setFilterArray(temp);
                         }}
                     />
@@ -177,19 +178,31 @@ const ItemList = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
 
-            <SearchBar
-                placeholder="search"
-                onChangeText={text => filterData(text)}
-                containerStyle={styles.searchContainer}
-                inputContainerStyle={styles.inputContainer}
-                inputStyle={styles.input}
-                value={search}
-                autoCorrect={false}
-                disabled={refreshing || load}
-            />
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, marginRight: 5 }}>
+                    <SearchBar
+                        placeholder="search"
+                        onChangeText={text => filterData(text)}
+                        containerStyle={styles.searchContainer}
+                        inputContainerStyle={styles.inputContainer}
+                        inputStyle={styles.input}
+                        value={search}
+                        autoCorrect={false}
+                        disabled={refreshing || load}
+                    />
+                </View>
+
+                <View style={{ justifyContent: 'flex-end', alignSelf: 'center' }}>
+                    <TouchableOpacity style={{ marginRight: 30, transform: [{ rotate: '90deg' }] }} onPress={() => null}>
+                        <Octicons name="settings" size={20} color="black" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 30 }}>
                 {Tag()}
             </View>
+
             {load &&
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <LottieView
@@ -232,6 +245,8 @@ const ItemList = ({ route, navigation }) => {
 }
 
 const CustomSidebarMenu = (props) => {
+    const { dispatch } = useAuthContext();
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ paddingTop: 25, alignItems: 'center' }}>
@@ -254,6 +269,22 @@ const CustomSidebarMenu = (props) => {
                 <DrawerItem
                     label="Contact Us"
                     onPress={() => null}
+                />
+                <DrawerItem
+                    label="Logout"
+                    onPress={() => SecureStore.deleteItemAsync('userToken').then(() => dispatch({ type: 'SIGN_OUT' }))}
+                />
+                <DrawerItem
+                    label="NOTI"
+                    onPress={() => props.navigation.navigate('Noti')}
+                />
+                <DrawerItem
+                    label="QR"
+                    onPress={() => props.navigation.navigate('QRCode')}
+                />
+                <DrawerItem
+                    label="END"
+                    onPress={() => props.navigation.navigate('End')}
                 />
             </DrawerContentScrollView>
         </SafeAreaView>
@@ -293,12 +324,6 @@ const ListPage = ({ navigation }) => {
                 <Tab.Screen name='Registered' component={ItemList} />
                 <Tab.Screen name='Claimed' component={ItemList} />
             </Tab.Navigator>
-            <Button title='QR (test)' onPress={() => navigation.navigate('QRCode')} />
-            <Button title='Filter (test)' onPress={() => navigation.navigate('Filter')} />
-            <Button title='Noti (test)' onPress={() => navigation.navigate('Noti')} />
-            <Button title='Logout (test)' onPress={() => {
-                SecureStore.deleteItemAsync('userToken').then(() => dispatch({ type: 'SIGN_OUT' }));
-            }} />
 
             <View style={styles.footer}>
 
@@ -327,7 +352,7 @@ const ListPage = ({ navigation }) => {
                 />
             </View>
 
-        </View>
+        </View >
     );
 }
 
@@ -336,7 +361,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderBottomColor: 'transparent',
         borderTopColor: 'transparent',
-        paddingHorizontal: 28,
+        paddingLeft: 28,
         paddingTop: 12
     },
     inputContainer: {
@@ -372,19 +397,19 @@ const styles = StyleSheet.create({
 });
 
 export const FilterContext = React.createContext();
-export default List = ({route}) => {
-    var filterArray = route.params?.filters;
-    
+export default List = ({ route, navigation }) => {
+    let filterArray = route.params?.filters;
+
     return (
         <FilterContext.Provider value={filterArray}>
-            <Drawer.Navigator 
-                initialRouteName="List" 
-                drawerPosition="left"  
-                drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: {marginVertical: 5}, }} 
-                drawerContent={(props) => <CustomSidebarMenu {...props} />} 
+            <Drawer.Navigator
+                initialRouteName="List"
+                drawerPosition="left"
+                drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: { marginVertical: 5 }, }}
+                drawerContent={(props) => <CustomSidebarMenu {...props} navigation={navigation} />}
             >
                 <Drawer.Screen name="Profile" component={Profile} />
-                <Drawer.Screen name="List Items" component={ListPage}  />
+                <Drawer.Screen name="List Items" component={ListPage} />
             </Drawer.Navigator>
         </FilterContext.Provider>
     )

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, Dimensions, Image, StyleSheet, TouchableWithoutFeedback, ImageBackground } from 'react-native';
-import { Button } from 'react-native-elements';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SharedElement } from 'react-navigation-shared-element';
