@@ -77,7 +77,7 @@ const ItemList = ({ route, navigation }) => {
                         category: 'bag',
                         color: "blue",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
+                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
 
                     },
                     {
@@ -87,7 +87,7 @@ const ItemList = ({ route, navigation }) => {
                         category: 'tumbler',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
+                        image: 'https://www.starbucks.co.th/stb-media/2020/08/6.Stainless-steel-white-with-green-lid-tumbler-12-oz-1080.png'
 
                     },
                     {
@@ -97,7 +97,7 @@ const ItemList = ({ route, navigation }) => {
                         category: 'bag',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
+                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
 
                     },
                     {
@@ -107,7 +107,7 @@ const ItemList = ({ route, navigation }) => {
                         category: 'tumbler',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
+                        image: 'https://www.starbucks.co.th/stb-media/2020/08/6.Stainless-steel-white-with-green-lid-tumbler-12-oz-1080.png'
 
                     },
                     {
@@ -117,7 +117,7 @@ const ItemList = ({ route, navigation }) => {
                         category: 'bag',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
+                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
 
                     }
                 ]
