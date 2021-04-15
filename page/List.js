@@ -53,6 +53,7 @@ const ItemList = ({ route, navigation }) => {
     }
 
     function fetchData() {
+        if (!refreshing) setLoad(true);
         /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
             .then(data => {
                 let mounted = true;
@@ -125,7 +126,7 @@ const ItemList = ({ route, navigation }) => {
 
         let mounted = true;
 
-        wait(refreshing ? 1000 : 0).then(() => {
+        wait(refreshing ? 1000 : 200).then(() => {
             if (mounted) {
                 setOriginalData(sample.Registered);
                 setRefreshing(false);
@@ -167,7 +168,7 @@ const ItemList = ({ route, navigation }) => {
             })
         }
 
-        if (!(newData.length === 0 && data.length === 0)) setData(newData);
+        setData(newData);
     }
 
     function Tag() {
@@ -231,7 +232,7 @@ const ItemList = ({ route, navigation }) => {
                 </View>
             }
 
-            {data.length === 0 &&
+            {data.length === 0 && !load && !refreshing &&
                 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                     <Animatable.View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} animation="fadeIn">
                         <LottieView
