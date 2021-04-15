@@ -62,9 +62,9 @@ const Register = ({ route, navigation }) => {
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            quality: 1
+            allowsEditing: false
         });
+
 
         await getColor(result.uri);
         setImg(result.uri);
@@ -75,7 +75,7 @@ const Register = ({ route, navigation }) => {
         await ImagePicker.requestCameraPermissionsAsync();
 
         let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true
+            allowsEditing: false
         });
 
         if (result.cancelled) {
@@ -109,7 +109,8 @@ const Register = ({ route, navigation }) => {
         for (let key in colors) {
             if (key !== 'platform') {
                 if (colors[key] !== '#FFFFFF')
-                    result.push(colors[key]);
+                    if (!result.includes(colors[key]))
+                        result.push(colors[key]);
             }
         }
 
@@ -178,7 +179,10 @@ const Register = ({ route, navigation }) => {
                                     />
                                 </View>
 
-                                <View style={{ alignSelf: 'stretch', padding: 10, zIndex: 2 }}>
+                                <View style={Platform.OS === 'ios' ?
+                                    { alignSelf: 'stretch', padding: 10, zIndex: 2 } :
+                                    { alignSelf: 'stretch', padding: 10 }}
+                                >
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
                                         controller={instance => categoryController = instance}
@@ -199,21 +203,13 @@ const Register = ({ route, navigation }) => {
                                         style={{
                                             borderTopLeftRadius: 10, borderTopRightRadius: 10,
                                             borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
-                                            shadowColor: 'black',
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 1,
-                                            },
-                                            shadowOpacity: 0.2,
-                                            shadowRadius: 1.4,
-                                            elevation: 5
+                                            height: 42
                                         }}
                                         dropDownStyle={{ backgroundColor: '#f1f1f1' }}
                                         labelStyle={{ fontFamily: 'NotoSansMedium' }}
                                         itemStyle={{
                                             justifyContent: 'flex-start'
                                         }}
-                                        containerStyle={{ height: 41, marginTop: 1 }}
                                         onChangeItem={item => setCategory(item)}
                                         onOpen={() => {
                                             if (route.params.type === 'lost') colorController.close();
@@ -222,7 +218,10 @@ const Register = ({ route, navigation }) => {
                                 </View>
 
                                 {route.params.type === 'lost' &&
-                                    <View style={{ alignSelf: 'stretch', padding: 10, zIndex: 1 }}>
+                                    <View style={Platform.OS === 'ios' ?
+                                        { alignSelf: 'stretch', padding: 10, zIndex: 1 } :
+                                        { alignSelf: 'stretch', padding: 10 }}
+                                    >
                                         <Text style={styles.label}>Color</Text>
                                         <DropDownPicker
                                             controller={instance => colorController = instance}
@@ -241,21 +240,13 @@ const Register = ({ route, navigation }) => {
                                             style={{
                                                 borderTopLeftRadius: 10, borderTopRightRadius: 10,
                                                 borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
-                                                shadowColor: 'black',
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 1,
-                                                },
-                                                shadowOpacity: 0.2,
-                                                shadowRadius: 1.4,
-                                                elevation: 5
+                                                height: 42
                                             }}
                                             dropDownStyle={{ backgroundColor: '#f1f1f1' }}
                                             labelStyle={{ fontFamily: 'NotoSansMedium' }}
                                             itemStyle={{
                                                 justifyContent: 'flex-start'
                                             }}
-                                            containerStyle={{ height: 41, marginTop: 1 }}
                                             onChangeItem={color => setColor(color)}
                                             onOpen={() => {
                                                 categoryController.close();
@@ -314,7 +305,7 @@ const Register = ({ route, navigation }) => {
 
                                         <View style={{ marginTop: 10 }}>
                                             <Text style={styles.label}>Color Palette</Text>
-                                            <View style={{ borderRadius: 10, backgroundColor: 'white', width: '100%', height: 70 }}>
+                                            <View style={{ borderRadius: 10, backgroundColor: 'white', width: '100%', height: 70, alignItems: 'center', justifyContent: 'center' }}>
                                                 <ScrollView style={{ padding: 15 }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                                     {
                                                         color.map((e, index) => {
@@ -330,7 +321,7 @@ const Register = ({ route, navigation }) => {
                                                     }
                                                     {
                                                         color.length === 0 &&
-                                                        <Text style={{ color: '#86939e', alignSelf: 'center', paddingHorizontal: 60 }}>
+                                                        <Text style={{ color: '#86939e', alignSelf: 'center' }}>
                                                             Upload an image of the item first
                                                         </Text>
                                                     }
