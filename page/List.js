@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Text } from '../component/Text';
 import { SearchBar, Button, Icon } from 'react-native-elements';
 import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from 'react-native';
-import { Text } from '../component/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { Octicons } from '@expo/vector-icons';
+import { Octicons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import Item from '../component/Item';
@@ -17,23 +17,40 @@ import * as SecureStore from 'expo-secure-store';
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-}
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
 const ItemList = ({ route, navigation }) => {
 
     const type = route.name === 'Registered' ? 0 : 1;
+    const filterArray = useContext(FilterContext);
     const [search, setSearch] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [load, setLoad] = useState(true);
     const [data, setData] = useState([null]);
     const [originalData, setOriginalData] = useState();
-    const inputFilter = useContext(FilterContext);
-    const [filterArray, setFilterArray] = useState(inputFilter);
+    const [filterCategory, setFilterCategory] = useState([]);
 
-    useEffect(() => fetchData(), [refreshing]);
-    useEffect(() => setFilterArray(inputFilter), [inputFilter]);
+    useEffect(() => fetchData(), [refreshing, filterCategory]);
+    useDidUpdateEffect(() => filterData(search), [originalData]);
+    useDidUpdateEffect(() => setLoad(false), [data]);
+    useDidUpdateEffect(() => {
+        if (filterArray.from === type)
+            setFilterCategory(filterArray.lists)
+    }, [filterArray]);
+
+    function useDidUpdateEffect(method, dependency) {
+        const didMountRef = useRef(false);
+
+        useEffect(() => {
+            if (didMountRef.current) {
+                let mounted = true;
+                if (mounted) method()
+                return function cleanup() {
+                    mounted = false;
+                }
+            } else didMountRef.current = true;
+        }, dependency);
+    }
 
     function fetchData() {
         /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
@@ -57,6 +74,7 @@ const ItemList = ({ route, navigation }) => {
                         name: type === 0 ? "Item 1 Registered" : "Item 1 Claimed",
                         item_id: 111,
                         location: "pacific ocean",
+                        category: 'bag',
                         color: "blue",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                         image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
@@ -66,6 +84,7 @@ const ItemList = ({ route, navigation }) => {
                         name: "Item 2",
                         item_id: 222,
                         location: "Saen Saeb Canal",
+                        category: 'tumbler',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                         image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
@@ -75,6 +94,7 @@ const ItemList = ({ route, navigation }) => {
                         name: "Item 3",
                         item_id: 222,
                         location: "Saen Saeb Canal",
+                        category: 'bag',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                         image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
@@ -84,6 +104,7 @@ const ItemList = ({ route, navigation }) => {
                         name: "Item 4",
                         item_id: 222,
                         location: "Saen Saeb Canal",
+                        category: 'tumbler',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                         image: 'https://i.ibb.co/vsjYG9M/tumber.jpg'
@@ -93,6 +114,7 @@ const ItemList = ({ route, navigation }) => {
                         name: "Item 5",
                         item_id: 222,
                         location: "Saen Saeb Canal",
+                        category: 'bag',
                         color: "green",
                         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                         image: 'https://i.ibb.co/d0hzxCX/bag.jpg'
@@ -103,8 +125,7 @@ const ItemList = ({ route, navigation }) => {
 
         let mounted = true;
 
-        //Wait 1 second for UX ;)
-        wait(1000).then(() => {
+        wait(refreshing ? 1000 : 0).then(() => {
             if (mounted) {
                 setOriginalData(sample.Registered);
                 setRefreshing(false);
@@ -117,6 +138,7 @@ const ItemList = ({ route, navigation }) => {
     }
 
     function filterData(value) {
+        //Filter by search input
         setSearch(value);
         let newData;
         const text = value.toLowerCase();
@@ -132,48 +154,43 @@ const ItemList = ({ route, navigation }) => {
         } else {
             newData = originalData;
         }
+
+        //Filter by category
+        if (filterCategory.length !== 0) {
+            newData = newData.filter(e => {
+                const constraint = e.category[0].toUpperCase() + e.category.substring(1);
+                if (filterCategory.includes(constraint)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+        }
+
         if (!(newData.length === 0 && data.length === 0)) setData(newData);
     }
 
     function Tag() {
-        if (Array.isArray(filterArray)) {
-            return filterArray.map((item, key) => {
+        if (Array.isArray(filterCategory)) {
+            return filterCategory.map((item, key) => {
                 return (
                     <Button
-                        title={item + "  x"}
+                        title={item}
                         key={key}
-                        titleStyle={{ padding: 7, marginTop: -3, fontFamily: 'NotoSans', color: '#ffffff', fontSize: 11 }}
+                        icon={<Ionicons name='close' size={14} color='white' />}
+                        iconRight={true}
+                        titleStyle={{ padding: 7, marginTop: -3, fontFamily: 'NotoSansMedium', color: '#ffffff', fontSize: 12 }}
                         buttonStyle={{ height: 32, borderRadius: 10, backgroundColor: '#ff8686', alignSelf: 'flex-start', marginRight: 5, marginBottom: 5 }}
                         onPress={() => {
-                            let temp = filterArray.slice();
-                            temp.splice(key, 1);
-                            setFilterArray(temp);
+                            let arr = filterCategory.slice();
+                            arr.splice(key, 1);
+                            setFilterCategory(arr);
                         }}
                     />
                 )
             })
         }
     }
-    useDidUpdateEffect(() => setLoad(false), [data]);
-    useDidUpdateEffect(() => filterData(search), [originalData]);
-
-    /* Custom function equivalent to componentDidUpdate*/
-    function useDidUpdateEffect(method, dependency) {
-        const didMountRef = useRef(false);
-
-        useEffect(() => {
-            if (didMountRef.current) {
-                let mounted = true;
-                if (mounted) method()
-                return function cleanup() {
-                    mounted = false;
-                }
-            }
-            else
-                didMountRef.current = true;
-        }, dependency);
-    }
-    /* End of Custom function */
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -193,7 +210,7 @@ const ItemList = ({ route, navigation }) => {
                 </View>
 
                 <View style={{ justifyContent: 'flex-end', alignSelf: 'center' }}>
-                    <TouchableOpacity style={{ marginRight: 30, transform: [{ rotate: '90deg' }] }} onPress={() => null}>
+                    <TouchableOpacity style={{ marginRight: 30, transform: [{ rotate: '90deg' }] }} onPress={() => navigation.navigate('Filter', { from: type })}>
                         <Octicons name="settings" size={20} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -292,8 +309,7 @@ const CustomSidebarMenu = (props) => {
 };
 
 const ListPage = ({ navigation }) => {
-    const { dispatch } = useAuthContext();
-    const filterArray = useContext(FilterContext);
+
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
 
@@ -403,7 +419,7 @@ export default List = ({ route, navigation }) => {
     return (
         <FilterContext.Provider value={filterArray}>
             <Drawer.Navigator
-                initialRouteName="List"
+                initialRouteName="List Items"
                 drawerPosition="left"
                 drawerContentOptions={{ activeTintColor: '#f6a085', itemStyle: { marginVertical: 5 }, }}
                 drawerContent={(props) => <CustomSidebarMenu {...props} navigation={navigation} />}

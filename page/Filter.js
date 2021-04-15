@@ -4,25 +4,22 @@ import { View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CheckBox, Button } from 'react-native-elements'
 
-function Filter({ navigation }) {
-    const [filter, setFilter] = useState(['Bag', 'Bottle', 'Certificate', 'Keyring', 'Tumbler']);
+function Filter({ route, navigation }) {
+    const filter = ['Bag', 'Bottle', 'Certificate', 'Keyring', 'Tumbler'];
     const [selected, setSelected] = useState([]);
 
-    function select(field){
-        var arr = selected.slice();
-        if(arr.includes(field)){
-            var index = arr.indexOf(field);
-            arr.splice(index, 1);
-        }
-        else{ 
-            arr.push(field); 
+    function select(field) {
+        let arr = selected.slice();
+        if (arr.includes(field)) {
+            arr = arr.filter(e => e !== field);
+        } else {
+            arr.push(field);
         }
         setSelected(arr);
     }
-    
+
     function sendFilter() {
-        console.log(selected);
-        navigation.navigate('List', { filters: selected })
+        navigation.navigate('List', { filters: { lists: selected, from: route.params.from } })
     }
 
     React.useLayoutEffect(() => {
@@ -54,8 +51,7 @@ function Filter({ navigation }) {
         <View>
             <View style={{ marginHorizontal: 35 }}>
 
-                <Text
-                    style={{ fontFamily: 'NotoSansBold', color: '#868686', fontSize: 13, marginTop: 17 }}>
+                <Text style={{ fontFamily: 'NotoSansBold', color: '#868686', fontSize: 13, marginTop: 17 }}>
                     Category
                 </Text>
 
