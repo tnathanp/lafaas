@@ -8,15 +8,18 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../component/BackButton';
+import ImageColors from 'react-native-image-colors';
+//import { TriangleColorPicker } from 'react-native-color-picker';
+//import { BlurView } from 'expo-blur';
 
 const Register = ({ route, navigation }) => {
-    let controller, locationInput, colorInput, descInput;
+    let categoryController, colorController, locationInput, descInput;
     const { showActionSheetWithOptions } = useActionSheet();
     const [itemName, setItemName] = useState("");
     const [locationDesc, setLocationDesc] = useState("");
     const [coordinate, setCoordinate] = useState("");
     const [category, setCategory] = useState({});
-    const [color, setColor] = useState("");
+    const [color, setColor] = useState([]);
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState("");
     const [imageBox, setPositionOfImageBox] = useState(0);
@@ -28,7 +31,8 @@ const Register = ({ route, navigation }) => {
     }, [route.params.coordinate]);
 
     const openActionSheet = () => {
-        controller.close();
+        categoryController.close();
+        if (route.params.type === 'lost') colorController.close();
 
         let options = ['Take Photo', 'Photo Library', 'Remove', 'Cancel'];
         if (img === '') options = options.filter(e => e !== 'Remove');
@@ -52,6 +56,7 @@ const Register = ({ route, navigation }) => {
             }
         );
     };
+
     const imageSelector = async () => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -61,6 +66,7 @@ const Register = ({ route, navigation }) => {
             quality: 1
         });
 
+        await getColor(result.uri);
         setImg(result.uri);
     }
 
@@ -77,7 +83,9 @@ const Register = ({ route, navigation }) => {
         }
 
         let localUri = result.uri;
+        await getColor(localUri);
         setImg(localUri);
+
 
         // let formData = new FormData();
         // formData.append('item_name', itemName);
@@ -94,6 +102,20 @@ const Register = ({ route, navigation }) => {
 
     }
 
+    const getColor = async (uri) => {
+        const colors = await ImageColors.getColors(uri, { quality: 'high' });
+        let result = [];
+
+        for (let key in colors) {
+            if (key !== 'platform') {
+                if (colors[key] !== '#FFFFFF')
+                    result.push(colors[key]);
+            }
+        }
+
+        setColor(result);
+    }
+
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -103,7 +125,7 @@ const Register = ({ route, navigation }) => {
                     </View>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
-                        <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+                        <ScrollView ref={scrollRef} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                             <View onStartShouldSetResponder={() => true}>
                                 <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>{route.params.type === 'found' ? 'Found' : 'Lost'}</Text>
 
@@ -116,7 +138,10 @@ const Register = ({ route, navigation }) => {
                                     inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                     onSubmitEditing={() => locationInput.focus()}
-                                    onFocus={() => controller.close()}
+                                    onFocus={() => {
+                                        categoryController.close();
+                                        if (route.params.type === 'lost') colorController.close();
+                                    }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                 />
@@ -129,8 +154,11 @@ const Register = ({ route, navigation }) => {
                                     labelStyle={styles.label}
                                     inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                    onSubmitEditing={() => colorInput.focus()}
-                                    onFocus={() => controller.close()}
+                                    onSubmitEditing={() => descInput.focus()}
+                                    onFocus={() => {
+                                        categoryController.close();
+                                        if (route.params.type === 'lost') colorController.close();
+                                    }}
                                     ref={instance => { locationInput = instance; }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
@@ -143,16 +171,17 @@ const Register = ({ route, navigation }) => {
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
                                         onPress={() => {
-                                            controller.close();
+                                            categoryController.close();
+                                            if (route.params.type === 'lost') colorController.close();
                                             navigation.navigate('Map', { type: route.params.type });
                                         }}
                                     />
                                 </View>
 
-                                <View style={{ alignSelf: 'stretch', padding: 10 }}>
+                                <View style={{ alignSelf: 'stretch', padding: 10, zIndex: 2 }}>
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
-                                        controller={instance => controller = instance}
+                                        controller={instance => categoryController = instance}
                                         items={[
                                             { label: 'North America', value: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
                                             { label: 'United States', value: 'us', parent: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
@@ -186,27 +215,56 @@ const Register = ({ route, navigation }) => {
                                         }}
                                         containerStyle={{ height: 41, marginTop: 1 }}
                                         onChangeItem={item => setCategory(item)}
+                                        onOpen={() => {
+                                            if (route.params.type === 'lost') colorController.close();
+                                        }}
                                     />
                                 </View>
 
-                                <View style={{ marginTop: -5, marginBottom: -20, zIndex: -1 }}>
-                                    <Input
-                                        onChangeText={value => setColor(value)}
-                                        label='Color'
-                                        placeholder='Describe its color'
-                                        style={styles.inputBox}
-                                        labelStyle={styles.label}
-                                        inputStyle={styles.input}
-                                        inputContainerStyle={{ borderBottomColor: 'transparent' }}
-                                        onSubmitEditing={() => descInput.focus()}
-                                        onFocus={() => controller.close()}
-                                        ref={instance => colorInput = instance}
-                                        autoCorrect={false}
-                                        autoCapitalize={'none'}
-                                    />
-                                </View>
+                                {route.params.type === 'lost' &&
+                                    <View style={{ alignSelf: 'stretch', padding: 10, zIndex: 1 }}>
+                                        <Text style={styles.label}>Color</Text>
+                                        <DropDownPicker
+                                            controller={instance => colorController = instance}
+                                            multiple={true} max={2}
+                                            defaultValue={0}
+                                            items={[
+                                                { label: 'Alaska', value: 'alaska' },
+                                                { label: 'Canada', value: 'canada' },
+                                                { label: 'Mexico', value: 'mexico' },
+                                                { label: 'UK', value: 'uk' },
+                                                { label: 'Germany', value: 'germany' },
+                                                { label: 'Russia', value: 'russia' }
+                                            ]}
+                                            scrollViewProps={{ showsVerticalScrollIndicator: false }}
+                                            placeholder='Select color'
+                                            style={{
+                                                borderTopLeftRadius: 10, borderTopRightRadius: 10,
+                                                borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
+                                                shadowColor: 'black',
+                                                shadowOffset: {
+                                                    width: 0,
+                                                    height: 1,
+                                                },
+                                                shadowOpacity: 0.2,
+                                                shadowRadius: 1.4,
+                                                elevation: 5
+                                            }}
+                                            dropDownStyle={{ backgroundColor: '#f1f1f1' }}
+                                            labelStyle={{ fontFamily: 'NotoSansMedium' }}
+                                            itemStyle={{
+                                                justifyContent: 'flex-start'
+                                            }}
+                                            containerStyle={{ height: 41, marginTop: 1 }}
+                                            onChangeItem={color => setColor(color)}
+                                            onOpen={() => {
+                                                categoryController.close();
+                                            }}
+                                        />
+                                    </View>
+                                }
 
-                                <View onLayout={e => setPositionOfImageBox(e.nativeEvent.layout.height + 20)} style={{ zIndex: -1 }}>
+                                <View onLayout={e => setPositionOfImageBox(e.nativeEvent.layout.height + 20)} style={{ marginTop: 15, zIndex: -1 }}>
                                     <Input
                                         onChangeText={value => setDesc(value)}
                                         label='Description'
@@ -217,8 +275,9 @@ const Register = ({ route, navigation }) => {
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
                                         onSubmitEditing={() => null}
                                         onFocus={() => {
+                                            categoryController.close();
+                                            if (route.params.type === 'lost') colorController.close();
                                             scrollRef.current.scrollTo({ x: 0, y: imageBox, animated: true });
-                                            controller.close();
                                         }}
                                         ref={instance => { descInput = instance; }}
                                         autoCorrect={false}
@@ -226,6 +285,16 @@ const Register = ({ route, navigation }) => {
                                         multiline={true}
                                     />
                                 </View>
+
+                                {/* <Modal animationType='fade' transparent={true} visible={true} >
+                                    <BlurView intensity={100} style={[StyleSheet.absoluteFill, { zIndex: 1 }]}>
+                                        <TriangleColorPicker
+                                            onColorChange={color => console.log(color)}
+                                            style={{ height: '100%' }}
+                                            hideControls={true}
+                                        />
+                                    </BlurView>
+                                </Modal> */}
 
                                 {route.params.type === 'found' &&
                                     <View style={{ alignSelf: 'stretch', marginTop: -10, height: 300, padding: 10 }}>
@@ -242,16 +311,43 @@ const Register = ({ route, navigation }) => {
                                                 </View>
                                             }
                                         </Image>
+
+                                        <View style={{ marginTop: 10 }}>
+                                            <Text style={styles.label}>Color Palette</Text>
+                                            <View style={{ borderRadius: 10, backgroundColor: 'white', width: '100%', height: 70 }}>
+                                                <ScrollView style={{ padding: 15 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                                    {
+                                                        color.map((e, index) => {
+                                                            return (
+                                                                <Button
+                                                                    key={index}
+                                                                    containerStyle={{ paddingRight: 15 }}
+                                                                    buttonStyle={[styles.colorButton, { backgroundColor: e }]}
+                                                                    onPress={() => null}
+                                                                />
+                                                            )
+                                                        })
+                                                    }
+                                                    {
+                                                        color.length === 0 &&
+                                                        <Text style={{ color: '#86939e', alignSelf: 'center', paddingHorizontal: 60 }}>
+                                                            Upload an image of the item first
+                                                        </Text>
+                                                    }
+                                                </ScrollView>
+                                            </View>
+                                        </View>
                                     </View>
                                 }
 
-                                <View style={{ alignSelf: 'stretch', marginTop: route.params.type === 'found' ? 20 : -20, padding: 10 }}>
+                                <View style={{ alignSelf: 'stretch', marginTop: route.params.type === 'found' ? 130 : -20, padding: 10 }}>
                                     <Button
                                         title='register'
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={styles.stretchButton}
                                         onPress={() => {
-                                            controller.close();
+                                            categoryController.close();
+                                            if (route.params.type === 'lost') colorController.close();
                                             console.log(itemName + locationDesc + coordinate + category.value + color + desc + img);
                                         }}
                                     />
@@ -315,6 +411,12 @@ const styles = StyleSheet.create({
     stretchButton: {
         backgroundColor: 'white',
         borderRadius: 10
+    },
+    colorButton: {
+        height: 40,
+        width: 40,
+        borderWidth: 5,
+        borderColor: '#dddddd'
     }
 });
 
