@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "707320056822",
+    "project_id": "lafaas-fcm",
+    "storage_bucket": "lafaas-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707320056822:android:a3c8dc949b8de799fc95d7",
+        "android_client_info": {
+          "package_name": "com.tanathanp.LaFaaS"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707320056822-tqirhv1qh4udpdg0vqhoibf1ltgk96tb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVpyY6dYM-G0W7qYIQgKmesIzEfJ6-U7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707320056822-tqirhv1qh4udpdg0vqhoibf1ltgk96tb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,6 +6,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import { AuthProvider, useAuthContext } from './component/AuthContext';
 import * as Font from 'expo-font';
 import * as SecureStore from 'expo-secure-store';
+import * as Notifications from 'expo-notifications';
 import AppLoading from 'expo-app-loading';
 import Home from './page/Home';
 import Create from './page/Create';
@@ -49,7 +50,11 @@ function Provider() {
       NotoSansBlack: require('./assets/fonts/900-NotoSans-Black.ttf')
     });
 
+    await Notifications.requestPermissionsAsync();
+    console.log(await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
+
     if (await SecureStore.getItemAsync('userToken') !== null) await dispatch({ type: 'SIGN_IN' });
+
   }
 
   if (!loaded) {
