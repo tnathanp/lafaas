@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Image, Button, Input } from 'react-native-elements';
-import { StyleSheet, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, View } from 'react-native';
+import { StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, KeyboardAvoidingView, Keyboard, View, Modal } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
+import LottieView from 'lottie-react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../component/BackButton';
 import ImageColors from 'react-native-image-colors';
 //import { TriangleColorPicker } from 'react-native-color-picker';
 //import { BlurView } from 'expo-blur';
+
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
 const Register = ({ route, navigation }) => {
     let categoryController, colorController, locationInput, descInput;
@@ -23,6 +26,8 @@ const Register = ({ route, navigation }) => {
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState("");
     const [imageBox, setPositionOfImageBox] = useState(0);
+    const [pickupModal, showPickup] = useState(false);
+    const [isLoading, setLoad] = useState(false);
     const scrollRef = useRef();
 
     //Set coordination after coming back from Map component
@@ -124,6 +129,53 @@ const Register = ({ route, navigation }) => {
                     <View style={{ position: 'absolute', top: 50, left: 20 }}>
                         <BackButton navigation={navigation} />
                     </View>
+
+                    <Modal
+                        visible={pickupModal}
+                        transparent={true}
+                        animationType='slide'
+                    >
+                        <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ backgroundColor: 'white', width: '90%', height: '50%', borderRadius: 20, alignItems: 'center' }}>
+                                {isLoading &&
+                                    < LottieView
+                                        style={{ backgroundColor: 'transparent' }}
+                                        source={require('../assets/anim/46779-locker.json')}
+                                        autoPlay
+                                    />
+                                }
+                                {!isLoading &&
+                                    <>
+                                        <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginVertical: 20 }}>Choose Pickup Station</Text>
+
+                                        <ScrollView style={{ width: '100%' }}>
+                                            {['test1', 'test2', 'test3', 'test4'].map(e => (
+                                                <TouchableOpacity key={e} style={{ paddingVertical: 10 }} onPress={() => setLoad(true)}>
+                                                    <View style={{ flexDirection: 'row', paddingHorizontal: 50 }}>
+                                                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                                            <Entypo name="location-pin" size={24} color="#fc8181" style={{ marginTop: 2, marginRight: 5 }} />
+                                                            <Text style={{ color: 'black', fontWeight: 'medium', fontSize: 20 }}>{e}</Text>
+                                                        </View>
+                                                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                            <Text style={{ color: '#f6a085', fontWeight: 'medium', fontSize: 20 }}>Vacant</Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            ))}
+                                        </ScrollView>
+
+                                        <Button
+                                            title="Cancel"
+                                            titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
+                                            buttonStyle={{ marginBottom: '5%', backgroundColor: '#fc8181', borderRadius: 10 }}
+                                            onPress={() => showPickup(false)}
+                                        />
+                                    </>
+                                }
+                            </View>
+
+                        </View>
+                    </Modal>
 
                     <KeyboardAvoidingView style={{ flex: 1, marginTop: 70 }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
                         <ScrollView ref={scrollRef} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -339,7 +391,7 @@ const Register = ({ route, navigation }) => {
                                         onPress={() => {
                                             categoryController.close();
                                             if (route.params.type === 'lost') colorController.close();
-                                            console.log(itemName + locationDesc + coordinate + category.value + color + desc + img);
+                                            showPickup(true);
                                         }}
                                     />
                                 </View>
