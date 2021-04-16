@@ -266,11 +266,16 @@ const ItemList = ({ route, navigation }) => {
 const CustomSidebarMenu = (props) => {
     const { dispatch } = useAuthContext();
 
+    const [name, setName] = useState('');
+    SecureStore.getItemAsync('username').then(result => setName(result));
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ paddingTop: 25, alignItems: 'center' }}>
-            <Circle color="#f6a085" scale={2} style={{alignItems: 'center',justifyContent:'center'}} />
-                    <Text style={{   justifyContent: "center",alignSelf: 'center',fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute',top:23 }}>{name[0].toUpperCase()}</Text>
+                <Circle color="#f6a085" scale={2} style={{ alignItems: 'center', justifyContent: 'center' }} />
+                <Text style={{ justifyContent: "center", alignSelf: 'center', fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute', top: 23 }}>
+                    {name ? name[0].toUpperCase() : ''}
+                </Text>
                 <Text
                     style={{
                         fontSize: 16,
@@ -278,7 +283,7 @@ const CustomSidebarMenu = (props) => {
                         color: '#000000',
                         fontWeight: 'bold', marginTop: 40, marginBottom: -20
                     }}>
-                   {name}
+                    {name}
                 </Text>
             </View>
             <DrawerContentScrollView {...props}>
@@ -289,7 +294,11 @@ const CustomSidebarMenu = (props) => {
                 />
                 <DrawerItem
                     label="Logout"
-                    onPress={() => SecureStore.deleteItemAsync('userToken').then(() => dispatch({ type: 'SIGN_OUT' }))}
+                    onPress={() => {
+                        SecureStore.deleteItemAsync('userToken')
+                            .then(() => SecureStore.deleteItemAsync('username')
+                                .then(() => dispatch({ type: 'SIGN_OUT' })));
+                    }}
                 />
                 <DrawerItem
                     label="NOTI"

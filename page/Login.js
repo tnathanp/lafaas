@@ -71,7 +71,10 @@ const Login = ({ navigation }) => {
         }).then(res => res.json()).then(data => {
             console.log(data);
             if (data.code === 1) {
-                SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
+                SecureStore.setItemAsync('userToken', data.token).then(() => {
+                    SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
+                });
+
             } else {
                 setLoad(false);
             }
