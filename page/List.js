@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text } from '../component/Text';
 import { SearchBar, Button, Icon } from 'react-native-elements';
 import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from 'react-native';
+import { Circle } from 'react-native-shape';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Octicons, Ionicons } from '@expo/vector-icons';
@@ -268,18 +269,16 @@ const CustomSidebarMenu = (props) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ paddingTop: 25, alignItems: 'center' }}>
-                <Image
-                    source={{ uri: 'https://picsum.photos/200/300' }}
-                    style={{ height: 100, width: 100, borderRadius: 50, alignContent: 'center', overflow: 'hidden' }}
-                />
+            <Circle color="#f6a085" scale={2} style={{alignItems: 'center',justifyContent:'center'}} />
+                    <Text style={{   justifyContent: "center",alignSelf: 'center',fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute',top:23 }}>{name[0].toUpperCase()}</Text>
                 <Text
                     style={{
                         fontSize: 16,
                         textAlign: 'center',
                         color: '#000000',
-                        fontWeight: 'bold', marginTop: 10, marginBottom: -25
+                        fontWeight: 'bold', marginTop: 40, marginBottom: -20
                     }}>
-                    User's name
+                   {name}
                 </Text>
             </View>
             <DrawerContentScrollView {...props}>
