@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
@@ -24,6 +25,15 @@ import Noti from './page/Noti';
 import Reporting from './page/Reporting';
 import Reported from './page/Reported';
 import End from './page/End';
+import linking from './linking';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: false,
+    shouldPlaySound: false,
+    shouldSetBadge: false
+  })
+});
 
 const Stack = createSharedElementStackNavigator();
 
@@ -38,6 +48,7 @@ function Provider() {
   });
 
   const loadAsset = async () => {
+    //Font loading
     await Font.loadAsync({
       NotoSansThin: require('./assets/fonts/100-NotoSans-Thin.ttf'),
       NotoSansExtraLight: require('./assets/fonts/200-NotoSans-ExtraLight.ttf'),
@@ -50,9 +61,25 @@ function Provider() {
       NotoSansBlack: require('./assets/fonts/900-NotoSans-Black.ttf')
     });
 
+    //Notification permission request
     await Notifications.requestPermissionsAsync();
     console.log(await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
 
+    //Register for notification events
+    //Foreground
+    Notifications.addNotificationReceivedListener(packet => {
+      const { data } = packet.request.content;
+      console.log('[Notification] ' + JSON.stringify(data));
+
+      if (data.id === 1) {
+        Linking.openURL('lafaas://app/error/' + data.msg);
+      }
+
+    });
+    //Background and Killed
+    Notifications.addNotificationResponseReceivedListener(packet => console.log(packet));
+
+    //Authentication
     if (await SecureStore.getItemAsync('userToken') !== null) await dispatch({ type: 'SIGN_IN' });
 
   }
@@ -69,7 +96,7 @@ function Provider() {
 
   return (
     <ActionSheetProvider>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <StatusBar style='dark' />
         <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true }}>
 
