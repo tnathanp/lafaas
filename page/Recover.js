@@ -22,7 +22,7 @@ const Recover = ({ navigation }) => {
     }
 
     function recover() {
-        if (formState.email === 1) {
+        if (formState.email === 1 || email == '') {
             showMessage({
                 message: 'Error',
                 description: 'Please enter a valid email address',
