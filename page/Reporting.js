@@ -5,8 +5,12 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet'
+import { showMessage } from 'react-native-flash-message';
 import * as ImagePicker from 'expo-image-picker';
 import BackButton from '../component/BackButton';
+import LoadingButton from '../component/LoadingButton';
+
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
 const Reporting = ({ route, navigation }) => {
 
@@ -14,6 +18,7 @@ const Reporting = ({ route, navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const [detail, setDetail] = useState("");
     const [img, setImg] = useState("");
+    const [isLoading, setLoad] = useState(false);
 
     const openActionSheet = () => {
         let options = ['Take Photo', 'Photo Library', 'Remove', 'Cancel'];
@@ -62,6 +67,27 @@ const Reporting = ({ route, navigation }) => {
 
         let localUri = result.uri;
         setImg(localUri);
+    }
+
+    function report() {
+        if (detail == '') {
+            showMessage({
+                message: 'Error',
+                description: 'Please provide us some detail',
+                type: 'danger',
+                titleStyle: { fontFamily: 'NotoSansBold' },
+                textStyle: { fontFamily: 'NotoSans' },
+                duration: 2500
+            });
+            return;
+        }
+
+        setLoad(true);
+
+        wait(200).then(() => {
+            navigation.navigate('Reported');
+            setLoad(false);
+        })
     }
 
     return (
@@ -121,10 +147,12 @@ const Reporting = ({ route, navigation }) => {
 
                                 <View style={{ alignItems: 'center', marginBottom: 30, marginTop: 15 }}>
                                     <Button
-                                        title="report"
+                                        title={isLoading ? <LoadingButton /> : "report"}
                                         titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                         buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                        onPress={() => navigation.navigate('Reported')}
+                                        disabled={isLoading}
+                                        disabledStyle={{ backgroundColor: 'white' }}
+                                        onPress={() => report()}
                                     />
                                 </View>
                             </View>

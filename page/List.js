@@ -229,7 +229,7 @@ const ItemList = ({ route, navigation }) => {
                         source={require('../assets/anim/890-loading-animation.json')}
                         autoPlay
                     />
-                    <Text style={{ color: 'black', paddingTop: Platform.OS === 'ios' ? 0 : 30 }}>Suppose loading is done in one second</Text>
+                    <Text style={{ color: 'black', paddingTop: Platform.OS === 'ios' ? 0 : 30 }}>Loading</Text>
                 </View>
             }
 

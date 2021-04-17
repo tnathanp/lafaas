@@ -3,6 +3,7 @@ import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, View, Dimensions } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
+import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LottieView from 'lottie-react-native';
 import validator from 'validator';
@@ -18,6 +19,32 @@ const Recover = ({ navigation }) => {
         } else {
             setFormState({ email: 1 });
         }
+    }
+
+    function recover() {
+        if (formState.email === 1) {
+            showMessage({
+                message: 'Error',
+                description: 'Please enter a valid email address',
+                type: 'danger',
+                titleStyle: { fontFamily: 'NotoSansBold' },
+                textStyle: { fontFamily: 'NotoSans' },
+                duration: 2500
+            });
+            return;
+        }
+
+        showMessage({
+            message: 'Success',
+            description: 'If your account exists, the email will be sent to you',
+            type: 'success',
+            titleStyle: { fontFamily: 'NotoSansBold' },
+            textStyle: { fontFamily: 'NotoSans' },
+            duration: 3000
+        });
+
+        navigation.goBack();
+
     }
 
     return (
@@ -49,7 +76,7 @@ const Recover = ({ navigation }) => {
                                     title="send email"
                                     titleStyle={{ padding: 10, marginTop: -3, fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
                                     buttonStyle={{ width: 300, height: 32, borderRadius: 10, backgroundColor: 'white' }}
-                                    onPress={() => null}
+                                    onPress={() => recover()}
                                 />
                             </View>
                         </View>
