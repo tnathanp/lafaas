@@ -9,6 +9,7 @@ import * as Font from 'expo-font';
 import * as SecureStore from 'expo-secure-store';
 import * as Notifications from 'expo-notifications';
 import AppLoading from 'expo-app-loading';
+import FlashMessage from 'react-native-flash-message';
 import Home from './page/Home';
 import Create from './page/Create';
 import Recover from './page/Recover';
@@ -138,6 +139,7 @@ function App() {
   return (
     <AuthProvider>
       <Provider />
+      <FlashMessage position='top' />
     </AuthProvider>
   )
 }

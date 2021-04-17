@@ -4,10 +4,13 @@ import { StyleSheet, TouchableWithoutFeedback, ScrollView, KeyboardAvoidingView,
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
+import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
+
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
 const Create = ({ navigation }) => {
     let lnameInput, usernameInput, emailInput, passInput, cpassInput;
@@ -78,7 +81,29 @@ const Create = ({ navigation }) => {
     function createAccount() {
         //Check if there are input errors
         for (let state in formState) {
-            if (formState[state] === 1) return;
+            if (state === 'cpassword' && formState[state] === 1) {
+                showMessage({
+                    message: 'Error',
+                    description: 'Password fields do not match',
+                    type: 'danger',
+                    titleStyle: { fontFamily: 'NotoSansBold' },
+                    textStyle: { fontFamily: 'NotoSans' },
+                    duration: 2500
+                });
+                return;
+            } else {
+                if (formState[state] === 1) {
+                    showMessage({
+                        message: 'Error',
+                        description: 'Some input field contains invalid character',
+                        type: 'danger',
+                        titleStyle: { fontFamily: 'NotoSansBold' },
+                        textStyle: { fontFamily: 'NotoSans' },
+                        duration: 2500
+                    });
+                    return;
+                }
+            }
         }
         //Check if it is empty
         if (username === '' || password === '' || fname === '' || lname === '' || email === '' || passwordConfirm === '') return;
@@ -98,11 +123,27 @@ const Create = ({ navigation }) => {
             })
         }).then(res => res.json()).then(data => {
             console.log(data);
-            if (data.code === 1) {
-                SecureStore.setItemAsync('userToken', data.token).then(() => dispatch({ type: 'SIGN_IN' }));
-            } else {
-                setLoad(false);
-            }
+            wait(100).then(() => {
+                if (data.code === 1) {
+
+                    SecureStore.setItemAsync('userToken', data.token).then(() => {
+                        SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
+                    });
+
+                } else {
+
+                    showMessage({
+                        message: 'Error',
+                        description: 'Username already exists',
+                        type: 'danger',
+                        titleStyle: { fontFamily: 'NotoSansBold' },
+                        textStyle: { fontFamily: 'NotoSans' },
+                        duration: 2500
+                    });
+
+                    setLoad(false);
+                }
+            })
         });
     }
 

@@ -4,14 +4,17 @@ import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, V
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
+import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
 
-const Login = ({ navigation }) => {
-    let passwordInput;
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
+const Login = ({ navigation }) => {
+
+    let passwordInput;
     const { dispatch } = useAuthContext();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -26,15 +29,16 @@ const Login = ({ navigation }) => {
         switch (field) {
             case 'username':
                 isPass = validator.isAlphanumeric(val, 'en-US');
+                if (val === '') isPass = true;
                 if (isPass) setUsername(val);
                 break;
             case 'password':
                 isPass = validator.isAlphanumeric(val, 'en-US');
+
+                if (val === '') isPass = true;
                 if (isPass) setPassword(val);
                 break;
         }
-
-        if (val === '') isPass = true;
 
         if (isPass) {
             setFormState(prev => {
@@ -54,10 +58,20 @@ const Login = ({ navigation }) => {
     function login() {
         //Check if there are input errors
         for (let state in formState) {
-            if (formState[state] === 1) return;
+            if (formState[state] === 1) {
+                showMessage({
+                    message: 'Error',
+                    description: 'Username or password contains invalid character',
+                    type: 'danger',
+                    titleStyle: { fontFamily: 'NotoSansBold' },
+                    textStyle: { fontFamily: 'NotoSans' },
+                    duration: 2500
+                });
+                return;
+            }
         }
         //Check if it is empty
-        if (username === '' || password === '') return;
+        if (username == '' || password == '') return;
 
         setLoad(true);
 
@@ -70,14 +84,27 @@ const Login = ({ navigation }) => {
             })
         }).then(res => res.json()).then(data => {
             console.log(data);
-            if (data.code === 1) {
-                SecureStore.setItemAsync('userToken', data.token).then(() => {
-                    SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
-                });
+            wait(100).then(() => {
+                if (data.code === 1) {
 
-            } else {
-                setLoad(false);
-            }
+                    SecureStore.setItemAsync('userToken', data.token).then(() => {
+                        SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
+                    });
+
+                } else {
+
+                    showMessage({
+                        message: 'Error',
+                        description: 'Wrong username or password',
+                        type: 'danger',
+                        titleStyle: { fontFamily: 'NotoSansBold' },
+                        textStyle: { fontFamily: 'NotoSans' },
+                        duration: 2500
+                    });
+
+                    setLoad(false);
+                }
+            })
         });
     }
 
