@@ -4,14 +4,14 @@ import { StyleSheet, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Key
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
-import { useActionSheet } from '@expo/react-native-action-sheet'
-import * as ImagePicker from 'expo-image-picker';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import LottieView from 'lottie-react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../component/BackButton';
 import ImageColors from 'react-native-image-colors';
+import * as Animatable from 'react-native-animatable';
+import * as ImagePicker from 'expo-image-picker';
 //import { TriangleColorPicker } from 'react-native-color-picker';
-//import { BlurView } from 'expo-blur';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -124,6 +124,8 @@ const Register = ({ route, navigation }) => {
 
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
+            {pickupModal && <Animatable.View animation='fadeIn' duration={200} useNativeDriver={true} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 1 }} />}
+
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ position: 'absolute', top: 50, left: 20 }}>
@@ -135,7 +137,7 @@ const Register = ({ route, navigation }) => {
                         transparent={true}
                         animationType='slide'
                     >
-                        <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
                             <View style={{ backgroundColor: 'white', width: '90%', height: '50%', borderRadius: 20, alignItems: 'center' }}>
                                 {isLoading &&
                                     < LottieView
@@ -173,7 +175,6 @@ const Register = ({ route, navigation }) => {
                                     </>
                                 }
                             </View>
-
                         </View>
                     </Modal>
 
