@@ -58,6 +58,6 @@
     "react-test-renderer": "~16.13.1"
   },
   "private": true,
-  "name": "lafaas-native",
+  "name": "lafaas",
   "version": "1.0.0"
 }
