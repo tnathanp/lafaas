@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions, Modal } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Text } from '../component/Text';
 import { default as QRGenerator } from 'react-native-qrcode-svg';
+import * as Animatable from 'react-native-animatable';
 
 const QRCode = ({ route, navigation }) => {
     const [error, showError] = useState(false);
@@ -19,12 +20,14 @@ const QRCode = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
 
+            {error && <Animatable.View animation='fadeIn' duration={200} useNativeDriver={true} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 1 }} />}
+
             <Modal
                 visible={error}
                 transparent={true}
-                animationType='fade'
+                animationType='slide'
             >
-                <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
                     <View style={{ backgroundColor: 'white', width: '90%', height: '50%', borderRadius: 20, alignItems: 'center' }}>
 
                         <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginVertical: 20 }}>{msg}</Text>
