@@ -67,7 +67,6 @@ function Provider() {
     console.log(await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
 
     //Register for notification events
-    //Foreground
     Notifications.addNotificationReceivedListener(packet => {
       const { data } = packet.request.content;
       console.log('[Notification] ' + JSON.stringify(data));
@@ -77,8 +76,6 @@ function Provider() {
       }
 
     });
-    //Background and Killed
-    Notifications.addNotificationResponseReceivedListener(packet => console.log(packet));
 
     //Authentication
     if (await SecureStore.getItemAsync('userToken') !== null) await dispatch({ type: 'SIGN_IN' });
