@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -28,17 +28,10 @@ import Reported from './page/Reported';
 import End from './page/End';
 import linking from './linking';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: false,
-    shouldPlaySound: false,
-    shouldSetBadge: false
-  })
-});
-
 const Stack = createSharedElementStackNavigator();
 
 function Provider() {
+
   const [loaded, setLoaded] = useState(false);
   const { state, dispatch } = useAuthContext();
 
@@ -48,7 +41,7 @@ function Provider() {
     }
   });
 
-  const loadAsset = async () => {
+  const load = async () => {
     //Font loading
     await Font.loadAsync({
       NotoSansThin: require('./assets/fonts/100-NotoSans-Thin.ttf'),
@@ -64,9 +57,18 @@ function Provider() {
 
     //Notification permission request
     await Notifications.requestPermissionsAsync();
-    console.log(await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
+    //console.log(await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
 
-    //Register for notification events
+    //Handling notification popup in foreground
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: false,
+        shouldPlaySound: false,
+        shouldSetBadge: false
+      })
+    });
+
+    //Register for notification event in foreground
     Notifications.addNotificationReceivedListener(packet => {
       const { data } = packet.request.content;
       console.log('[Notification] ' + JSON.stringify(data));
@@ -85,7 +87,7 @@ function Provider() {
   if (!loaded) {
     return (
       <AppLoading
-        startAsync={loadAsset}
+        startAsync={load}
         onFinish={() => setLoaded(true)}
         onError={console.warn}
       />
@@ -132,6 +134,25 @@ function Provider() {
 }
 
 function App() {
+
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  //Handle notification from closed app
+  useEffect(() => {
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
+    ) {
+      const { data } = lastNotificationResponse.notification.request.content;
+
+      setTimeout(() => {
+        if (data.id === 1) {
+          Linking.openURL('lafaas://app/error/' + data.msg);
+        }
+      }, 500)
+
+    }
+  }, [lastNotificationResponse]);
 
   return (
     <AuthProvider>
