@@ -27,7 +27,7 @@ const Item = (props, { navigation }) => {
                                     <View style={styles.cardImgWrapper}>
                                         <Image
                                             onLoadEnd={() => itemsRef[index].fadeIn()}
-                                            source={{ uri: item.image }}
+                                            source={{ uri: item.url }}
                                             resizeMode='cover'
                                             style={styles.cardImg}
                                         />

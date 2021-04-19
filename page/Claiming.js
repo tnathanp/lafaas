@@ -120,7 +120,7 @@ const Claiming = ({ route, navigation }) => {
 
                                 <View style={{ marginBottom: 10 }} >
                                     <Image
-                                        source={{ uri: item.image }}
+                                        source={{ uri: item.url }}
                                         resizeMode="cover"
                                         style={styles.stretch}
                                     />

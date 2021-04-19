@@ -19,7 +19,7 @@ const ItemView = ({ route, navigation }) => {
                 <Image
                     resizeMode='contain'
                     style={{ alignSelf: 'center', width: '100%', height: '100%' }}
-                    source={{ uri: item.image }} 
+                    source={{ uri: item.url }} 
                     />
             </SharedElement>
 

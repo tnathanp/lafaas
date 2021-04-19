@@ -21,14 +21,14 @@ const ItemDesc = ({ route, navigation }) => {
 
     return (
         <Animatable.View animation='fadeIn'>
-            <ImageBackground source={{ uri: item.image }} imageStyle={{ height: '50%' }} style={{ height: '100%', backgroundColor: 'white' }}>
+            <ImageBackground source={{ uri: item.url }} imageStyle={{ height: '50%' }} style={{ height: '100%', backgroundColor: 'white' }}>
 
                 <View style={{ backgroundColor: 'transparent', height: 0.5 * Dimensions.get('window').height }}>
                     <TouchableWithoutFeedback onPress={() => navigation.navigate('ItemView', { item: item })}>
                         <SharedElement id={'image'} >
                             <Image
                                 style={{ height: '100%', width: '100%', opacity: 0 }}
-                                source={{ uri: item.image }}
+                                source={{ uri: item.url }}
                             />
                         </SharedElement>
                     </TouchableWithoutFeedback>

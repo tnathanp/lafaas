@@ -55,88 +55,29 @@ const ItemList = ({ route, navigation }) => {
 
     function fetchData() {
         if (!refreshing) setLoad(true);
-        /*fetch('https://lafaas-n4hzx.ondigitalocean.app/' + type === 0 ? 'item_reg' : 'item_claimed').then(res => res.json())
+
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=test').then(res => res.json())
             .then(data => {
                 let mounted = true;
-                wait(1000).then(() => {
+
+                wait(refreshing ? 1000 : 200).then(() => {
                     if (mounted) {
-                        setOriginalData(type === 0 ? data.Registered : data.Claimed);
+                        if (type === 0) {
+                            if (data[0].Registered) setOriginalData(data[0].Registered);
+                            else setOriginalData([]);
+                        } else {
+                            if (data[0].Claimed) setOriginalData(data[0].Claimed);
+                            else setOriginalData([]);
+                        }
                         setRefreshing(false);
                     }
                 })
+
                 return function cleanup() {
                     mounted = false;
                 }
-            }).catch(e => console.log(e));*/
+            }).catch(e => console.log(e));
 
-        const sample = {
-            Registered:
-                [
-                    {
-                        name: type === 0 ? "Item 1 Registered" : "Item 1 Claimed",
-                        item_id: 111,
-                        location: "pacific ocean",
-                        category: 'bag',
-                        color: "blue",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
-
-                    },
-                    {
-                        name: "Item 2",
-                        item_id: 222,
-                        location: "Saen Saeb Canal",
-                        category: 'tumbler',
-                        color: "green",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://www.starbucks.co.th/stb-media/2020/08/6.Stainless-steel-white-with-green-lid-tumbler-12-oz-1080.png'
-
-                    },
-                    {
-                        name: "Item 3",
-                        item_id: 222,
-                        location: "Saen Saeb Canal",
-                        category: 'bag',
-                        color: "green",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
-
-                    },
-                    {
-                        name: "Item 4",
-                        item_id: 222,
-                        location: "Saen Saeb Canal",
-                        category: 'tumbler',
-                        color: "green",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://www.starbucks.co.th/stb-media/2020/08/6.Stainless-steel-white-with-green-lid-tumbler-12-oz-1080.png'
-
-                    },
-                    {
-                        name: "Item 5",
-                        item_id: 222,
-                        location: "Saen Saeb Canal",
-                        category: 'bag',
-                        color: "green",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                        image: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg'
-
-                    }
-                ]
-        }
-
-        let mounted = true;
-
-        wait(refreshing ? 1000 : 200).then(() => {
-            if (mounted) {
-                setOriginalData(sample.Registered);
-                setRefreshing(false);
-            }
-        })
-
-        return function cleanup() {
-            mounted = false;
-        }
     }
 
     function filterData(value) {
