@@ -9,6 +9,7 @@ import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
+import * as Notifications from 'expo-notifications';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -78,7 +79,7 @@ const Create = ({ navigation }) => {
         }
     }
 
-    function createAccount() {
+    async function createAccount() {
         //Check if there are input errors
         for (let state in formState) {
             if (state === 'cpassword' && formState[state] === 1) {
@@ -110,6 +111,8 @@ const Create = ({ navigation }) => {
 
         setLoad(true);
 
+        const noti_token = 'test';
+
         fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -119,7 +122,7 @@ const Create = ({ navigation }) => {
                 email: email,
                 fname: fname,
                 lname: lname,
-                noti_token: 'test'
+                noti_token: noti_token
             })
         }).then(res => res.json()).then(data => {
             console.log(data);
