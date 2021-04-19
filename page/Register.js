@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { showMessage } from 'react-native-flash-message';
 import LottieView from 'lottie-react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../component/BackButton';
@@ -26,8 +27,7 @@ const Register = ({ route, navigation }) => {
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState("");
     const [imageBox, setPositionOfImageBox] = useState(0);
-    const [pickupModal, showPickup] = useState(false);
-    const [isLoading, setLoad] = useState(false);
+    const [loading, setLoad] = useState(false);
     const scrollRef = useRef();
 
     //Set coordination after coming back from Map component
@@ -67,7 +67,8 @@ const Register = ({ route, navigation }) => {
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false
+            allowsEditing: false,
+            quality: 0
         });
 
 
@@ -80,7 +81,8 @@ const Register = ({ route, navigation }) => {
         await ImagePicker.requestCameraPermissionsAsync();
 
         let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: false
+            allowsEditing: false,
+            quality: 0
         });
 
         if (result.cancelled) {
@@ -90,20 +92,6 @@ const Register = ({ route, navigation }) => {
         let localUri = result.uri;
         await getColor(localUri);
         setImg(localUri);
-
-
-        // let formData = new FormData();
-        // formData.append('item_name', itemName);
-        // formData.append('color', 'green');
-        // formData.append('image', { uri: localUri, name: localUri.split('/').pop(), type: 'image/jpeg' });
-
-        // await fetch('http://192.168.1.33:7000/registeritem', {
-        //     method: 'POST',
-        //     body: formData,
-        //     headers: {
-        //         'content-type': 'multipart/form-data',
-        //     },
-        // });
 
     }
 
@@ -122,9 +110,153 @@ const Register = ({ route, navigation }) => {
         setColor(result);
     }
 
+    function getListOfCategory() {
+        let arr = [];
+
+        arr.push({ label: 'Gadgets', value: 'Gadgets', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Phone', 'Tablet', 'Apple pencil', 'Mouse', 'Laptop', 'Camera', 'Portable game', 'Airpods', 'Earphones', 'Headphones', 'Phone/Tablet charger', 'Laptop charger', 'Smart Watch', 'Power Bank'].map(e => arr.push({ label: e, value: e, parent: 'Gadgets' }));
+
+        arr.push({ label: 'Apparels', value: 'Apparels', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Jacket', 'Hat'].map(e => arr.push({ label: e, value: e, parent: 'Apparels' }));
+
+        arr.push({ label: 'Shoes', value: 'Shoes', parent: 'Apparels', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Sandals', 'Sneakers', 'Loafers'].map(e => arr.push({ label: e, value: e, parent: 'Shoes' }));
+
+        ['Socks', 'Shirt', 'Skirts', 'Pants'].map(e => arr.push({ label: e, value: e, parent: 'Apparels' }));
+
+        arr.push({ label: 'Stationary', value: 'Stationary', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Pencil case', 'Pencil', 'Ruler', 'Eraser', 'Pen', 'Apple pencil'].map(e => arr.push({ label: e, value: e, parent: 'Stationary' }));
+
+        arr.push({ label: 'Documents', value: 'Documents', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Textbook', 'Lecture sheets', 'Notebook', 'File'].map(e => arr.push({ label: e, value: e, parent: 'Documents' }));
+
+        arr.push({ label: 'Accessories', value: 'Accessories', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Necklace', 'Earrings', 'Rings', 'Bracelet', 'Anklet', 'Hairband/ Headband', 'Scrunchie/ Hair ties', 'Bag', 'Wallet', 'Purse', 'Glasses', 'Watch'].map(e => arr.push({ label: e, value: e, parent: 'Accessories' }));
+
+        arr.push({ label: 'Cards', value: 'Cards', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
+
+        ['Debit/ Credit card', 'ID card', 'Student ID card', 'Driver’s license', 'Membership card', 'Point card'].map(e => arr.push({ label: e, value: e, parent: 'Cards' }));
+
+        arr.push({ label: 'Other', value: 'Other' });
+
+        return arr;
+    }
+
+    function register() {
+        //check if empty
+
+        if (route.params.type === 'found') {
+            if (itemName == '' || locationDesc == '' || coordinate == ''
+                || category == {}) {
+
+                showMessage({
+                    message: 'Error',
+                    description: 'Please fill all the required fields',
+                    type: 'danger',
+                    titleStyle: { fontFamily: 'NotoSansBold' },
+                    textStyle: { fontFamily: 'NotoSans' },
+                    duration: 2500
+                });
+
+                return;
+            }
+
+            if (img == '') {
+                showMessage({
+                    message: 'Error',
+                    description: 'Please upload an image',
+                    type: 'danger',
+                    titleStyle: { fontFamily: 'NotoSansBold' },
+                    textStyle: { fontFamily: 'NotoSans' },
+                    duration: 2500
+                });
+                return;
+            }
+        } else {
+            if (itemName == '' || locationDesc == '' || coordinate == ''
+                || category == {} || color.length === 0) {
+
+                showMessage({
+                    message: 'Error',
+                    description: 'Please fill all the required fields',
+                    type: 'danger',
+                    titleStyle: { fontFamily: 'NotoSansBold' },
+                    textStyle: { fontFamily: 'NotoSans' },
+                    duration: 2500
+                });
+
+                return;
+            }
+        }
+
+        //prepare data to send
+
+        let formData = new FormData();
+        formData.append('item_name', itemName);
+        formData.append('location_desc', locationDesc);
+        formData.append('location_lat', coordinate.latitude);
+        formData.append('location_long', coordinate.longitude);
+        formData.append('category', category.value);
+        formData.append('description', desc);
+        formData.append('type', route.params.type);
+        formData.append('device_token', 'test');
+        formData.append('color', color.map(e => e.substring(1)).toString());
+
+        if (route.params.type === 'found') {
+            formData.append('image', { uri: img, name: img.split('/').pop(), type: 'image/jpeg' });
+
+            setLoad(true);
+
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'content-type': 'multipart/form-data',
+                }
+            }).then(res => res.text()).then(id => {
+                wait(2000).then(() => {
+                    //Handle qrid for case found
+                    setLoad(false);
+
+                    navigation.navigate('QRCode', { qrid: id });
+                })
+            });
+
+        } else {
+            setLoad(true);
+
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'content-type': 'multipart/form-data',
+                }
+            }).then(res => res.json()).then(data => {
+                wait(2000).then(() => {
+                    //Handle result for case lost
+                    setLoad(false);
+
+                    if (data.code === 1) {
+                        navigation.navigate('Noti', { item: data.item[0] });
+                    } else if (data.code === 2) {
+                        navigation.navigate('List');
+                    }
+
+                })
+            });
+        }
+
+    }
+
     return (
         <LinearGradient colors={['#fc8181', '#f6a085']} locations={[0.7, 1]} style={{ flex: 1 }}>
-            {pickupModal && <Animatable.View animation='fadeIn' duration={200} useNativeDriver={true} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 1 }} />}
+            {loading && <Animatable.View animation='fadeIn' duration={200} useNativeDriver={true} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 1 }} />}
 
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1, padding: 20 }}>
@@ -133,47 +265,17 @@ const Register = ({ route, navigation }) => {
                     </View>
 
                     <Modal
-                        visible={pickupModal}
+                        visible={loading}
                         transparent={true}
                         animationType='slide'
                     >
                         <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
                             <View style={{ backgroundColor: 'white', width: '90%', height: '50%', borderRadius: 20, alignItems: 'center' }}>
-                                {isLoading &&
-                                    < LottieView
-                                        style={{ backgroundColor: 'transparent' }}
-                                        source={require('../assets/anim/46779-locker.json')}
-                                        autoPlay
-                                    />
-                                }
-                                {!isLoading &&
-                                    <>
-                                        <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginVertical: 20 }}>Choose Pickup Station</Text>
-
-                                        <ScrollView style={{ width: '100%' }}>
-                                            {['test1', 'test2', 'test3', 'test4'].map(e => (
-                                                <TouchableOpacity key={e} style={{ paddingVertical: 10 }} onPress={() => setLoad(true)}>
-                                                    <View style={{ flexDirection: 'row', paddingHorizontal: 50 }}>
-                                                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
-                                                            <Entypo name="location-pin" size={24} color="#fc8181" style={{ marginTop: 2, marginRight: 5 }} />
-                                                            <Text style={{ color: 'black', fontWeight: 'medium', fontSize: 20 }}>{e}</Text>
-                                                        </View>
-                                                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                                            <Text style={{ color: '#f6a085', fontWeight: 'medium', fontSize: 20 }}>Vacant</Text>
-                                                        </View>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            ))}
-                                        </ScrollView>
-
-                                        <Button
-                                            title="Cancel"
-                                            titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
-                                            buttonStyle={{ marginBottom: '5%', backgroundColor: '#fc8181', borderRadius: 10 }}
-                                            onPress={() => showPickup(false)}
-                                        />
-                                    </>
-                                }
+                                < LottieView
+                                    style={{ backgroundColor: 'transparent' }}
+                                    source={require('../assets/anim/46779-locker.json')}
+                                    autoPlay
+                                />
                             </View>
                         </View>
                     </Modal>
@@ -239,18 +341,7 @@ const Register = ({ route, navigation }) => {
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
                                         controller={instance => categoryController = instance}
-                                        items={[
-                                            { label: 'North America', value: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
-                                            { label: 'United States', value: 'us', parent: 'na', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
-                                            { label: 'Alaska', value: 'alaska', parent: 'us' },
-                                            { label: 'Canada', value: 'canada', parent: 'na' },
-                                            { label: 'Mexico', value: 'mexico', parent: 'na' },
-
-                                            { label: 'Europe', value: 'eu', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } },
-                                            { label: 'UK', value: 'uk', parent: 'eu' },
-                                            { label: 'Germany', value: 'germany', parent: 'eu' },
-                                            { label: 'Russia', value: 'russia', parent: 'eu' }
-                                        ]}
+                                        items={getListOfCategory()}
                                         scrollViewProps={{ showsVerticalScrollIndicator: false }}
                                         placeholder='Select category'
                                         style={{
@@ -281,12 +372,9 @@ const Register = ({ route, navigation }) => {
                                             multiple={true} max={2}
                                             defaultValue={0}
                                             items={[
-                                                { label: 'Alaska', value: 'alaska' },
-                                                { label: 'Canada', value: 'canada' },
-                                                { label: 'Mexico', value: 'mexico' },
-                                                { label: 'UK', value: 'uk' },
-                                                { label: 'Germany', value: 'germany' },
-                                                { label: 'Russia', value: 'russia' }
+                                                { label: 'Red', value: '#ff0000', textStyle: { color: '#ff0000' } },
+                                                { label: 'Green', value: '#00ff00', textStyle: { color: '#00ff00' } },
+                                                { label: 'Blue', value: '#0000ff', textStyle: { color: '#0000ff' } }
                                             ]}
                                             scrollViewProps={{ showsVerticalScrollIndicator: false }}
                                             placeholder='Select color'
@@ -392,7 +480,7 @@ const Register = ({ route, navigation }) => {
                                         onPress={() => {
                                             categoryController.close();
                                             if (route.params.type === 'lost') colorController.close();
-                                            showPickup(true);
+                                            register();
                                         }}
                                     />
                                 </View>
