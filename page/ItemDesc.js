@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SharedElement } from 'react-navigation-shared-element';
 import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { Circle } from 'react-native-shape';
 import BackButton from '../component/BackButton';
 import * as Animatable from 'react-native-animatable';
 
@@ -46,6 +47,29 @@ const ItemDesc = ({ route, navigation }) => {
                         <Text style={styles.title}>{item.name}</Text>
                         <Text style={styles.topic}>Description:</Text>
                         <Text style={styles.content}>{item.description}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.topic}>Location:</Text>
+                            <Text style={styles.contentline}>{item.location}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.topic}>Category:</Text>
+                            <Text style={styles.contentline}>{item.category}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.topic}>Color:</Text>
+
+                            {item.color.split(',').map((e, i) => {
+                                return (
+                                    <View key={i} style={{ top: -5 }}>
+                                        <Circle color={'#' + e} scale={0.4} />
+                                    </View>
+                                );
+                            })}
+
+                        </View>
+
 
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             {type === 0 && <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', marginTop: 24 }}>Is this yours?</Text>}
@@ -71,17 +95,27 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: 'black',
-        margin: 24
+        margin: 24,
+        marginBottom: 15
     },
     topic: {
-        fontSize: 14,
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginTop: 10,
         color: 'black',
         marginLeft: 24
     },
     content: {
-        fontSize: 14,
+        fontSize: 15,
         color: 'black',
         marginLeft: 24,
+        marginTop: 10,
+        marginRight: 24
+    },
+    contentline: {
+        fontSize: 15,
+        color: 'black',
+        marginLeft: 10,
         marginTop: 10,
         marginRight: 24
     },
