@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Text } from '../component/Text';
@@ -8,8 +8,26 @@ import * as SecureStore from 'expo-secure-store';
 const Profile = ({ navigation }) => {
 
     const [name, setName] = useState('Loading');
+    const [itemsFound, setItemsFound] = useState([]);
+    const [itemsLost, setItemsLost] = useState([]);
+
     SecureStore.getItemAsync('username').then(result => setName(result));
-    const list = [{ name: 'List Item 1' }, { name: 'List Item 2' }];
+
+    useEffect(() => {
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/myregister' + '?token=asdf').then(res => res.json())
+            .then(data => {
+                let arrFound = [];
+                let arrLost = [];
+
+                data.map(e => {
+                    if (e.type == 'Found') arrFound.push(e);
+                    else arrLost.push(e);
+                })
+
+                setItemsFound(arrFound);
+                setItemsLost(arrLost);
+            });
+    }, []);
 
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
@@ -54,15 +72,46 @@ const Profile = ({ navigation }) => {
                 />
 
                 <Text style={styles.title}>My Registered Item</Text>
-                {list.map((l, i) => (
-                    <Text key={i} style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.name}</Text>
-                ))}
+
                 <Button
-                    title='view more'
-                    onPress={() => null}
-                    titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3, color: '#f6a085' }}
-                    buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, borderWidth: 1, borderColor: '#f6a085', backgroundColor: 'white' }}
+                    title='Found'
+                    disabled={true}
+                    disabledTitleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3, color: '#f6a085' }}
+                    disabledStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, width: '100%', borderWidth: 1, borderColor: '#f6a085', backgroundColor: 'white' }}
                 />
+                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 15 }}>
+                    {itemsFound.map((l, i) => (
+                        <View key={i} style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
+                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
+                            </View>
+
+                            <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
+                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+
+                <Button
+                    title='Lost'
+                    disabled={true}
+                    disabledTitleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3, color: '#f6a085' }}
+                    disabledStyle={{ borderRadius: 10, marginRight: 10, marginTop: 30, width: '100%', borderWidth: 1, borderColor: '#f6a085', backgroundColor: 'white' }}
+                />
+                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 15 }}>
+                    {itemsLost.map((l, i) => (
+                        <View key={i} style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
+                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
+                            </View>
+
+                            <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
+                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
             </View>
         </View>
     );
