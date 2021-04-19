@@ -22,14 +22,14 @@ const ItemDesc = ({ route, navigation }) => {
 
     return (
         <Animatable.View animation='fadeIn'>
-            <ImageBackground source={{ uri: item.url }} imageStyle={{ height: '50%' }} style={{ height: '100%', backgroundColor: 'white' }}>
+            <ImageBackground source={{ uri: item.image_url }} imageStyle={{ height: '50%' }} style={{ height: '100%', backgroundColor: 'white' }}>
 
                 <View style={{ backgroundColor: 'transparent', height: 0.5 * Dimensions.get('window').height }}>
                     <TouchableWithoutFeedback onPress={() => navigation.navigate('ItemView', { item: item })}>
                         <SharedElement id={'image'} >
                             <Image
                                 style={{ height: '100%', width: '100%', opacity: 0 }}
-                                source={{ uri: item.url }}
+                                source={{ uri: item.image_url }}
                             />
                         </SharedElement>
                     </TouchableWithoutFeedback>
@@ -44,12 +44,12 @@ const ItemDesc = ({ route, navigation }) => {
                 <BottomSheet ref={refs => bottomSheetRef = refs} index={0} snapPoints={snapPoints}>
 
                     <View style={{ backgroundColor: 'white', height: '100%', marginTop: -20 }}>
-                        <Text style={styles.title}>{item.name}</Text>
+                        <Text style={styles.title}>{item.item_name}</Text>
                         <Text style={styles.topic}>Description:</Text>
                         <Text style={styles.content}>{item.description}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.topic}>Location:</Text>
-                            <Text style={styles.contentline}>{item.location}</Text>
+                            <Text style={styles.contentline}>{item.location_desc}</Text>
                         </View>
 
                         <View style={{ flexDirection: 'row' }}>

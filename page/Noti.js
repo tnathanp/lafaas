@@ -4,18 +4,22 @@ import { StyleSheet, View, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const Noti = ({ navigation }) => {
+const Noti = ({ route, navigation }) => {
+    const { item } = route.params;
+    item.item_name = item.name;
+    delete item.name;
+
     return (
         <View style={{ height: '100%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
 
             <View style={{ marginBottom: 30, alignItems: 'center' }} >
                 <Text style={{ fontSize: 30, color: 'black', fontWeight: 'bold' }}>Found Possible Item!</Text>
-                <Text style={{ fontSize: 16, color: 'black' }}>Did you lose a <Text style={{ fontWeight: "bold", color: 'black' }}> ITEM NAME</Text> ?</Text>
+                <Text style={{ fontSize: 16, color: 'black' }}>Did you lose a <Text style={{ fontWeight: "bold", color: 'black' }}>{item.item_name}</Text> ?</Text>
             </View>
 
             <View style={{ marginBottom: 10, alignItems: 'center' }} >
                 <Image
-                    source={{ uri: 'https://ninjaya.com/media/product/7a0/canvas-tote-bag-large-horizontal-703.jpg' }}
+                    source={{ uri: item.image_url }}
                     resizeMode="cover"
                     style={styles.stretch}
                 />
@@ -27,7 +31,7 @@ const Noti = ({ navigation }) => {
                     <View style={{ marginRight: 10 }}>
                         <Button
                             title='YES'
-                            onPress={() => null}
+                            onPress={() => navigation.navigate('Claiming', { item: item })}
                             titleStyle={{ padding: 10, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
                             buttonStyle={{ borderRadius: 16 }}
                             ViewComponent={LinearGradient}
@@ -40,7 +44,7 @@ const Noti = ({ navigation }) => {
                     <View>
                         <Button
                             title='NO'
-                            onPress={() => null}
+                            onPress={() => navigation.navigate('List')}
                             titleStyle={{ padding: 10, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
                             buttonStyle={{ borderRadius: 16, }}
                             ViewComponent={LinearGradient}

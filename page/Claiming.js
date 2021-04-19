@@ -101,6 +101,7 @@ const Claiming = ({ route, navigation }) => {
         if (phone == '' || id == '') return;
 
         setLoad(true);
+        console.log(item)
     }
 
     return (
@@ -115,12 +116,12 @@ const Claiming = ({ route, navigation }) => {
                             <View style={{ marginTop: -50 }} onStartShouldSetResponder={() => true}>
                                 <View style={{ padding: 20, left: 20 }} >
                                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50 }}>Claim</Text>
-                                    <Text style={{ fontSize: 16 }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 16 }}>{item.item_name}</Text>
                                 </View>
 
                                 <View style={{ marginBottom: 10 }} >
                                     <Image
-                                        source={{ uri: item.url }}
+                                        source={{ uri: item.image_url }}
                                         resizeMode="cover"
                                         style={styles.stretch}
                                     />

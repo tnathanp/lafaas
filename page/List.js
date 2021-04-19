@@ -56,19 +56,15 @@ const ItemList = ({ route, navigation }) => {
     function fetchData() {
         if (!refreshing) setLoad(true);
 
-        fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=test').then(res => res.json())
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=ohno').then(res => res.json())
             .then(data => {
                 let mounted = true;
 
                 wait(refreshing ? 1000 : 200).then(() => {
                     if (mounted) {
-                        if (type === 0) {
-                            if (data[0].Registered) setOriginalData(data[0].Registered);
-                            else setOriginalData([]);
-                        } else {
-                            if (data[0].Claimed) setOriginalData(data[0].Claimed);
-                            else setOriginalData([]);
-                        }
+                        if (data.length !== 0) setOriginalData(data);
+                        else setOriginalData([]);
+
                         setRefreshing(false);
                     }
                 })

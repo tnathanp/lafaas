@@ -27,13 +27,13 @@ const Item = (props, { navigation }) => {
                                     <View style={styles.cardImgWrapper}>
                                         <Image
                                             onLoadEnd={() => itemsRef[index].fadeIn()}
-                                            source={{ uri: item.url }}
+                                            source={{ uri: item.image_url }}
                                             resizeMode='cover'
                                             style={styles.cardImg}
                                         />
                                     </View>
                                     <View style={styles.cardInfo}>
-                                        <Text style={{ fontSize: 18, color: 'black', fontWeight: 'medium' }}>{item.name}</Text>
+                                        <Text style={{ fontSize: 18, color: 'black', fontWeight: 'medium' }}>{item.item_name}</Text>
                                         <Text style={{ fontSize: 13, color: 'black' }}>{descriptionText}</Text>
                                     </View>
                                 </View>

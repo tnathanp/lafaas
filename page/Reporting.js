@@ -105,7 +105,7 @@ const Reporting = ({ route, navigation }) => {
                                     <Text style={{ fontSize: 16 }}>If you are sure that this belongs to you,{'\n'}</Text>
                                     <Text style={{ fontSize: 16 }}>
                                         Give details about
-                                        <Text style={{ fontWeight: 'bold' }}> {item.name} </Text>
+                                        <Text style={{ fontWeight: 'bold' }}> {item.item_name} </Text>
                                         and we will contact you as soon as possible.
                                      </Text>
                                 </View>
