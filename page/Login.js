@@ -9,6 +9,7 @@ import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
 import * as SecureStore from 'expo-secure-store';
+import * as Notifications from 'expo-notifications';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -55,7 +56,7 @@ const Login = ({ navigation }) => {
         }
     }
 
-    function login() {
+    async function login() {
         //Check if there are input errors
         for (let state in formState) {
             if (formState[state] === 1) {
@@ -75,12 +76,15 @@ const Login = ({ navigation }) => {
 
         setLoad(true);
 
+        const noti_token = 'test'
+
         fetch('https://lafaas-n4hzx.ondigitalocean.app/login', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 user: username,
-                pass: password
+                pass: password,
+                noti_token: noti_token
             })
         }).then(res => res.json()).then(data => {
             console.log(data);
