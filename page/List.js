@@ -93,11 +93,11 @@ const ItemList = ({ route, navigation }) => {
         } else {
             newData = originalData;
         }
-
+        
         //Filter by category
         if (filterCategory.length !== 0) {
             newData = newData.filter(e => {
-                if (filterCategory.includes(e)) {
+                if (filterCategory.includes(e.category)) {
                     return true;
                 } else {
                     return false;
