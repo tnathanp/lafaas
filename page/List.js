@@ -101,8 +101,7 @@ const ItemList = ({ route, navigation }) => {
         //Filter by category
         if (filterCategory.length !== 0) {
             newData = newData.filter(e => {
-                const constraint = e.category[0].toUpperCase() + e.category.substring(1);
-                if (filterCategory.includes(constraint)) {
+                if (filterCategory.includes(e)) {
                     return true;
                 } else {
                     return false;

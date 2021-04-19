@@ -137,11 +137,11 @@ const Register = ({ route, navigation }) => {
 
         arr.push({ label: 'Accessories', value: 'Accessories', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
 
-        ['Necklace', 'Earrings', 'Rings', 'Bracelet', 'Anklet', 'Hairband/ Headband', 'Scrunchie/ Hair ties', 'Bag', 'Wallet', 'Purse', 'Glasses', 'Watch'].map(e => arr.push({ label: e, value: e, parent: 'Accessories' }));
+        ['Necklace', 'Earrings', 'Rings', 'Bracelet', 'Anklet', 'Hairband/Headband', 'Scrunchie/Hair ties', 'Bag', 'Wallet', 'Purse', 'Glasses', 'Watch'].map(e => arr.push({ label: e, value: e, parent: 'Accessories' }));
 
         arr.push({ label: 'Cards', value: 'Cards', untouchable: true, textStyle: { fontFamily: 'NotoSansBold' } });
 
-        ['Debit/ Credit card', 'ID card', 'Student ID card', 'Driver’s license', 'Membership card', 'Point card'].map(e => arr.push({ label: e, value: e, parent: 'Cards' }));
+        ['Debit/Credit card', 'ID card', 'Student ID card', 'Driver’s license', 'Membership card', 'Point card'].map(e => arr.push({ label: e, value: e, parent: 'Cards' }));
 
         arr.push({ label: 'Other', value: 'Other' });
 
