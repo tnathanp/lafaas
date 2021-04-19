@@ -123,7 +123,7 @@ function Provider() {
 
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Map" component={Map} options={{ headerShown: true, title: 'Pick the area', headerTitleStyle: { alignSelf: 'center', fontFamily: 'NotoSansBold' } }} />
-          <Stack.Screen name="QRCode" component={QRCode} />
+          <Stack.Screen name="QRCode" component={QRCode} options={{ gestureEnabled: false }} />
           <Stack.Screen name="End" component={End} />
 
         </Stack.Navigator>

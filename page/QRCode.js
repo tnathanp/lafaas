@@ -10,6 +10,12 @@ const QRCode = ({ route, navigation }) => {
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
+        navigation.addListener('beforeRemove', e => {
+            e.preventDefault();
+        });
+    }, [navigation]);
+
+    useEffect(() => {
         if (route.params?.msg) setMsg(route.params.msg);
     }, [route.params])
 
@@ -43,8 +49,7 @@ const QRCode = ({ route, navigation }) => {
                 </View>
             </Modal>
 
-            {/*https://www.devglan.com/online-tools/aes-encryption-decryption*/}
-            <QRGenerator size={0.6 * Dimensions.get('window').width} value='aeJshhikeV0l6BCOZH3qj1BJzElD3OQngAIMUqlrLOM=' />
+            <QRGenerator size={0.6 * Dimensions.get('window').width} value={route.params?.qrid ?? 'none'} />
             <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, marginTop: 20 }}>Scan this QR Code at the pickup module</Text>
 
         </View>
