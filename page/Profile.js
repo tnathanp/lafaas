@@ -27,7 +27,7 @@ const Profile = ({ navigation }) => {
                 setItemsFound(arrFound);
                 setItemsLost(arrLost);
             });
-    }, []);
+    }, [navigation]);
 
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
@@ -67,50 +67,50 @@ const Profile = ({ navigation }) => {
                     title='change password'
                     onPress={() => null}
                     titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
-                    buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, backgroundColor: '#f6a085' }}
-
+                    buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, backgroundColor: '#f6a085', width: '100%' }}
                 />
+                <Text style={styles.title}>My Found Items</Text>
 
-                <Text style={styles.title}>My Registered Item</Text>
+                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 10 }}>
+                    {itemsFound.length !== 0 ?
+                        itemsFound.map((l, i) => (
+                            <View key={i} style={{ flexDirection: 'row' }}>
+                                <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
+                                    <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
+                                </View>
 
-                <Button
-                    title='Found'
-                    disabled={true}
-                    disabledTitleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3, color: '#f6a085' }}
-                    disabledStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, width: '100%', borderWidth: 1, borderColor: '#f6a085', backgroundColor: 'white' }}
-                />
-                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 15 }}>
-                    {itemsFound.map((l, i) => (
-                        <View key={i} style={{ flexDirection: 'row' }}>
-                            <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
-                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
+                                <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
+                                    <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
+                                </View>
                             </View>
-
-                            <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
-                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
-                            </View>
+                        ))
+                        :
+                        <View style={{ alignSelf: 'center' }}>
+                            <Text style={{ fontSize: 16, color: '#f6a085', marginTop: 10, marginBottom: 10 }}>None</Text>
                         </View>
-                    ))}
+                    }
                 </View>
 
-                <Button
-                    title='Lost'
-                    disabled={true}
-                    disabledTitleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3, color: '#f6a085' }}
-                    disabledStyle={{ borderRadius: 10, marginRight: 10, marginTop: 30, width: '100%', borderWidth: 1, borderColor: '#f6a085', backgroundColor: 'white' }}
-                />
-                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 15 }}>
-                    {itemsLost.map((l, i) => (
-                        <View key={i} style={{ flexDirection: 'row' }}>
-                            <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
-                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
-                            </View>
+                <Text style={styles.title}>My Lost Items</Text>
 
-                            <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
-                                <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
+                <View style={{ borderWidth: 1, borderColor: '#f6a085', borderRadius: 10, marginTop: 10 }}>
+                    {itemsLost.length !== 0 ?
+                        itemsLost.map((l, i) => (
+                            <View key={i} style={{ flexDirection: 'row' }}>
+                                <View style={{ flex: 1, textAlign: 'flex-start', marginLeft: 30 }}>
+                                    <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10, fontWeight: 'medium' }}>{l.item_name}</Text>
+                                </View>
+
+                                <View style={{ textAlign: 'flex-end', marginRight: 30 }}>
+                                    <Text style={{ fontSize: 16, color: '#494949', marginTop: 15, marginBottom: 10 }}>{l.location_desc}</Text>
+                                </View>
                             </View>
+                        ))
+                        :
+                        <View style={{ alignSelf: 'center' }}>
+                            <Text style={{ fontSize: 16, color: '#f6a085', marginTop: 10, marginBottom: 10 }}>None</Text>
                         </View>
-                    ))}
+                    }
                 </View>
             </View>
         </View>
