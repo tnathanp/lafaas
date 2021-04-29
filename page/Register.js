@@ -57,6 +57,7 @@ const Register = ({ route, navigation }) => {
                     imageSelector();
                 } else if (buttonIndex === 2 && img !== '') {
                     setImg('');
+                    setColor([]);
                 }
             }
         );
@@ -96,7 +97,7 @@ const Register = ({ route, navigation }) => {
     }
 
     const getColor = async (uri) => {
-        const colors = await ImageColors.getColors(uri, { quality: 'high' });
+        const colors = await ImageColors.getColors(uri, { quality: 'low' });
         let result = [];
 
         for (let key in colors) {
@@ -108,6 +109,13 @@ const Register = ({ route, navigation }) => {
         }
 
         setColor(result);
+    }
+
+    const deleteColor = c => {
+
+        let tempColor = color.slice().filter(e => !e.includes(c));
+        if(tempColor.length !== 0) setColor(tempColor);
+
     }
 
     function getListOfCategory() {
@@ -455,7 +463,7 @@ const Register = ({ route, navigation }) => {
                                                                     key={index}
                                                                     containerStyle={{ paddingRight: 15 }}
                                                                     buttonStyle={[styles.colorButton, { backgroundColor: e }]}
-                                                                    onPress={() => null}
+                                                                    onPress={() => deleteColor(e)}
                                                                 />
                                                             )
                                                         })
