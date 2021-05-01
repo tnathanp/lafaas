@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import { showMessage } from 'react-native-flash-message';
+import { FontAwesome } from '@expo/vector-icons';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
@@ -83,7 +84,7 @@ const Login = ({ navigation }) => {
                 body: JSON.stringify({
                     user: username,
                     pass: password,
-                    noti_token: token
+                    noti_token: token.data.split(']')[0].substring(18)
                 })
             }).then(res => res.json()).then(data => {
                 console.log(data);
@@ -129,8 +130,18 @@ const Login = ({ navigation }) => {
                             label='Username'
                             style={formState.username == 0 ? styles.inputBox : styles.inputBoxError}
                             labelStyle={styles.label}
-                            inputStyle={formState.username == 0 ? styles.input : styles.inputError}
+                            inputStyle={styles.input}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                            rightIcon={() => {
+                                if (formState.username) {
+                                    return (
+                                        <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                            <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                        </View>
+                                    )
+                                }
+                            }}
+                            rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                             onSubmitEditing={() => passwordInput.focus()}
                             autoCorrect={false}
                             autoCapitalize={'none'}
@@ -141,8 +152,18 @@ const Login = ({ navigation }) => {
                             label='Password'
                             style={formState.password == 0 ? styles.inputBox : styles.inputBoxError}
                             labelStyle={styles.label}
-                            inputStyle={formState.password == 0 ? styles.input : styles.inputError}
+                            inputStyle={styles.input}
                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                            rightIcon={() => {
+                                if (formState.password) {
+                                    return (
+                                        <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                            <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                        </View>
+                                    )
+                                }
+                            }}
+                            rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                             onSubmitEditing={() => login()}
                             ref={instance => { passwordInput = instance; }}
                             autoCorrect={false}
@@ -189,39 +210,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: 'white',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'white'
     },
     inputBoxError: {
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: '#FC4E29',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'red'
     },
     input: {
         fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
-    },
-    inputError: {
-        fontFamily: 'NotoSans',
-        fontSize: 15,
-        padding: 10,
-        color: '#FC4E29'
     },
     label: {
         color: 'white',

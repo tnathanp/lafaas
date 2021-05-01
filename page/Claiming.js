@@ -3,6 +3,7 @@ import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, View, Keyboard, Image } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
@@ -133,12 +134,23 @@ const Claiming = ({ route, navigation }) => {
                                         label='Phone no.'
                                         style={formState.phone == 0 ? styles.inputBox : styles.inputBoxError}
                                         labelStyle={styles.label}
-                                        inputStyle={formState.phone == 0 ? styles.input : styles.inputError}
+                                        inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        rightIcon={() => {
+                                            if (formState.phone) {
+                                                return (
+                                                    <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                        <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                    </View>
+                                                )
+                                            }
+                                        }}
+                                        rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                         onSubmitEditing={() => idInput.focus()}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                         maxLength={10}
+                                        keyboardType={'phone-pad'}
                                     />
                                 </View>
 
@@ -148,13 +160,24 @@ const Claiming = ({ route, navigation }) => {
                                         label='Identification card number'
                                         style={formState.id == 0 ? styles.inputBox : styles.inputBoxError}
                                         labelStyle={styles.label}
-                                        inputStyle={formState.id == 0 ? styles.input : styles.inputError}
+                                        inputStyle={styles.input}
                                         inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                        rightIcon={() => {
+                                            if (formState.id) {
+                                                return (
+                                                    <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                        <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                    </View>
+                                                )
+                                            }
+                                        }}
+                                        rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                         onSubmitEditing={() => Keyboard.dismiss()}
                                         ref={instance => { idInput = instance; }}
                                         autoCorrect={false}
                                         autoCapitalize={'none'}
                                         maxLength={13}
+                                        keyboardType={'phone-pad'}
                                     />
                                 </View>
 
@@ -187,39 +210,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: 'white',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'white'
     },
     inputBoxError: {
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: '#FC4E29',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'red'
     },
     input: {
         fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
-    },
-    inputError: {
-        fontFamily: 'NotoSans',
-        fontSize: 15,
-        padding: 10,
-        color: '#FC4E29'
     },
     label: {
         color: 'white',

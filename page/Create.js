@@ -5,6 +5,7 @@ import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthContext } from '../component/AuthContext';
 import { showMessage } from 'react-native-flash-message';
+import { FontAwesome } from '@expo/vector-icons';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
@@ -121,7 +122,7 @@ const Create = ({ navigation }) => {
                     email: email,
                     fname: fname,
                     lname: lname,
-                    noti_token: token
+                    noti_token: token.data.split(']')[0].substring(18)
                 })
             }).then(res => res.json()).then(data => {
                 console.log(data);
@@ -164,15 +165,25 @@ const Create = ({ navigation }) => {
                             <View onStartShouldSetResponder={() => true}>
                                 <Text style={{ fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 }}>Create Account</Text>
 
-                                <View style={{ flexDirection: 'row', marginBottom: -15 }}>
+                                <View style={{ flexDirection: 'row', marginBottom: 0 }}>
                                     <View style={{ width: '50%' }}>
                                         <Input
                                             onChangeText={value => handleChange(value, 'fname')}
                                             label='First Name'
                                             style={formState.fname == 0 ? styles.inputBox : styles.inputBoxError}
                                             labelStyle={styles.label}
-                                            inputStyle={formState.fname == 0 ? styles.input : styles.inputError}
+                                            inputStyle={styles.input}
                                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                            rightIcon={() => {
+                                                if (formState.fname) {
+                                                    return (
+                                                        <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                            <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                        </View>
+                                                    )
+                                                }
+                                            }}
+                                            rightIconContainerStyle={{ position: 'absolute', left: '75%' }}
                                             onSubmitEditing={() => lnameInput.focus()}
                                             autoCorrect={false}
                                         />
@@ -183,8 +194,18 @@ const Create = ({ navigation }) => {
                                             label='Last Name'
                                             style={formState.lname == 0 ? styles.inputBox : styles.inputBoxError}
                                             labelStyle={styles.label}
-                                            inputStyle={formState.lname == 0 ? styles.input : styles.inputError}
+                                            inputStyle={styles.input}
                                             inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                            rightIcon={() => {
+                                                if (formState.lname) {
+                                                    return (
+                                                        <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                            <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                        </View>
+                                                    )
+                                                }
+                                            }}
+                                            rightIconContainerStyle={{ position: 'absolute', left: '75%' }}
                                             onSubmitEditing={() => usernameInput.focus()}
                                             ref={instance => { lnameInput = instance; }}
                                             autoCorrect={false}
@@ -197,8 +218,18 @@ const Create = ({ navigation }) => {
                                     label='Username'
                                     style={formState.username == 0 ? styles.inputBox : styles.inputBoxError}
                                     labelStyle={styles.label}
-                                    inputStyle={formState.username == 0 ? styles.input : styles.inputError}
+                                    inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    rightIcon={() => {
+                                        if (formState.username) {
+                                            return (
+                                                <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                    <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                </View>
+                                            )
+                                        }
+                                    }}
+                                    rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                     onSubmitEditing={() => emailInput.focus()}
                                     ref={instance => { usernameInput = instance; }}
                                     autoCorrect={false}
@@ -210,12 +241,24 @@ const Create = ({ navigation }) => {
                                     label='Email'
                                     style={formState.email == 0 ? styles.inputBox : styles.inputBoxError}
                                     labelStyle={styles.label}
-                                    inputStyle={formState.email == 0 ? styles.input : styles.inputError}
+                                    inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    rightIcon={() => {
+                                        if (formState.email) {
+                                            return (
+                                                <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                    <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                </View>
+                                            )
+                                        }
+                                    }}
+                                    rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                     onSubmitEditing={() => passInput.focus()}
                                     ref={instance => { emailInput = instance; }}
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
+                                    keyboardType={'email-address'}
+                                    autoCompleteType={'email'}
                                 />
 
                                 <Input
@@ -223,8 +266,18 @@ const Create = ({ navigation }) => {
                                     label='Password'
                                     style={formState.password == 0 ? styles.inputBox : styles.inputBoxError}
                                     labelStyle={styles.label}
-                                    inputStyle={formState.password == 0 ? styles.input : styles.inputError}
+                                    inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    rightIcon={() => {
+                                        if (formState.password) {
+                                            return (
+                                                <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                    <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                </View>
+                                            )
+                                        }
+                                    }}
+                                    rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                     onSubmitEditing={() => cpassInput.focus()}
                                     ref={instance => { passInput = instance; }}
                                     autoCorrect={false}
@@ -237,8 +290,18 @@ const Create = ({ navigation }) => {
                                     label='Confirm Password'
                                     style={formState.cpassword == 0 ? styles.inputBox : styles.inputBoxError}
                                     labelStyle={styles.label}
-                                    inputStyle={formState.cpassword == 0 ? styles.input : styles.inputError}
+                                    inputStyle={styles.input}
                                     inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                    rightIcon={() => {
+                                        if (formState.cpassword) {
+                                            return (
+                                                <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                    <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                                </View>
+                                            )
+                                        }
+                                    }}
+                                    rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                     containerStyle={{ marginTop: -20, marginBottom: 10 }}
                                     onSubmitEditing={() => createAccount()}
                                     ref={instance => { cpassInput = instance; }}
@@ -272,39 +335,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: 'white',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'white'
     },
     inputBoxError: {
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: '#FC4E29',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'red'
     },
     input: {
         fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
-    },
-    inputError: {
-        fontFamily: 'NotoSans',
-        fontSize: 15,
-        padding: 10,
-        color: '#FC4E29'
     },
     label: {
         color: 'white',

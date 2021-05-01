@@ -3,6 +3,7 @@ import { Button, Input } from 'react-native-elements';
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, View, Dimensions } from 'react-native';
 import { Text } from '../component/Text';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LottieView from 'lottie-react-native';
@@ -64,11 +65,23 @@ const Recover = ({ navigation }) => {
                                 label='Enter your email address'
                                 style={formState.email == 0 ? styles.inputBox : styles.inputBoxError}
                                 labelStyle={styles.label}
-                                inputStyle={formState.email == 0 ? styles.input : styles.inputError}
+                                inputStyle={styles.input}
                                 inputContainerStyle={{ borderBottomColor: 'transparent' }}
+                                rightIcon={() => {
+                                    if (formState.email) {
+                                        return (
+                                            <View style={{ backgroundColor: 'white', padding: 5 }}>
+                                                <FontAwesome name="exclamation-triangle" size={18} color="red" />
+                                            </View>
+                                        )
+                                    }
+                                }}
+                                rightIconContainerStyle={{ position: 'absolute', left: '85%' }}
                                 onSubmitEditing={() => null}
                                 autoCorrect={false}
                                 autoCapitalize={'none'}
+                                keyboardType={'email-address'}
+                                autoCompleteType={'email'}
                             />
 
                             <View style={{ alignItems: 'center', marginTop: -5 }}>
@@ -106,45 +119,25 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: 'white',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'white'
     },
     inputBoxError: {
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: 'black',
         borderWidth: 1.5,
-        borderColor: '#FC4E29',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.4,
-        elevation: 5
+        borderColor: 'red'
     },
     input: {
         fontFamily: 'NotoSans',
         fontSize: 15,
         padding: 10
     },
-    inputError: {
-        fontFamily: 'NotoSans',
-        fontSize: 15,
-        padding: 10,
-        color: '#FC4E29'
-    },
     label: {
         color: 'white',
         marginBottom: 3,
         fontSize: 16,
-        fontFamily: 'NotoSans'
+        fontFamily: 'NotoSansBold'
     }
 });
 
