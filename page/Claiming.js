@@ -8,6 +8,7 @@ import { showMessage } from 'react-native-flash-message';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 import validator from 'validator';
+import * as SecureStore from 'expo-secure-store';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -102,7 +103,27 @@ const Claiming = ({ route, navigation }) => {
         if (phone == '' || id == '') return;
 
         setLoad(true);
-        console.log(item)
+
+        SecureStore.getItemAsync('userToken').then(token => {
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/claim', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    token: token,
+                    tel: phone,
+                    national_id: id,
+                    item_id: item.item_id
+                })
+            }).then(res => res.text()).then(data => {
+
+                wait(100).then(() => {
+                    setLoad(false);
+                    navigation.navigate('QRCode', { qrid: data });
+                })
+            });
+        })
+
+
     }
 
     return (
