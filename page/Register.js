@@ -349,6 +349,7 @@ const Register = ({ route, navigation }) => {
                                 >
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
+                                        searchable={true}
                                         controller={instance => categoryController = instance}
                                         items={getListOfCategory()}
                                         scrollViewProps={{ showsVerticalScrollIndicator: false }}
@@ -380,11 +381,17 @@ const Register = ({ route, navigation }) => {
                                             controller={instance => colorController = instance}
                                             multiple={true} max={2}
                                             defaultValue={0}
-                                            items={[
-                                                { label: 'Red', value: '#ff0000', textStyle: { color: '#ff0000' } },
-                                                { label: 'Green', value: '#00ff00', textStyle: { color: '#00ff00' } },
-                                                { label: 'Blue', value: '#0000ff', textStyle: { color: '#0000ff' } }
-                                            ]}
+                                            items={
+                                                ['#B21F35', '#D82735', '#FF7435', '#FFA135', '#FFCB35', '#FFF735', '#00753A',
+                                                    '#009E47', '#16DD36', '#0052A5', '#0079E7', '#06A9FC', '#681E7E', '#7D3CB5', '#BD7AF6'].map(c => {
+                                                        return { label: '', value: c, viewStyle: { backgroundColor: c, width: '100%', borderRadius: 5, marginVertical: 5 } }
+                                                    })
+                                            }
+                                            customTickIcon={() =>
+                                                <View style={{ marginRight: 10 }}>
+                                                    <Entypo name="check" size={12} color="white" />
+                                                </View>
+                                            }
                                             scrollViewProps={{ showsVerticalScrollIndicator: false }}
                                             placeholder='Select color'
                                             style={{
