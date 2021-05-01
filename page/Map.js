@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import LottieView from 'lottie-react-native';
 import { Entypo } from '@expo/vector-icons';
 import { Button } from 'react-native-elements';
@@ -35,6 +35,7 @@ const Map = ({ route, navigation }) => {
         <View style={styles.container}>
 
             <MapView
+                provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 initialRegion={{ latitude: 13.739, longitude: 100.5303, latitudeDelta: 13.523 - 13.5, longitudeDelta: (13.523 - 13.5) * ASPECT_RATIO }}
                 onRegionChangeComplete={loc => setLocation(loc)}

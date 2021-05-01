@@ -21,6 +21,11 @@
       "bundleIdentifier": "com.tanathanp.LaFaaS"
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBK9DzE85B9dlttYktKemcDjD9OTHT05Qc"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

@@ -29,7 +29,7 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
     <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyBfzY2a_J6ziJfORoFNRB26j3b4K9PAXOs"/>
+     android:value="AIzaSyBK9DzE85B9dlttYktKemcDjD9OTHT05Qc"/>
 
    <!-- You will also only need to add this uses-library tag -->
    <uses-library android:name="org.apache.http.legacy" android:required="false"/>
