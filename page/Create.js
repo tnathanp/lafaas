@@ -111,8 +111,6 @@ const Create = ({ navigation }) => {
 
         setLoad(true);
 
-        const noti_token = 'test';
-
         fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },

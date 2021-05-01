@@ -12,6 +12,7 @@ import BackButton from '../component/BackButton';
 import ImageColors from 'react-native-image-colors';
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
+import * as Notifications from 'expo-notifications';
 //import { TriangleColorPicker } from 'react-native-color-picker';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
@@ -114,7 +115,7 @@ const Register = ({ route, navigation }) => {
     const deleteColor = c => {
 
         let tempColor = color.slice().filter(e => !e.includes(c));
-        if(tempColor.length !== 0) setColor(tempColor);
+        if (tempColor.length !== 0) setColor(tempColor);
 
     }
 
@@ -156,7 +157,7 @@ const Register = ({ route, navigation }) => {
         return arr;
     }
 
-    function register() {
+    async function register() {
         //check if empty
 
         if (route.params.type === 'found') {
@@ -213,7 +214,7 @@ const Register = ({ route, navigation }) => {
         formData.append('category', category.value);
         formData.append('description', desc);
         formData.append('type', route.params.type);
-        formData.append('device_token', 'test');
+        formData.append('device_token', await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
         formData.append('color', color.map(e => e.substring(1)).toString());
 
         if (route.params.type === 'found') {
