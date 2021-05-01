@@ -75,10 +75,24 @@ function Provider() {
       const { data } = packet.request.content;
       console.log('[Notification] ' + JSON.stringify(data));
 
-      if (data.id === 1) {
-        Linking.openURL('lafaas://app/error/' + data.msg);
+      switch (data.id) {
+        case 0:
+          Linking.openURL('lafaas://app/success?type=' + data.type);
+          break;
+        case 1:
+          if (Object.keys(data).length == 3) {
+            Linking.openURL('lafaas://app/inform?msg=' + data.msg + '&msg2=' + data.msg2);
+          } else {
+            Linking.openURL('lafaas://app/inform?msg=' + data.msg);
+          }
+          break;
+        case 2:
+          Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
+          break;
+        case 3:
+          Linking.openURL('lafaas://app/cancelComplete');
+          break;
       }
-
     });
 
     //Authentication
@@ -150,8 +164,23 @@ function App() {
       const { data } = lastNotificationResponse.notification.request.content;
 
       setTimeout(() => {
-        if (data.id === 1) {
-          Linking.openURL('lafaas://app/error/' + data.msg);
+        switch (data.id) {
+          case 0:
+            Linking.openURL('lafaas://app/success?type=' + data.type);
+            break;
+          case 1:
+            if (Object.keys(data).length == 3) {
+              Linking.openURL('lafaas://app/inform?msg=' + data.msg + '&msg2=' + data.msg2);
+            } else {
+              Linking.openURL('lafaas://app/inform?msg=' + data.msg);
+            }
+            break;
+          case 2:
+            Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
+            break;
+          case 3:
+            Linking.openURL('lafaas://app/cancelComplete');
+            break;
         }
       }, 500)
 

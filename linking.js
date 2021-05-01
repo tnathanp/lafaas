@@ -1,12 +1,9 @@
 const config = {
     screens: {
         QRCode: {
-            path: 'error/:msg',
-            parse: {
-                msg: (msg) => `${msg}`,
-            },
-        },
-    },
+            path: ':operation'
+        }
+    }
 };
 
 const linking = {
