@@ -58,7 +58,7 @@ const ItemList = ({ route, navigation }) => {
         if (!refreshing) setLoad(true);
 
         Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
-            fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=' + token).then(res => res.json())
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=' + token.data.split(']')[0].substring(18)).then(res => res.json())
                 .then(data => {
                     let mounted = true;
 
@@ -85,9 +85,9 @@ const ItemList = ({ route, navigation }) => {
         const text = value.toLowerCase();
         if (text !== '') {
             newData = originalData.filter(e => {
-                if (e.name.toLowerCase().includes(text)) {
+                if (e.item_name.toLowerCase().includes(text)) {
                     return true;
-                } else if (Comparator.compareTwoStrings(e.name, text) >= 0.6) {
+                } else if (Comparator.compareTwoStrings(e.item_name, text) >= 0.6) {
                     return true;
                 }
                 return false;
@@ -209,9 +209,9 @@ const CustomSidebarMenu = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ paddingTop: Platform.OS === 'ios' ? 35 : 50, alignItems: 'center' }}>
+            <View style={{ paddingTop: Platform.OS === 'ios' ? 35 : 80, alignItems: 'center' }}>
                 <Circle color="#f6a085" scale={2} style={{ alignItems: 'center', justifyContent: 'center' }} />
-                <Text style={{ justifyContent: "center", alignSelf: 'center', fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute', top: Platform.OS === 'ios' ? 33 : 48 }}>
+                <Text style={{ justifyContent: "center", alignSelf: 'center', fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute', top: Platform.OS === 'ios' ? 33 : 78 }}>
                     {name ? name[0].toUpperCase() : ''}
                 </Text>
                 <Text

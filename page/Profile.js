@@ -17,7 +17,7 @@ const Profile = ({ navigation }) => {
 
     useEffect(() => {
         Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
-            fetch('https://lafaas-n4hzx.ondigitalocean.app/profile' + '?token=' + token).then(res => res.json())
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/profile' + '?token=' + token.data.split(']')[0].substring(18)).then(res => res.json())
                 .then(data => {
                     let arrFound = [];
                     let arrLost = [];
@@ -66,7 +66,7 @@ const Profile = ({ navigation }) => {
                 </View>
             </View>
 
-            <View style={{ flex: 1, padding: 30, top: -250 }}>
+            <View style={{ flex: 1, padding: 30, bottom: '32%' }}>
                 <Text style={styles.title}>Password Setting</Text>
                 <Button
                     title='change password'

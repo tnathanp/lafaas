@@ -214,7 +214,6 @@ const Register = ({ route, navigation }) => {
         formData.append('category', category.value);
         formData.append('description', desc);
         formData.append('type', route.params.type);
-        formData.append('device_token', await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }));
         formData.append('color', color.map(e => e.substring(1)).toString());
 
         if (route.params.type === 'found') {
@@ -222,43 +221,51 @@ const Register = ({ route, navigation }) => {
 
             setLoad(true);
 
-            fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'content-type': 'multipart/form-data',
-                }
-            }).then(res => res.text()).then(id => {
-                wait(2000).then(() => {
-                    //Handle qrid for case found
-                    setLoad(false);
+            Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
+                formData.append('device_token', token.data.split(']')[0].substring(18));
+                fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                    }
+                }).then(res => res.text()).then(id => {
+                    wait(2000).then(() => {
+                        //Handle qrid for case found
+                        setLoad(false);
 
-                    navigation.navigate('QRCode', { qrid: id });
-                })
+                        navigation.navigate('QRCode', { qrid: id });
+                    })
+                });
             });
+
 
         } else {
             setLoad(true);
 
-            fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'content-type': 'multipart/form-data',
-                }
-            }).then(res => res.json()).then(data => {
-                wait(2000).then(() => {
-                    //Handle result for case lost
-                    setLoad(false);
-
-                    if (data.code === 1) {
-                        navigation.navigate('Noti', { item: data.item[0] });
-                    } else if (data.code === 2) {
-                        navigation.navigate('List');
+            Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
+                formData.append('device_token', token.data.split(']')[0].substring(18));
+                fetch('https://lafaas-n4hzx.ondigitalocean.app/registeritem', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'content-type': 'multipart/form-data',
                     }
+                }).then(res => res.json()).then(data => {
+                    wait(2000).then(() => {
+                        //Handle result for case lost
+                        setLoad(false);
 
-                })
+                        if (data.code === 1) {
+                            navigation.navigate('Noti', { item: data.item[0] });
+                        } else if (data.code === 2) {
+                            navigation.navigate('List');
+                        }
+
+                    })
+                });
             });
+
         }
 
     }
