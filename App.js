@@ -63,7 +63,7 @@ function Provider() {
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: false,
-        shouldPlaySound: false,
+        shouldPlaySound: true,
         shouldSetBadge: false
       })
     });
