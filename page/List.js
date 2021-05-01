@@ -14,6 +14,7 @@ import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Comparator from 'string-similarity';
 import * as SecureStore from 'expo-secure-store';
+import * as Notifications from 'expo-notifications';
 
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -56,24 +57,25 @@ const ItemList = ({ route, navigation }) => {
     function fetchData() {
         if (!refreshing) setLoad(true);
 
-        fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=ohno').then(res => res.json())
-            .then(data => {
-                let mounted = true;
+        Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/' + (type === 0 ? 'item_reg' : 'item_claimed') + '?token=' + token).then(res => res.json())
+                .then(data => {
+                    let mounted = true;
 
-                wait(refreshing ? 1000 : 200).then(() => {
-                    if (mounted) {
-                        if (data.length !== 0) setOriginalData(data);
-                        else setOriginalData([]);
+                    wait(refreshing ? 1000 : 200).then(() => {
+                        if (mounted) {
+                            if (data.length !== 0) setOriginalData(data);
+                            else setOriginalData([]);
 
-                        setRefreshing(false);
+                            setRefreshing(false);
+                        }
+                    })
+
+                    return function cleanup() {
+                        mounted = false;
                     }
-                })
-
-                return function cleanup() {
-                    mounted = false;
-                }
-            }).catch(e => console.log(e));
-
+                }).catch(e => console.log(e));
+        });
     }
 
     function filterData(value) {
@@ -93,7 +95,7 @@ const ItemList = ({ route, navigation }) => {
         } else {
             newData = originalData;
         }
-        
+
         //Filter by category
         if (filterCategory.length !== 0) {
             newData = newData.filter(e => {
@@ -207,9 +209,9 @@ const CustomSidebarMenu = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ paddingTop: 25, alignItems: 'center' }}>
+            <View style={{ paddingTop: Platform.OS === 'ios' ? 35 : 50, alignItems: 'center' }}>
                 <Circle color="#f6a085" scale={2} style={{ alignItems: 'center', justifyContent: 'center' }} />
-                <Text style={{ justifyContent: "center", alignSelf: 'center', fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute', top: 23 }}>
+                <Text style={{ justifyContent: "center", alignSelf: 'center', fontSize: 40, color: '#ffffff', fontWeight: 'bold', position: 'absolute', top: Platform.OS === 'ios' ? 33 : 48 }}>
                     {name ? name[0].toUpperCase() : ''}
                 </Text>
                 <Text
@@ -237,16 +239,16 @@ const CustomSidebarMenu = (props) => {
                     }}
                 />
                 <DrawerItem
-                    label="NOTI"
-                    onPress={() => props.navigation.navigate('Noti')}
-                />
-                <DrawerItem
                     label="QR"
                     onPress={() => props.navigation.navigate('QRCode')}
                 />
                 <DrawerItem
                     label="END"
                     onPress={() => props.navigation.navigate('End')}
+                />
+                <DrawerItem
+                    label="Confirm"
+                    onPress={() => props.navigation.navigate('Confirm')}
                 />
             </DrawerContentScrollView>
         </SafeAreaView>
