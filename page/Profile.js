@@ -4,29 +4,34 @@ import { Button, Icon } from 'react-native-elements';
 import { Text } from '../component/Text';
 import { Circle } from 'react-native-shape';
 import * as SecureStore from 'expo-secure-store';
+import * as Notifications from 'expo-notifications';
 
 const Profile = ({ navigation }) => {
 
     const [name, setName] = useState('Loading');
+    const [fullname, setFullname] = useState('Loading');
     const [itemsFound, setItemsFound] = useState([]);
     const [itemsLost, setItemsLost] = useState([]);
 
     SecureStore.getItemAsync('username').then(result => setName(result));
 
     useEffect(() => {
-        fetch('https://lafaas-n4hzx.ondigitalocean.app/myregister' + '?token=asdf').then(res => res.json())
-            .then(data => {
-                let arrFound = [];
-                let arrLost = [];
+        Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/profile' + '?token=' + token).then(res => res.json())
+                .then(data => {
+                    let arrFound = [];
+                    let arrLost = [];
 
-                data.map(e => {
-                    if (e.type == 'Found') arrFound.push(e);
-                    else arrLost.push(e);
-                })
+                    data.data.map(e => {
+                        if (e.type == 'Found') arrFound.push(e);
+                        else arrLost.push(e);
+                    })
 
-                setItemsFound(arrFound);
-                setItemsLost(arrLost);
-            });
+                    setFullname(data.name);
+                    setItemsFound(arrFound);
+                    setItemsLost(arrLost);
+                });
+        });
     }, [navigation]);
 
     return (
@@ -57,7 +62,7 @@ const Profile = ({ navigation }) => {
 
                 <View>
                     <Text style={{ fontSize: 25, color: '#000000', fontWeight: 'bold' }}>{name}</Text>
-                    <Text style={{ fontSize: 16, color: '#000000', }}>username</Text>
+                    <Text style={{ fontSize: 16, color: '#000000', }}>{fullname}</Text>
                 </View>
             </View>
 
@@ -65,7 +70,7 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.title}>Password Setting</Text>
                 <Button
                     title='change password'
-                    onPress={() => null}
+                    onPress={() => navigation.navigate('ChangePassword')}
                     titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
                     buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, backgroundColor: '#f6a085', width: '100%' }}
                 />
