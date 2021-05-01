@@ -34,14 +34,14 @@ const QRCode = ({ route, navigation }) => {
                 animationType='slide'
             >
                 <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                    <View style={{ backgroundColor: 'white', width: '90%', height: '50%', borderRadius: 20, alignItems: 'center' }}>
+                    <View style={{ backgroundColor: 'white', width: '90%', height: '30%', borderRadius: 20, alignItems: 'center' }}>
 
-                        <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginVertical: 20 }}>{msg}</Text>
+                        <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginVertical: 50 }}>{msg}</Text>
 
                         <Button
                             title="Close"
                             titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
-                            buttonStyle={{ marginBottom: '5%', backgroundColor: '#fc8181', borderRadius: 10 }}
+                            buttonStyle={{ marginBottom: '30%', backgroundColor: '#fc8181', borderRadius: 10 }}
                             onPress={() => showError(false)}
                         />
 
