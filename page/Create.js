@@ -111,41 +111,44 @@ const Create = ({ navigation }) => {
 
         setLoad(true);
 
-        fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                user: username,
-                pass: passwordConfirm,
-                email: email,
-                fname: fname,
-                lname: lname,
-                noti_token: await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' })
-            })
-        }).then(res => res.json()).then(data => {
-            console.log(data);
-            wait(100).then(() => {
-                if (data.code === 1) {
+        Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' }).then(token => {
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/createuser', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    user: username,
+                    pass: passwordConfirm,
+                    email: email,
+                    fname: fname,
+                    lname: lname,
+                    noti_token: token
+                })
+            }).then(res => res.json()).then(data => {
+                console.log(data);
+                wait(100).then(() => {
+                    if (data.code === 1) {
 
-                    SecureStore.setItemAsync('userToken', data.token).then(() => {
-                        SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
-                    });
+                        SecureStore.setItemAsync('userToken', data.token).then(() => {
+                            SecureStore.setItemAsync('username', data.name).then(() => dispatch({ type: 'SIGN_IN' }));
+                        });
 
-                } else {
+                    } else {
 
-                    showMessage({
-                        message: 'Error',
-                        description: 'Username already exists',
-                        type: 'danger',
-                        titleStyle: { fontFamily: 'NotoSansBold' },
-                        textStyle: { fontFamily: 'NotoSans' },
-                        duration: 2500
-                    });
+                        showMessage({
+                            message: 'Error',
+                            description: 'Username already exists',
+                            type: 'danger',
+                            titleStyle: { fontFamily: 'NotoSansBold' },
+                            textStyle: { fontFamily: 'NotoSans' },
+                            duration: 2500
+                        });
 
-                    setLoad(false);
-                }
-            })
+                        setLoad(false);
+                    }
+                })
+            });
         });
+
     }
 
     return (
