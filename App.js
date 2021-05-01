@@ -26,6 +26,8 @@ import Noti from './page/Noti';
 import Reporting from './page/Reporting';
 import Reported from './page/Reported';
 import End from './page/End';
+import Confirm from './page/Confirm';
+import ChangePassword from './page/ChangePassword';
 import linking from './linking';
 
 const Stack = createSharedElementStackNavigator();
@@ -118,6 +120,8 @@ function Provider() {
               <Stack.Screen name="Noti" component={Noti} />
               <Stack.Screen name="Reporting" component={Reporting} />
               <Stack.Screen name="Reported" component={Reported} options={{ gestureEnabled: false }} />
+              <Stack.Screen name="Confirm" component={Confirm} />
+              <Stack.Screen name="ChangePassword" component={ChangePassword} />
             </>
           }
 
