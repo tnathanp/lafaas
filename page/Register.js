@@ -70,7 +70,7 @@ const Register = ({ route, navigation }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
-            quality: 0
+            quality: 1
         });
 
 
@@ -84,7 +84,7 @@ const Register = ({ route, navigation }) => {
 
         let result = await ImagePicker.launchCameraAsync({
             allowsEditing: false,
-            quality: 0
+            quality: 1
         });
 
         if (result.cancelled) {
@@ -356,7 +356,6 @@ const Register = ({ route, navigation }) => {
                                 >
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
-                                        searchable={true}
                                         controller={instance => categoryController = instance}
                                         items={getListOfCategory()}
                                         scrollViewProps={{ showsVerticalScrollIndicator: false }}
@@ -389,7 +388,7 @@ const Register = ({ route, navigation }) => {
                                             multiple={true} max={2}
                                             defaultValue={0}
                                             items={
-                                                ['#B21F35', '#D82735', '#FF7435', '#FFA135', '#FFCB35', '#FFF735', '#00753A',
+                                                ['#000000', '#FFFFFF', '#B21F35', '#D82735', '#FF7435', '#FFA135', '#FFCB35', '#FFF735', '#00753A',
                                                     '#009E47', '#16DD36', '#0052A5', '#0079E7', '#06A9FC', '#681E7E', '#7D3CB5', '#BD7AF6'].map(c => {
                                                         return { label: '', value: c, viewStyle: { backgroundColor: c, width: '100%', borderRadius: 5, marginVertical: 5 } }
                                                     })
