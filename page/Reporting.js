@@ -111,7 +111,7 @@ const Reporting = ({ route, navigation }) => {
                                 </View>
 
                                 <Image
-                                    source={{ uri: item.image }}
+                                    source={{ uri: item.image_url }}
                                     resizeMode="cover"
                                     style={styles.stretch}
                                 />
