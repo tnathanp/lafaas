@@ -84,7 +84,7 @@ const Login = ({ navigation }) => {
             body: JSON.stringify({
                 user: username,
                 pass: password,
-                noti_token: noti_token
+                noti_token: await Notifications.getExpoPushTokenAsync({ experienceId: '@tanathanp/LaFaaS' })
             })
         }).then(res => res.json()).then(data => {
             console.log(data);
