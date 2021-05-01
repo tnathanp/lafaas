@@ -238,18 +238,6 @@ const CustomSidebarMenu = (props) => {
                                 .then(() => dispatch({ type: 'SIGN_OUT' })));
                     }}
                 />
-                <DrawerItem
-                    label="QR"
-                    onPress={() => props.navigation.navigate('QRCode')}
-                />
-                <DrawerItem
-                    label="END"
-                    onPress={() => props.navigation.navigate('End')}
-                />
-                <DrawerItem
-                    label="Confirm"
-                    onPress={() => props.navigation.navigate('Confirm')}
-                />
             </DrawerContentScrollView>
         </SafeAreaView>
     );
