@@ -227,10 +227,6 @@ const CustomSidebarMenu = (props) => {
             <DrawerContentScrollView {...props}>
                 <DrawerItemList {...props} />
                 <DrawerItem
-                    label="Contact Us"
-                    onPress={() => null}
-                />
-                <DrawerItem
                     label="Logout"
                     onPress={() => {
                         SecureStore.deleteItemAsync('userToken')

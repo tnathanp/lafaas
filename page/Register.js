@@ -13,6 +13,7 @@ import ImageColors from 'react-native-image-colors';
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
+import { Dimensions } from 'react-native';
 //import { TriangleColorPicker } from 'react-native-color-picker';
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
@@ -357,6 +358,7 @@ const Register = ({ route, navigation }) => {
                                     <Text style={styles.label}>Category</Text>
                                     <DropDownPicker
                                         controller={instance => categoryController = instance}
+                                        dropDownMaxHeight={Dimensions.get('window').height * 0.28}
                                         items={getListOfCategory()}
                                         scrollViewProps={{ showsVerticalScrollIndicator: false }}
                                         placeholder='Select category'
@@ -388,8 +390,8 @@ const Register = ({ route, navigation }) => {
                                             multiple={true} max={2}
                                             defaultValue={0}
                                             items={
-                                                ['#000000', '#FFFFFF', '#B21F35', '#D82735', '#FF7435', '#FFA135', '#FFCB35', '#FFF735', '#00753A',
-                                                    '#009E47', '#16DD36', '#0052A5', '#0079E7', '#06A9FC', '#681E7E', '#7D3CB5', '#BD7AF6'].map(c => {
+                                                ['#000000', '#B21F35', '#D82735', '#FF7435', '#FFA135', '#FFCB35', '#FFF735', '#00753A',
+                                                    '#009E47', '#16DD36', '#0052A5', '#0079E7', '#06A9FC', '#681E7E', '#7D3CB5', '#BD7AF6', '#FFFFFF'].map(c => {
                                                         return { label: '', value: c, viewStyle: { backgroundColor: c, width: '100%', borderRadius: 5, marginVertical: 5 } }
                                                     })
                                             }
@@ -468,7 +470,7 @@ const Register = ({ route, navigation }) => {
 
                                         <View style={{ marginTop: 10 }}>
                                             <Text style={styles.label}>Color Palette</Text>
-                                            <View style={{ borderRadius: 10, backgroundColor: 'white', width: '100%', height: 70, alignItems: 'center', justifyContent: 'center' }}>
+                                            <View style={{ borderRadius: 10, backgroundColor: 'white', width: '100%', height: 90, alignItems: 'center', justifyContent: 'center' }}>
                                                 <ScrollView style={{ padding: 15 }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                                     {
                                                         color.map((e, index) => {
@@ -483,18 +485,24 @@ const Register = ({ route, navigation }) => {
                                                         })
                                                     }
                                                     {
-                                                        color.length === 0 &&
+                                                        color.length == 0 &&
                                                         <Text style={{ color: '#86939e', alignSelf: 'center' }}>
                                                             Upload an image of the item first
                                                         </Text>
                                                     }
                                                 </ScrollView>
+                                                {
+                                                    color.length !== 0 &&
+                                                    <Text style={{ color: '#86939e', alignSelf: 'center', marginTop: -20, marginBottom: 10 }}>
+                                                        Tap on color to pop it off
+                                                    </Text>
+                                                }
                                             </View>
                                         </View>
                                     </View>
                                 }
 
-                                <View style={{ alignSelf: 'stretch', marginTop: route.params.type === 'found' ? 130 : -20, padding: 10 }}>
+                                <View style={{ alignSelf: 'stretch', marginTop: route.params.type === 'found' ? 150 : -20, padding: 10 }}>
                                     <Button
                                         title='register'
                                         titleStyle={{ fontFamily: 'NotoSansBold', color: '#fc8181', fontSize: 14 }}
