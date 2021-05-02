@@ -3,9 +3,8 @@ import { View, StyleSheet, Dimensions, Modal } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Text } from '../component/Text';
 import { default as QRGenerator } from 'react-native-qrcode-svg';
+import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
-
-const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
 const QRCode = ({ route, navigation }) => {
 
@@ -22,7 +21,8 @@ const QRCode = ({ route, navigation }) => {
             case 'inform':
                 if (Object.keys(params).length === 3) {
                     showError(false);
-                    setMessage([params.msg, params.msg2]);
+                    if (params.msg2 == 'undefined' || params.msg2 == undefined) setMessage([params.msg, '']);
+                    else setMessage([params.msg, params.msg2]);
                 } else {
                     showError(false);
                     setMessage([params.msg, '']);
@@ -68,20 +68,34 @@ const QRCode = ({ route, navigation }) => {
                 animationType='slide'
             >
                 <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                    <View style={{ backgroundColor: 'white', width: '90%', height: '30%', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ backgroundColor: 'white', width: '90%', height: '35%', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
 
+                        {message[0] == 'Please scan your fingerprint with your right thumb' ?
+                            <>
+                                <LottieView
+                                    style={{ backgroundColor: 'transparent', marginTop: -15, marginBottom: 20 }}
+                                    source={require('../assets/anim/lf30_fingerprint.json')}
+                                    autoPlay
+                                />
 
-                        <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginBottom: 10 }}>Alert</Text>
-                        <Text style={{ textAlign: 'center', color: 'black', fontWeight: 'normal', fontSize: 16, marginBottom: 30, paddingHorizontal: 10 }}>
-                            {message[0] + '\n' + message[1]}
-                        </Text>
+                                <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 20, marginTop: '45%', paddingHorizontal: 15 }}>{message[0]}</Text>
+                                <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, marginTop: 10, paddingHorizontal: 15 }}>The process might take some time</Text>
+                            </>
+                            :
+                            <>
+                                <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginBottom: 10 }}>Alert</Text>
+                                <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 18, marginTop: 30, marginBottom: 60, paddingHorizontal: 15 }}>
+                                    {message[1] == '' ? message[0] : message[0] + '\n' + message[1]}
+                                </Text>
 
-                        <Button
-                            title="Close"
-                            titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
-                            buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10 }}
-                            onPress={() => showError(false)}
-                        />
+                                <Button
+                                    title="Close"
+                                    titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
+                                    buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10 }}
+                                    onPress={() => showError(false)}
+                                />
+                            </>
+                        }
 
                     </View>
                 </View>

@@ -13,19 +13,19 @@ const Confirm = ({ route, navigation }) => {
     }, [route.params])
 
     function cancel() {
-        fetch('https://lafaas-n4hzx.ondigitalocean.app/cancelclaim' + qrid).then(res => res.text()).then(data => {
-            //Done
+        fetch('https://lafaas-n4hzx.ondigitalocean.app/cancelclaim?qr_id=' + qrid).then(res => res.text()).then(data => {
+            navigation.navigate('List');
         })
     };
 
     return (
         <View style={styles.container}>
 
-            <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 48, marginTop: 20 }}>หน้าcancel</Text>
-            <Text style={{ color: '#777777', fontSize: 16 }}>Let's hope the owner finds their item soon</Text>
+            <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 48, marginTop: 20 }}>Not Yours?</Text>
+            <Text style={{ color: '#777777', fontSize: 16, textAlign: 'center' }}>If you recognize the item is indeed {'\n'} not belong to you</Text>
 
             <Text style={{ color: '#fc8181', fontWeight: 'bold', fontSize: 18, textAlign: 'center', marginBottom: 20, marginTop: Dimensions.get('window').height * 0.35 }}>
-                You are the reason why the{'\n'}world is getting better!
+                Please cancel the process {'\n'} before closing the module
             </Text>
 
             <Button
