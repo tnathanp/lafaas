@@ -77,7 +77,11 @@ function Provider() {
 
       switch (data.id) {
         case 0:
-          Linking.openURL('lafaas://app/success?type=' + data.type);
+          if (data.type == 'found') {
+            Linking.openURL('lafaas://app/success?type=' + data.type);
+          } else {
+            Linking.openURL('lafaas://app/endClaim/lost');
+          }
           break;
         case 1:
           if (Object.keys(data).length == 3) {
@@ -88,9 +92,6 @@ function Provider() {
           break;
         case 2:
           Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
-          break;
-        case 3:
-          Linking.openURL('lafaas://app/cancelComplete');
           break;
       }
     });
@@ -166,7 +167,11 @@ function App() {
       setTimeout(() => {
         switch (data.id) {
           case 0:
-            Linking.openURL('lafaas://app/success?type=' + data.type);
+            if (data.type == 'found') {
+              Linking.openURL('lafaas://app/success?type=' + data.type);
+            } else {
+              Linking.openURL('lafaas://app/endClaim/lost');
+            }
             break;
           case 1:
             if (Object.keys(data).length == 3) {
@@ -177,9 +182,6 @@ function App() {
             break;
           case 2:
             Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
-            break;
-          case 3:
-            Linking.openURL('lafaas://app/cancelComplete');
             break;
         }
       }, 500)

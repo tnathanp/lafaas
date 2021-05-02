@@ -1,5 +1,8 @@
 const config = {
     screens: {
+        End: {
+            path: 'endClaim/:type'
+        },
         QRCode: {
             path: ':operation'
         }

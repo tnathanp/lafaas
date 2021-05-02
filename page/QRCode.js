@@ -32,10 +32,6 @@ const QRCode = ({ route, navigation }) => {
                 showError(false);
                 navigation.navigate('Confirm', { qrid: params.qrid })
                 break;
-            case 'cancelComplete':
-                showError(false);
-                navigation.navigate('List');
-                break;
         }
     }, [route.params]);
 
