@@ -4,6 +4,7 @@ import { SearchBar, Button, Icon } from 'react-native-elements';
 import { StyleSheet, Dimensions, TouchableOpacity, View, ScrollView, RefreshControl, Keyboard, TouchableWithoutFeedback, SafeAreaView, Image } from 'react-native';
 import { Circle } from 'react-native-shape';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useIsFocused } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Octicons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -24,7 +25,8 @@ const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 const ItemList = ({ route, navigation }) => {
 
     const type = route.name === 'Registered' ? 0 : 1;
-    const filterArray = useContext(FilterContext);
+    const options = useContext(ListContext);
+    const focused = useIsFocused();
     const [search, setSearch] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const [load, setLoad] = useState(true);
@@ -36,9 +38,18 @@ const ItemList = ({ route, navigation }) => {
     useDidUpdateEffect(() => filterData(search), [originalData]);
     useDidUpdateEffect(() => setLoad(false), [data]);
     useDidUpdateEffect(() => {
-        if (filterArray.from === type)
-            setFilterCategory(filterArray.lists)
-    }, [filterArray]);
+        if (options.filter.from === type)
+            setFilterCategory(options.filter.lists)
+    }, [options.filter]);
+    useDidUpdateEffect(() => {
+        if (focused) {
+            if (options.stamp) {
+                if (new Date().getTime() < options.stamp) {
+                    setRefreshing(true);
+                }
+            }
+        }
+    }, [focused]);
 
     function useDidUpdateEffect(method, dependency) {
         const didMountRef = useRef(false);
@@ -191,9 +202,12 @@ const ItemList = ({ route, navigation }) => {
             {data.length !== 0 && !load &&
                 <ScrollView
                     showsVerticalScrollIndicator={false}
+                    pointerEvents={refreshing ? 'none' : 'auto'}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(true)} />}
                 >
-                    <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item, type: type })} />
+                    <View style={{ opacity: refreshing ? 0.2 : 1 }}>
+                        <Item data={data} navigator={item => navigation.navigate('ItemDesc', { item: item, type: type })} />
+                    </View>
                 </ScrollView>
             }
 
@@ -343,12 +357,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export const FilterContext = React.createContext();
+export const ListContext = React.createContext();
 export default List = ({ route, navigation }) => {
-    let filterArray = route.params?.filters;
+
+    let options = {};
+
+    options.filter = route.params?.filters;
+    options.stamp = route.params?.stamp;
 
     return (
-        <FilterContext.Provider value={filterArray}>
+        <ListContext.Provider value={options}>
             <Drawer.Navigator
                 initialRouteName="List Items"
                 drawerPosition="left"
@@ -358,6 +376,6 @@ export default List = ({ route, navigation }) => {
                 <Drawer.Screen name="Profile" component={Profile} />
                 <Drawer.Screen name="List Items" component={ListPage} />
             </Drawer.Navigator>
-        </FilterContext.Provider>
+        </ListContext.Provider>
     )
 }

@@ -32,11 +32,11 @@ const End = ({ route, navigation }) => {
                         onPress={() => {
                             if (type === 'found') {
                                 SecureStore.getItemAsync('userToken').then(userToken => {
-                                    if (userToken) navigation.navigate('List');
+                                    if (userToken) navigation.navigate('List', { stamp: new Date().getTime() + 1000 });
                                     else navigation.navigate('Home');
                                 });
                             } else {
-                                navigation.navigate('List');
+                                navigation.navigate('List', { stamp: new Date().getTime() + 1000 });
                             }
                         }}
                         titleStyle={{ padding: 50, fontSize: 14, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
@@ -66,11 +66,11 @@ const End = ({ route, navigation }) => {
                             onPress={() => {
                                 if (type === 'found') {
                                     SecureStore.getItemAsync('userToken').then(userToken => {
-                                        if (userToken) navigation.navigate('List');
+                                        if (userToken) navigation.navigate('List', { stamp: new Date().getTime() + 1000 });
                                         else navigation.navigate('Home');
                                     });
                                 } else {
-                                    navigation.navigate('List');
+                                    navigation.navigate('List', { stamp: new Date().getTime() + 1000 });
                                 }
                             }}
                             titleStyle={{ padding: 50, fontSize: 14, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
