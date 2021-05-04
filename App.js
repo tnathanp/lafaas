@@ -94,7 +94,7 @@ function Provider() {
           Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
           break;
         case 3:
-          Linking.openURL('lafaas://app/match/' + data.item + '?requestInfo=true');
+          Linking.openURL('lafaas://app/match/' + data.item_id + '?requestInfo=true');
           break;
       }
     });
@@ -187,7 +187,7 @@ function App() {
             Linking.openURL('lafaas://app/cancelNavigate?qrid=' + data.qrid);
             break;
           case 3:
-            Linking.openURL('lafaas://app/match/' + data.item);
+            Linking.openURL('lafaas://app/match/' + data.item_id + '?requestInfo=true');
             break;
         }
       }, 500)
