@@ -64,7 +64,7 @@ const QRCode = ({ route, navigation }) => {
                 animationType='slide'
             >
                 <View style={{ backgroundColor: 'transparent', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                    <View style={{ backgroundColor: 'white', width: '90%', height: '35%', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ backgroundColor: 'white', width: '90%', height: '38%', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
 
                         {message[0] == 'Please scan your fingerprint with your right thumb' ?
                             <>
