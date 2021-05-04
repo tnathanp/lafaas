@@ -14,7 +14,7 @@ const Confirm = ({ route, navigation }) => {
 
     function cancel() {
         fetch('https://lafaas-n4hzx.ondigitalocean.app/cancelclaim?qr_id=' + qrid).then(res => res.text()).then(data => {
-            navigation.navigate('List');
+            navigation.navigate('List', { stamp: new Date().getTime() + 1000 });
         })
     };
 
