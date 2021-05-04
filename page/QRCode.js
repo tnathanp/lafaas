@@ -87,7 +87,7 @@ const QRCode = ({ route, navigation }) => {
                                     />
 
                                     <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 15 }}>{message[0]}</Text>
-                                    <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, paddingHorizontal: 15 }}>Please store the item and close the module</Text>
+                                    <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, paddingHorizontal: 15 }}>Store the item and close the module</Text>
                                 </>
                                 :
                                 <>
