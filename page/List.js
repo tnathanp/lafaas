@@ -73,7 +73,7 @@ const ItemList = ({ route, navigation }) => {
                 .then(data => {
                     let mounted = true;
 
-                    wait(refreshing ? 1000 : 200).then(() => {
+                    wait(refreshing ? 400 : 200).then(() => {
                         if (mounted) {
                             if (data.length !== 0) setOriginalData(data);
                             else setOriginalData([]);

@@ -231,7 +231,7 @@ const Register = ({ route, navigation }) => {
                         'content-type': 'multipart/form-data',
                     }
                 }).then(res => res.text()).then(id => {
-                    wait(2000).then(() => {
+                    wait(10).then(() => {
                         //Handle qrid for case found
                         setLoad(false);
 
@@ -253,7 +253,7 @@ const Register = ({ route, navigation }) => {
                         'content-type': 'multipart/form-data',
                     }
                 }).then(res => res.json()).then(data => {
-                    wait(2000).then(() => {
+                    wait(10).then(() => {
                         //Handle result for case lost
                         setLoad(false);
 

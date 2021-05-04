@@ -47,7 +47,9 @@ const Reporting = ({ route, navigation }) => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            quality: 1
         });
 
         setImg(result.uri);
@@ -58,7 +60,8 @@ const Reporting = ({ route, navigation }) => {
         await ImagePicker.requestCameraPermissionsAsync();
 
         let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true
+            allowsEditing: false,
+            quality: 1
         });
 
         if (result.cancelled) {
@@ -84,7 +87,7 @@ const Reporting = ({ route, navigation }) => {
 
         setLoad(true);
 
-        wait(200).then(() => {
+        wait(10).then(() => {
             navigation.navigate('Reported');
             setLoad(false);
         })
