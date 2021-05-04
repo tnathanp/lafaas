@@ -5,6 +5,9 @@ const config = {
         },
         QRCode: {
             path: ':operation'
+        },
+        Noti: {
+            path: 'match/:item_id'
         }
     }
 };
