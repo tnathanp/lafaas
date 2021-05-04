@@ -34,6 +34,11 @@ const Profile = ({ navigation }) => {
         });
     }, [navigation]);
 
+    function admin() {
+        //if(admin)
+        //navigate qr with {qrid: id}
+    }
+
     return (
         <View style={{ flex: 1, paddingTop: 60, backgroundColor: 'white', }}>
             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
@@ -69,8 +74,14 @@ const Profile = ({ navigation }) => {
             <View style={{ flex: 1, padding: 30, bottom: '32%' }}>
                 <Text style={styles.title}>Password Setting</Text>
                 <Button
-                    title='change password'
+                    title='Change Password'
                     onPress={() => navigation.navigate('ChangePassword')}
+                    titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
+                    buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, backgroundColor: '#f6a085', width: '100%' }}
+                />
+                <Button
+                    title='Generate QR Code'
+                    onPress={() => admin()}
                     titleStyle={{ padding: 50, fontSize: 16, fontFamily: 'NotoSansBold', marginTop: -5, marginBottom: -3 }}
                     buttonStyle={{ borderRadius: 10, marginRight: 10, marginTop: 10, backgroundColor: '#f6a085', width: '100%' }}
                 />
