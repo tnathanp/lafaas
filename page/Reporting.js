@@ -7,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { showMessage } from 'react-native-flash-message';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from 'expo-secure-store';
 import BackButton from '../component/BackButton';
 import LoadingButton from '../component/LoadingButton';
 
@@ -87,10 +88,28 @@ const Reporting = ({ route, navigation }) => {
 
         setLoad(true);
 
-        wait(10).then(() => {
-            navigation.navigate('Reported');
-            setLoad(false);
+        SecureStore.getItemAsync('userToken').then(token => {
+            let formData = new FormData();
+            formData.append('item_id', item.item_id);
+            formData.append('message', detail);
+            formData.append('token', token);
+            formData.append('image', { uri: img, name: img.split('/').pop(), type: 'image/jpeg' });
+
+            fetch('https://lafaas-n4hzx.ondigitalocean.app/report', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'content-type': 'multipart/form-data',
+                }
+            }).then(res => res.text()).then(id => {
+                wait(10).then(() => {
+                    navigation.navigate('Reported');
+                    setLoad(false);
+                })
+            });
+
         })
+
     }
 
     return (

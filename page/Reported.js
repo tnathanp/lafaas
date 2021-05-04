@@ -32,7 +32,7 @@ const Reported = ({ navigation }) => {
 
                             Here are ways to contact us:{'\n'}{'\n'}
 
-                            <Text style={{ fontWeight: 'bold' }}>Tel.</Text>: xxx-xxx-xxxx{'\n'}{'\n'}
+                            <Text style={{ fontWeight: 'bold' }}>Tel.</Text>: 089-929-5959{'\n'}{'\n'}
                             <Text style={{ fontWeight: 'bold' }}>Email</Text>: lafaas.admin@gmail.com
                         </Text>
                     </View>
