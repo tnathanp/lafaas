@@ -75,22 +75,34 @@ const QRCode = ({ route, navigation }) => {
                                 />
 
                                 <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 20, marginTop: '45%', paddingHorizontal: 15 }}>{message[0]}</Text>
-                                <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, marginTop: 10, paddingHorizontal: 15 }}>The process might take some time</Text>
+                                <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, marginVertical: 10, paddingHorizontal: 15 }}>The process might take some time</Text>
                             </>
                             :
-                            <>
-                                <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginBottom: 10 }}>Alert</Text>
-                                <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 18, marginTop: 30, marginBottom: 60, paddingHorizontal: 15 }}>
-                                    {message[1] == '' ? message[0] : message[0] + '\n' + message[1]}
-                                </Text>
+                            message[0]?.includes('opened') ?
+                                <>
+                                    <LottieView
+                                        style={{ backgroundColor: 'transparent', width: 200 }}
+                                        source={require('../assets/anim/lf30_store_item.json')}
+                                        autoPlay
+                                    />
 
-                                <Button
-                                    title="Close"
-                                    titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
-                                    buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10 }}
-                                    onPress={() => showError(false)}
-                                />
-                            </>
+                                    <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 15 }}>{message[0]}</Text>
+                                    <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 16, paddingHorizontal: 15 }}>Please store the item and close the module</Text>
+                                </>
+                                :
+                                <>
+                                    <Text style={{ textAlign: 'center', color: '#fc8181', fontWeight: 'bold', fontSize: 28, marginBottom: 10 }}>Alert</Text>
+                                    <Text style={{ textAlign: 'center', color: '#777777', fontWeight: 'normal', fontSize: 18, marginTop: 30, marginBottom: 60, paddingHorizontal: 15 }}>
+                                        {message[1] == '' ? message[0] : message[0] + '\n' + message[1]}
+                                    </Text>
+
+                                    <Button
+                                        title="Close"
+                                        titleStyle={{ fontFamily: 'NotoSansBold', padding: '35%' }}
+                                        buttonStyle={{ backgroundColor: '#fc8181', borderRadius: 10 }}
+                                        onPress={() => showError(false)}
+                                    />
+                                </>
                         }
 
                     </View>
