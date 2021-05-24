@@ -1,0 +1,3 @@
+java -jar /Users/tnathanp/Desktop/bundletool-all-1.6.0.jar build-apks --bundle=/Users/tnathanp/Desktop/lafaas/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/tnathanp/Desktop/app-release.apks --ks=/Users/tnathanp/Desktop/lafaas/my-upload-key.keystore --ks-key-alias=my-key-alias
+
+java -jar bundletool-all-1.6.0.jar install-apks --apks=app-release.apks 

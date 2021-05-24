@@ -1,0 +1,14 @@
+{
+    "Simulator Target Bundle": "com.tanathanp.LaFaaS",
+    "aps": {
+        "alert": {
+            "title": "TEST NOTI",
+            "body": "lol"
+        }
+    },
+    "experienceId": "@tanathanp/LaFaaS",
+    "body": {
+        "id": 1,
+        "msg": "wtf"
+    }
+}
